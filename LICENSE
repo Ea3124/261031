@@ -20,5 +20,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-The pstack sources under vendor/pstack retain their original MIT license
-and Copyright (c) 2026 Lauren Tan.
+The adapted pstack skill material retains the MIT notice and
+Copyright (c) 2026 Lauren Tan in .agents/skills/LICENSE.pstack.
+The adapted Cofa Ready Kit material retains its MIT notice in
+.agents/skills/LICENSE.cofa-ready-kit.

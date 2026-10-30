@@ -27,14 +27,19 @@ check_path() {
     fi
 }
 runtime=(
-    .agents/skills/LICENSE.pstack
+    readme.kit.md readme.skill.md
+    .agents/skills/LICENSE.pstack .agents/skills/LICENSE.cofa-ready-kit
     scripts/check scripts/source-tree scripts/setup
     .githooks/pre-commit .githooks/pre-push
 )
-for skill in fde-workflow design-change feature-map verify-app test-verifier debug-root-cause handoff; do
+for skill in 01-fde-workflow 02-design-change 03-feature-map 04-verify-app 05-test-verifier 06-debug-root-cause 07-handoff; do
+    legacy=".agents/skills/${skill#??-}/SKILL.md"
+    if exists "$legacy"; then
+        fail "번호 없는 이전 스킬을 보존했습니다: $legacy. 새 스킬과 중복되지 않도록 내용을 비교해 이전 경로를 정리한 뒤 다시 실행하세요."
+    fi
     runtime+=(".agents/skills/$skill/SKILL.md")
 done
-preserved=(docs/intent.md docs/features.md docs/handoff.md docs/skills.md verification/check)
+preserved=(docs/intent.md docs/features.md docs/handoff.md verification/check)
 for path in "${runtime[@]}" "${preserved[@]}" AGENTS.md RULE.md; do
     [ -f "$kit/$path" ] && [ ! -L "$kit/$path" ] || fail "키트 원본 누락: $path"
     check_path "$path"
@@ -119,6 +124,7 @@ printf '\n설치 완료. 실제 과제 안내·RULE.md·AGENTS.md를 먼저 읽�
 if [ "$rules" = RULE.kit.md ]; then
     printf '기존 RULE.md를 보존하고 키트 규칙을 RULE.kit.md에 두었습니다. 실제 과제 규칙이 우선합니다.\n'
 fi
+printf '키트 안내는 readme.kit.md, 단계별 스킬과 시나리오는 readme.skill.md에서 확인하세요.\n'
 printf 'docs/intent.md·docs/features.md와 verification/check를 과제에 맞게 작성하세요.\n'
 printf '그 뒤 ./scripts/check → 코드·증거 함께 스테이징 → 커밋 순서로 진행하세요.\n'
 printf '앱 검증·스테이징·커밋은 실행하지 않았습니다. 재실행은 기존 과제 문서와 검사 어댑터를 보존합니다.\n'

@@ -1,6 +1,7 @@
 """Install the public kit into disposable task repositories, not its own checkout."""
 
 import os
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -18,7 +19,7 @@ class SetupTests(unittest.TestCase):
         self.base = Path(self.temporary.name)
         self.kit = self.base / "public kit source"
         self.kit.mkdir()
-        for name in ("setup.sh", "AGENTS.md", "RULE.md", "LICENSE"):
+        for name in ("setup.sh", "AGENTS.md", "RULE.md", "LICENSE", "readme.kit.md", "readme.skill.md"):
             shutil.copy2(SOURCE / name, self.kit / name)
         for name in (".agents", "docs", "scripts", ".githooks", "verification"):
             shutil.copytree(SOURCE / name, self.kit / name)
@@ -70,9 +71,28 @@ class SetupTests(unittest.TestCase):
             self.assertFalse((self.repo / name).exists())
         self.assertEqual(
             {p.name for p in (self.repo / "docs").iterdir()},
-            {"intent.md", "features.md", "handoff.md", "skills.md"},
+            {"intent.md", "features.md", "handoff.md"},
         )
-        self.assertEqual(len(list((self.repo / ".agents/skills").glob("*/SKILL.md"))), 7)
+        self.assertEqual(
+            {p.parent.name for p in (self.repo / ".agents/skills").glob("*/SKILL.md")},
+            {"01-fde-workflow", "02-design-change", "03-feature-map", "04-verify-app",
+             "05-test-verifier", "06-debug-root-cause", "07-handoff"},
+        )
+        for name in ("readme.kit.md", "readme.skill.md"):
+            self.assertEqual((self.repo / name).read_bytes(), (self.kit / name).read_bytes())
+        for name in ("LICENSE.pstack", "LICENSE.cofa-ready-kit"):
+            self.assertEqual(
+                (self.repo / ".agents/skills" / name).read_bytes(),
+                (self.kit / ".agents/skills" / name).read_bytes(),
+            )
+        for document in self.repo.rglob("*.md"):
+            if ".git" in document.relative_to(self.repo).parts:
+                continue
+            for target in re.findall(r"\]\(([^)]+)\)", document.read_text()):
+                if target.startswith(("https://", "http://", "#", "mailto:")):
+                    continue
+                local = target.split("#", 1)[0].strip("<>")
+                self.assertTrue((document.parent / local).exists(), f"{document}: {target}")
         self.assertEqual(self.command("./verification/check", expected=2).returncode, 2)
         self.command("git", "check-ignore", "--quiet", ".evidence/tmp/state")
         self.command("git", "check-ignore", "--quiet", ".evidence/run-proof/output.log", expected=1)
@@ -127,6 +147,29 @@ class SetupTests(unittest.TestCase):
         self.assertEqual(self.snapshot(), before)
         self.command("git", "config", "--get", "core.hooksPath", expected=1)
 
+    def test_conflicting_kit_guides_stop_before_copying(self):
+        for name in ("readme.kit.md", "readme.skill.md"):
+            with self.subTest(name=name):
+                guide = self.repo / name
+                guide.write_text("native guide that must survive\n")
+                before = self.snapshot()
+                result = self.setup(expected=1)
+                self.assertIn(name, result.stderr)
+                self.assertEqual(self.snapshot(), before)
+                self.command("git", "config", "--get", "core.hooksPath", expected=1)
+                guide.unlink()
+
+    def test_legacy_unnumbered_skill_stops_before_copying(self):
+        legacy = self.repo / ".agents/skills/fde-workflow/SKILL.md"
+        legacy.parent.mkdir(parents=True)
+        legacy.write_text("previous local workflow that must survive\n")
+        before = self.snapshot()
+        result = self.setup(expected=1)
+        self.assertIn(str(legacy.relative_to(self.repo)), result.stderr)
+        self.assertEqual(self.snapshot(), before)
+        self.assertFalse((self.repo / ".agents/skills/01-fde-workflow").exists())
+        self.command("git", "config", "--get", "core.hooksPath", expected=1)
+
     def test_sidecar_conflict_stops_before_copying(self):
         (self.repo / "AGENTS.md").write_text("native rules\n")
         (self.repo / "AGENTS.kit.md").write_text("another kit\n")
@@ -171,7 +214,7 @@ class SetupTests(unittest.TestCase):
         self.assertEqual(self.command("git", "config", "--get", "core.hooksPath").stdout.strip(), "native-hooks")
 
     def test_ignored_managed_files_stop_before_copying(self):
-        for pattern in (".githooks/\n", "scripts/\n"):
+        for pattern in (".githooks/\n", "scripts/\n", "readme.kit.md\n", "readme.skill.md\n", ".agents/skills/LICENSE.cofa-ready-kit\n"):
             with self.subTest(pattern=pattern):
                 (self.repo / ".gitignore").write_text(pattern)
                 before = self.snapshot()

@@ -1,0 +1,66 @@
+{
+  "kind": "HTML 설명서 동작 검사: 실제 과제 앱 검사와 구분",
+  "method": "새 임시 Chrome 프로필·headless·Chrome DevTools Protocol, 로컬 HTML만 열기",
+  "checks": [
+    {
+      "name": "scenario_has_12_continuous_stages",
+      "status": "PASS"
+    },
+    {
+      "name": "every_file_has_description_and_usage",
+      "status": "PASS"
+    },
+    {
+      "name": "all_file_paths_unique",
+      "status": "PASS"
+    },
+    {
+      "name": "scenario_file_references_resolve",
+      "status": "PASS"
+    },
+    {
+      "name": "embedded_text_matches_actual_files",
+      "status": "PASS"
+    },
+    {
+      "name": "scenario_links_open_setup_file",
+      "status": "PASS"
+    },
+    {
+      "name": "source_view_displays_numbered_lines",
+      "status": "PASS"
+    },
+    {
+      "name": "search_finds_commit_hook",
+      "status": "PASS"
+    },
+    {
+      "name": "empty_search_has_clear_state",
+      "status": "PASS"
+    },
+    {
+      "name": "all_files_available_in_explorer",
+      "status": "PASS"
+    },
+    {
+      "name": "numbered_skills_guides_and_no_vendor",
+      "status": "PASS"
+    },
+    {
+      "name": "mobile_flow_has_no_page_horizontal_overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "mobile_file_view_has_no_page_horizontal_overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "return_to_scenario_works",
+      "status": "PASS"
+    },
+    {
+      "name": "no_uncaught_browser_exceptions",
+      "status": "PASS"
+    }
+  ]
+}

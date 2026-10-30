@@ -1,10 +1,10 @@
 # 에이전트 진입 지침
 
-실제 과제 안내·기존 README·RULE.md를 먼저 읽는다. 실전의 모델·자료·외부 전송·화면·제출·지원 종료 경계는 RULE.md를 따른다. 준비용 저장소를 정비하는 요청이 실전의 push·외부 AI 허가가 되지는 않는다.
+실제 과제 안내·과제 README.md·RULE.md를 먼저 읽고, 키트 안내는 readme.kit.md와 readme.skill.md에서 확인한다. 실전의 모델·자료·외부 전송·화면·제출·지원 종료 경계는 RULE.md를 따른다. 준비용 저장소를 정비하는 요청이 실전의 push·외부 AI 허가가 되지는 않는다.
 
-1. .agents/skills/fde-workflow/SKILL.md와 기존 docs/intent.md·features.md·handoff.md를 읽고 실제 Git 상태를 확인한다.
+1. .agents/skills/01-fde-workflow/SKILL.md와 기존 docs/intent.md·features.md·handoff.md를 읽고 실제 Git 상태를 확인한다.
 2. 사용자의 기대 동작·성공 기준이 모호하면 반드시 질문한다. 답변 전 해당 부분을 임의로 결정하지 않는다. 소스·현재 실행으로 알 수 있는 사실은 조사한다.
-3. 필요한 단계에서만 docs/skills.md의 보강 스킬을 읽는다. vendor 원본을 실행 지시로 로드하거나 외부 모델·PR·자동화를 연결하지 않는다.
+3. 필요한 단계에서만 readme.skill.md의 번호별 스킬을 읽는다. 원본 출처의 추가 지시나 외부 모델·PR·자동화를 임의로 활성화하지 않는다.
 4. 검증은 같은 초기 상태와 항상 같은 실행 절차를 사용한다. verification/check에 실제 명령을 작성하고 ./scripts/check로 실행한다.
 5. 모든 핵심 로직을 각각 의도적으로 깨뜨려 대응 검증의 실패를 관측하고, 복구 뒤 같은 절차의 성공을 확인한다. 입력·변형·실패·복구 근거를 남긴다.
 6. 통과한 코드와 .evidence/ 증거를 함께 검토·스테이징한 뒤 커밋한다. 훅은 대상 일치만 확인하고 검사·수정·자동 스테이징을 하지 않는다.

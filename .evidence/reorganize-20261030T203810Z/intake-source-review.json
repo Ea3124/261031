@@ -1,0 +1,63 @@
+{
+  "source_url": "https://github.com/ripplelover/cofa-ready-kit/blob/main/skills/cofa-triage/SKILL.md",
+  "source_git_blob": "041e38c27b824de67e95099242ad69970694448e",
+  "license_url": "https://github.com/ripplelover/cofa-ready-kit/blob/main/LICENSE",
+  "license_git_blob": "7bf9b078ee8289cea0f19ee960890ff0fbf3ccd9",
+  "comparison": {
+    "source_sentence_count": 44,
+    "rewritten_sentence_count": 58,
+    "minimum_characters": 1,
+    "identical_complete_sentences": [],
+    "scope": "01 skill natural-language body; YAML, URLs, HTML comments and license excluded"
+  },
+  "validation": [
+    {
+      "skill": "01-fde-workflow",
+      "exit_code": 0,
+      "output": "Skill is valid!\n"
+    },
+    {
+      "skill": "02-design-change",
+      "exit_code": 0,
+      "output": "Skill is valid!\n"
+    },
+    {
+      "skill": "03-feature-map",
+      "exit_code": 0,
+      "output": "Skill is valid!\n"
+    },
+    {
+      "skill": "04-verify-app",
+      "exit_code": 0,
+      "output": "Skill is valid!\n"
+    },
+    {
+      "skill": "05-test-verifier",
+      "exit_code": 0,
+      "output": "Skill is valid!\n"
+    },
+    {
+      "skill": "06-debug-root-cause",
+      "exit_code": 0,
+      "output": "Skill is valid!\n"
+    },
+    {
+      "skill": "07-handoff",
+      "exit_code": 0,
+      "output": "Skill is valid!\n"
+    }
+  ],
+  "other_skills_semantics_preserved": [
+    "02-design-change",
+    "03-feature-map",
+    "04-verify-app",
+    "05-test-verifier",
+    "06-debug-root-cause",
+    "07-handoff"
+  ],
+  "new_skill_sha256": "5d1cf7231e45c87016f9e33f39f1b167d74503d127fac5af4e9cfe4df9663215",
+  "last_comment": "<!-- reference: https://github.com/Ea3124/261031/blob/main/.agents/skills/fde-workflow/SKILL.md (번호 변경 전 경로; 당시 내용: https://github.com/Ea3124/261031/blob/bae18c03e3ef562d5e05cb9896004102c3445cc2/.agents/skills/fde-workflow/SKILL.md) -->",
+  "source_blob_verified_against_full_text": true,
+  "license_blob_verified_against_full_text": true,
+  "license_sha256": "81d5c277e283ba07e71662e36891893f0f07761cb16ba6d292462eecd0ae286c"
+}
