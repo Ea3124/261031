@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
+if [ "$#" -gt 1 ]; then printf 'Usage: scripts/setup [--check]\n' >&2; exit 2; fi
+case "${1:-}" in
+    ''|--check) ;;
+    *) printf 'Usage: scripts/setup [--check]\n' >&2; exit 2 ;;
+esac
 cd "$(git rev-parse --show-toplevel)"
 if configured=$(git config --get core.hooksPath); then
     if [ "$configured" != .githooks ] && [ "$configured" != "$PWD/.githooks" ]; then
@@ -13,6 +18,7 @@ else
         exit 1
     fi
 fi
+if [ "${1:-}" = --check ]; then exit 0; fi
 test -x .githooks/pre-commit
 test -x .githooks/pre-push
 git config --local core.hooksPath .githooks

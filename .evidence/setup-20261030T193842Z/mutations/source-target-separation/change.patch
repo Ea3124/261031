@@ -1,0 +1,11 @@
+--- a/setup.sh
++++ b/setup.sh
+@@ -10,7 +10,7 @@
+ top=$(git rev-parse --show-toplevel 2>/dev/null) || fail '과제 Git 루트에서 실행하세요. Git 저장소를 자동 생성하지 않습니다.'
+ top=$(cd "$top" && pwd -P)
+ [ "$target" = "$top" ] || fail '하위 폴더가 아닌 과제 Git 루트에서 실행하세요.'
+-[ "$target" != "$kit" ] || fail '키트 원본이 아닌 별도 과제 Git 루트에서 실행하세요.'
++: # source checkout is wrongly accepted
+ [ "$#" -eq 0 ] || fail '인자 없이 과제 Git 루트에서 실행하세요.'
+ 
+ # 모든 충돌을 먼저 확인한다. 외부 경로로 연결되는 symlink는 따라가지 않는다.

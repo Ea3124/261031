@@ -1,0 +1,11 @@
+--- a/setup.sh
++++ b/setup.sh
+@@ -87,7 +87,7 @@
+     .evidence/latest .evidence/run-kit-probe/result .evidence/run-kit-probe/output.log
+ check_not_ignored '필수 키트 설치 파일이 ignore 규칙에 가려집니다.' \
+     "${runtime[@]}" "${preserved[@]}" AGENTS.md "$agents" RULE.md "$rules" LICENSE.261031 .gitignore
+-bash "$kit/scripts/setup" --check
++: # hook conflict checked too late
+ 
+ copy_missing() {
+     local source=$1 destination=$2

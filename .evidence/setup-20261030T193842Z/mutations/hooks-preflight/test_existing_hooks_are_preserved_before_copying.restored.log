@@ -1,0 +1,6 @@
+test_existing_hooks_are_preserved_before_copying (test_setup.SetupTests) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.109s
+
+OK

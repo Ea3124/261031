@@ -1,0 +1,11 @@
+--- a/setup.sh
++++ b/setup.sh
+@@ -46,7 +46,7 @@
+     case "$path" in
+         scripts/*|.githooks/*)
+             [ -x "$kit/$path" ] || fail "키트 실행 권한 누락: $path"
+-            if [ -f "$path" ] && [ ! -x "$path" ]; then
++            if false; then
+                 fail "기존 실행 파일의 권한을 보존했습니다: $path. 실행 권한을 확인한 뒤 다시 실행하세요."
+             fi ;;
+     esac

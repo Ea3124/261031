@@ -1,0 +1,11 @@
+--- a/setup.sh
++++ b/setup.sh
+@@ -103,7 +103,7 @@
+ copy_missing LICENSE LICENSE.261031
+ copy_missing AGENTS.md "$agents"
+ copy_missing RULE.md "$rules"
+-if [ "$agents" = AGENTS.kit.md ] && ! grep -Fqx '<!-- 261031-kit -->' AGENTS.md; then
++if false; then
+     cat >> AGENTS.md <<'POINTER'
+ 
+ <!-- 261031-kit -->

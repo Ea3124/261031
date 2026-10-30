@@ -1,0 +1,45 @@
+test_reject_non_git_subdirectory_and_source_checkout (test_setup.SetupTests) ... FAIL
+
+======================================================================
+FAIL: test_reject_non_git_subdirectory_and_source_checkout (test_setup.SetupTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/05/cvkr89bd0r59mk0ts5kln8mw0000gn/T/kit-installer-mutant-txyzt_e_/tests/test_setup.py", line 90, in test_reject_non_git_subdirectory_and_source_checkout
+    self.setup(cwd=self.kit, expected=1)
+  File "/private/var/folders/05/cvkr89bd0r59mk0ts5kln8mw0000gn/T/kit-installer-mutant-txyzt_e_/tests/test_setup.py", line 50, in setup
+    return self.command("bash", str(self.kit / "setup.sh"), **kwargs)
+  File "/private/var/folders/05/cvkr89bd0r59mk0ts5kln8mw0000gn/T/kit-installer-mutant-txyzt_e_/tests/test_setup.py", line 46, in command
+    self.assertEqual(result.returncode, expected, result.stdout + result.stderr)
+AssertionError: 0 != 1 : 보존: .agents/skills/LICENSE.pstack
+보존: scripts/check
+보존: scripts/source-tree
+보존: scripts/setup
+보존: .githooks/pre-commit
+보존: .githooks/pre-push
+보존: .agents/skills/fde-workflow/SKILL.md
+보존: .agents/skills/design-change/SKILL.md
+보존: .agents/skills/feature-map/SKILL.md
+보존: .agents/skills/verify-app/SKILL.md
+보존: .agents/skills/test-verifier/SKILL.md
+보존: .agents/skills/debug-root-cause/SKILL.md
+보존: .agents/skills/handoff/SKILL.md
+보존: docs/intent.md
+보존: docs/features.md
+보존: docs/handoff.md
+보존: docs/skills.md
+보존: verification/check
+추가: LICENSE.261031
+보존: AGENTS.md
+보존: RULE.md
+Installed local Git hooks from .githooks.
+
+설치 완료. 실제 과제 안내·RULE.md·AGENTS.md를 먼저 읽으세요.
+docs/intent.md·docs/features.md와 verification/check를 과제에 맞게 작성하세요.
+그 뒤 ./scripts/check → 코드·증거 함께 스테이징 → 커밋 순서로 진행하세요.
+앱 검증·스테이징·커밋은 실행하지 않았습니다. 재실행은 기존 과제 문서와 검사 어댑터를 보존합니다.
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.133s
+
+FAILED (failures=1)

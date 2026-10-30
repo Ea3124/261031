@@ -1,0 +1,45 @@
+test_runtime_conflict_stops_before_copying (test_setup.SetupTests) ... FAIL
+
+======================================================================
+FAIL: test_runtime_conflict_stops_before_copying (test_setup.SetupTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/05/cvkr89bd0r59mk0ts5kln8mw0000gn/T/kit-installer-mutant-_u0ktpev/tests/test_setup.py", line 125, in test_runtime_conflict_stops_before_copying
+    result = self.setup(expected=1)
+  File "/private/var/folders/05/cvkr89bd0r59mk0ts5kln8mw0000gn/T/kit-installer-mutant-_u0ktpev/tests/test_setup.py", line 50, in setup
+    return self.command("bash", str(self.kit / "setup.sh"), **kwargs)
+  File "/private/var/folders/05/cvkr89bd0r59mk0ts5kln8mw0000gn/T/kit-installer-mutant-_u0ktpev/tests/test_setup.py", line 46, in command
+    self.assertEqual(result.returncode, expected, result.stdout + result.stderr)
+AssertionError: 0 != 1 : 추가: .agents/skills/LICENSE.pstack
+보존: scripts/check
+추가: scripts/source-tree
+추가: scripts/setup
+추가: .githooks/pre-commit
+추가: .githooks/pre-push
+추가: .agents/skills/fde-workflow/SKILL.md
+추가: .agents/skills/design-change/SKILL.md
+추가: .agents/skills/feature-map/SKILL.md
+추가: .agents/skills/verify-app/SKILL.md
+추가: .agents/skills/test-verifier/SKILL.md
+추가: .agents/skills/debug-root-cause/SKILL.md
+추가: .agents/skills/handoff/SKILL.md
+추가: docs/intent.md
+추가: docs/features.md
+추가: docs/handoff.md
+추가: docs/skills.md
+추가: verification/check
+추가: LICENSE.261031
+추가: AGENTS.md
+추가: RULE.md
+Installed local Git hooks from .githooks.
+
+설치 완료. 실제 과제 안내·RULE.md·AGENTS.md를 먼저 읽으세요.
+docs/intent.md·docs/features.md와 verification/check를 과제에 맞게 작성하세요.
+그 뒤 ./scripts/check → 코드·증거 함께 스테이징 → 커밋 순서로 진행하세요.
+앱 검증·스테이징·커밋은 실행하지 않았습니다. 재실행은 기존 과제 문서와 검사 어댑터를 보존합니다.
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.146s
+
+FAILED (failures=1)

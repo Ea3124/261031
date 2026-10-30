@@ -1,0 +1,6 @@
+test_runtime_conflict_stops_before_copying (test_setup.SetupTests) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.041s
+
+OK

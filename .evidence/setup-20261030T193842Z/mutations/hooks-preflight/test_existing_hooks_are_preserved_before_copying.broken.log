@@ -1,0 +1,15 @@
+test_existing_hooks_are_preserved_before_copying (test_setup.SetupTests) ... FAIL
+
+======================================================================
+FAIL: test_existing_hooks_are_preserved_before_copying (test_setup.SetupTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/05/cvkr89bd0r59mk0ts5kln8mw0000gn/T/kit-installer-mutant-b6ehr6rc/tests/test_setup.py", line 165, in test_existing_hooks_are_preserved_before_copying
+    self.assertEqual(self.snapshot(), before)
+AssertionError: {'LIC[25 chars]', 'RULE.md': b'# \xed\x95\xb4\xec\xbb\xa4\xed[129401 chars]"\n'} != {'LIC[25 chars]', 'README.md': b'task readme\n'}
+Diff is 263445 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 1 test in 0.157s
+
+FAILED (failures=1)

@@ -1,0 +1,6 @@
+test_existing_documents_and_adapter_survive_idempotent_rerun (test_setup.SetupTests) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.219s
+
+OK

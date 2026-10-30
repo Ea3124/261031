@@ -1,0 +1,289 @@
+{
+  "kind": "공통 키트 최초 설치 검증: 실제 과제 앱의 기능 검증이 아님",
+  "utc": "2026-10-30T19:38:42.486175+00:00",
+  "base_commit": "cde0db570aec3daefb75fe350b0297a6c658ea3e",
+  "reference": {
+    "url": "https://github.com/JinwooKim-git/cofa-kit/blob/main/setup.sh",
+    "git_blob_sha": "b75bbaefe369b3d8698d8b9abc016676ce2b6628",
+    "use": "설치 아이디어만 참고해 독립 구현. 원문 코드를 복사하거나 실행하지 않음."
+  },
+  "source_scope": [
+    "setup.sh",
+    "scripts/check",
+    "scripts/setup",
+    "scripts/source-tree",
+    ".githooks/pre-commit",
+    ".githooks/pre-push",
+    "verification/check",
+    "tests/test_setup.py",
+    "tests/test_workflow.py"
+  ],
+  "source_sha256_before": {
+    "setup.sh": "8e18a2ca4bafacfbfa1bf0ecaf9acc3a1602d27edeaad677b003115526aea299",
+    "scripts/check": "f7215d687e163d240bb4a6b3988527143134e6e6488780879c7feda39590b643",
+    "scripts/setup": "75a9cd99e4c5984701428ab602605181c67555a0cd9036f5dc96ec54adbf749c",
+    "scripts/source-tree": "e2057f17adb4cc195b9baa5e1ab1a2b28e91de3bd54a66f2b8e78680b4408b06",
+    ".githooks/pre-commit": "82f826414a5e3206887a820264c801f87cfc61ff06b58bb40ec4d1ddf153a0e1",
+    ".githooks/pre-push": "0c4a4ca2bba7aefd8db365f086adaed2378108b6a8258130a2b8dc378319cbee",
+    "verification/check": "5ba14607c15031dd382a20d6885f12e738bc6751c37b61e72adfac45afc07df5",
+    "tests/test_setup.py": "357a16f4e41558c56661092c200cff610f2563a88fcba34c7364d9b0e9f78c25",
+    "tests/test_workflow.py": "b2e0907196296aeb636628e424a423b2a4a7cfc860237607594f92f86818cbc5"
+  },
+  "mutations": [
+    {
+      "id": "runtime-conflict",
+      "defect_ko": "서로 다른 실행 가능한 공통 도구가 있어도 설치를 계속하는 결함",
+      "expected_failure_ko": "설치 성공 종료가 관측되어 실패해야 할 기존 충돌 검사가 실패한다.",
+      "syntax_exit_code": 0,
+      "checks": [
+        {
+          "test": "test_runtime_conflict_stops_before_copying",
+          "argv": [
+            "python3",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "tests",
+            "-p",
+            "test_setup.py",
+            "-k",
+            "test_runtime_conflict_stops_before_copying",
+            "-v"
+          ],
+          "broken_exit_code": 1,
+          "restored_exit_code": 0,
+          "broken_log": "test_runtime_conflict_stops_before_copying.broken.log",
+          "restored_log": "test_runtime_conflict_stops_before_copying.restored.log"
+        }
+      ],
+      "patch_sha256": "c6b30fdd0f35b127d240b1955492ad25282071f6dbd273d08a519884bf4297cc"
+    },
+    {
+      "id": "preserve-native-files",
+      "defect_ko": "기존 과제 문서·검사 어댑터를 원본 템플릿으로 덮어쓰는 결함",
+      "expected_failure_ko": "설치 뒤 과제 intent 문서가 원본과 달라져 실제 보존 검사가 실패한다.",
+      "syntax_exit_code": 0,
+      "checks": [
+        {
+          "test": "test_existing_documents_and_adapter_survive_idempotent_rerun",
+          "argv": [
+            "python3",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "tests",
+            "-p",
+            "test_setup.py",
+            "-k",
+            "test_existing_documents_and_adapter_survive_idempotent_rerun",
+            "-v"
+          ],
+          "broken_exit_code": 1,
+          "restored_exit_code": 0,
+          "broken_log": "test_existing_documents_and_adapter_survive_idempotent_rerun.broken.log",
+          "restored_log": "test_existing_documents_and_adapter_survive_idempotent_rerun.restored.log"
+        }
+      ],
+      "patch_sha256": "97d04e958d229eb45580361e3d808511066fea252a386a556db8648ec225d88d"
+    },
+    {
+      "id": "ignored-install-inputs",
+      "defect_ko": "증거·필수 공통 도구가 Git ignore로 가려져도 설치하는 결함",
+      "expected_failure_ko": "가려진 파일 조건에서 설치가 잘못 성공하여 두 검사가 실패한다.",
+      "syntax_exit_code": 0,
+      "checks": [
+        {
+          "test": "test_ignored_evidence_stops_before_copying",
+          "argv": [
+            "python3",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "tests",
+            "-p",
+            "test_setup.py",
+            "-k",
+            "test_ignored_evidence_stops_before_copying",
+            "-v"
+          ],
+          "broken_exit_code": 1,
+          "restored_exit_code": 0,
+          "broken_log": "test_ignored_evidence_stops_before_copying.broken.log",
+          "restored_log": "test_ignored_evidence_stops_before_copying.restored.log"
+        },
+        {
+          "test": "test_ignored_managed_files_stop_before_copying",
+          "argv": [
+            "python3",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "tests",
+            "-p",
+            "test_setup.py",
+            "-k",
+            "test_ignored_managed_files_stop_before_copying",
+            "-v"
+          ],
+          "broken_exit_code": 1,
+          "restored_exit_code": 0,
+          "broken_log": "test_ignored_managed_files_stop_before_copying.broken.log",
+          "restored_log": "test_ignored_managed_files_stop_before_copying.restored.log"
+        }
+      ],
+      "patch_sha256": "104bb1ca7c2cebe4f4b530a4706063318ddfbf9bc10ee47f955952716002a11c"
+    },
+    {
+      "id": "source-target-separation",
+      "defect_ko": "별도 과제 대신 키트 원본에 설치하는 결함",
+      "expected_failure_ko": "임시 키트 원본에서 설치가 잘못 성공하여 거절 검사가 실패한다.",
+      "syntax_exit_code": 0,
+      "checks": [
+        {
+          "test": "test_reject_non_git_subdirectory_and_source_checkout",
+          "argv": [
+            "python3",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "tests",
+            "-p",
+            "test_setup.py",
+            "-k",
+            "test_reject_non_git_subdirectory_and_source_checkout",
+            "-v"
+          ],
+          "broken_exit_code": 1,
+          "restored_exit_code": 0,
+          "broken_log": "test_reject_non_git_subdirectory_and_source_checkout.broken.log",
+          "restored_log": "test_reject_non_git_subdirectory_and_source_checkout.restored.log"
+        }
+      ],
+      "patch_sha256": "9bd54423139b54dc6e78d4e81367aec110b0adaa358b758460e36befc1123214"
+    },
+    {
+      "id": "hooks-preflight",
+      "defect_ko": "기존 사용자 훅 충돌을 파일 복사 뒤에야 발견하는 결함",
+      "expected_failure_ko": "나중에 설치 실패해도 이미 파일이 생겨 원래 상태 보존 검사가 실패한다.",
+      "syntax_exit_code": 0,
+      "checks": [
+        {
+          "test": "test_existing_hooks_are_preserved_before_copying",
+          "argv": [
+            "python3",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "tests",
+            "-p",
+            "test_setup.py",
+            "-k",
+            "test_existing_hooks_are_preserved_before_copying",
+            "-v"
+          ],
+          "broken_exit_code": 1,
+          "restored_exit_code": 0,
+          "broken_log": "test_existing_hooks_are_preserved_before_copying.broken.log",
+          "restored_log": "test_existing_hooks_are_preserved_before_copying.restored.log"
+        }
+      ],
+      "patch_sha256": "009fe2af8bf2ac2ace192b7ea052bd60370579f33c218119b3aa57030d15abd7"
+    },
+    {
+      "id": "agent-discovery",
+      "defect_ko": "기존 AGENTS에서 키트 지침을 발견할 읽기 참조를 누락하는 결함",
+      "expected_failure_ko": "AGENTS.kit.md 연결이 실제 기존 AGENTS에 없어 발견성 검사가 실패한다.",
+      "syntax_exit_code": 0,
+      "checks": [
+        {
+          "test": "test_existing_documents_and_adapter_survive_idempotent_rerun",
+          "argv": [
+            "python3",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "tests",
+            "-p",
+            "test_setup.py",
+            "-k",
+            "test_existing_documents_and_adapter_survive_idempotent_rerun",
+            "-v"
+          ],
+          "broken_exit_code": 1,
+          "restored_exit_code": 0,
+          "broken_log": "test_existing_documents_and_adapter_survive_idempotent_rerun.broken.log",
+          "restored_log": "test_existing_documents_and_adapter_survive_idempotent_rerun.restored.log"
+        }
+      ],
+      "patch_sha256": "81cbe7190593da3f9ade7e60a11884a30b587217f4044ed317b118c5e4489a24"
+    },
+    {
+      "id": "runtime-execute-permission",
+      "defect_ko": "내용은 같지만 실행 불가능한 기존 공통 도구를 허용하는 결함",
+      "expected_failure_ko": "실행 권한이 없는 도구를 남긴 채 설치가 잘못 성공해 검사가 실패한다.",
+      "syntax_exit_code": 0,
+      "checks": [
+        {
+          "test": "test_identical_runtime_without_execute_permission_stops_before_copying",
+          "argv": [
+            "python3",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "tests",
+            "-p",
+            "test_setup.py",
+            "-k",
+            "test_identical_runtime_without_execute_permission_stops_before_copying",
+            "-v"
+          ],
+          "broken_exit_code": 1,
+          "restored_exit_code": 0,
+          "broken_log": "test_identical_runtime_without_execute_permission_stops_before_copying.broken.log",
+          "restored_log": "test_identical_runtime_without_execute_permission_stops_before_copying.restored.log"
+        }
+      ],
+      "patch_sha256": "4e3bcc1a8e0bcf6eb8398b38c979c7b1b326e403198c493fe9d03d6ec43fa640"
+    }
+  ],
+  "baseline": {
+    "argv": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-v"
+    ],
+    "exit_code": 0,
+    "tests": 33
+  },
+  "source_sha256_after": {
+    "setup.sh": "8e18a2ca4bafacfbfa1bf0ecaf9acc3a1602d27edeaad677b003115526aea299",
+    "scripts/check": "f7215d687e163d240bb4a6b3988527143134e6e6488780879c7feda39590b643",
+    "scripts/setup": "75a9cd99e4c5984701428ab602605181c67555a0cd9036f5dc96ec54adbf749c",
+    "scripts/source-tree": "e2057f17adb4cc195b9baa5e1ab1a2b28e91de3bd54a66f2b8e78680b4408b06",
+    ".githooks/pre-commit": "82f826414a5e3206887a820264c801f87cfc61ff06b58bb40ec4d1ddf153a0e1",
+    ".githooks/pre-push": "0c4a4ca2bba7aefd8db365f086adaed2378108b6a8258130a2b8dc378319cbee",
+    "verification/check": "5ba14607c15031dd382a20d6885f12e738bc6751c37b61e72adfac45afc07df5",
+    "tests/test_setup.py": "357a16f4e41558c56661092c200cff610f2563a88fcba34c7364d9b0e9f78c25",
+    "tests/test_workflow.py": "b2e0907196296aeb636628e424a423b2a4a7cfc860237607594f92f86818cbc5"
+  },
+  "rule_sha256": "73d13bf567ef3544d6af973fc1a08887eeb79e7bd142c38d0df477210feab58f",
+  "summary": {
+    "conceptual_mutations": 7,
+    "targeted_checks": 8,
+    "all_defects_detected": true,
+    "all_restorations_passed": true,
+    "root_runtime_source_mutated": false
+  }
+}
