@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "run_id": "20261030T174038-d21f11e90c",
+  "status": "FAIL",
+  "staged": false,
+  "staged_tree": null,
+  "fingerprint": "98054eab896919617a46eb6bebeac249d6baa8755936b96a3460adc128e843b0",
+  "checks": [],
+  "errors": [
+    "F003: 존재하지 않는 검사 ID: ['does-not-exist']"
+  ],
+  "started_at": "2026-10-30T17:40:38.293247+00:00",
+  "fingerprint_after": "98054eab896919617a46eb6bebeac249d6baa8755936b96a3460adc128e843b0",
+  "duration_seconds": 0.0537
+}

@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "doctor": {
+    "argv": [
+      "python3",
+      "verification/doctor.py"
+    ],
+    "timeout_seconds": 10
+  },
+  "checks": [
+    {
+      "id": "syntax",
+      "kind": "static",
+      "argv": [
+        "python3",
+        "verification/syntax.py"
+      ],
+      "timeout_seconds": 10
+    },
+    {
+      "id": "business-invariants",
+      "kind": "business",
+      "argv": [
+        "python3",
+        "verification/invariants.py"
+      ],
+      "timeout_seconds": 30
+    },
+    {
+      "id": "ledger-runtime",
+      "kind": "runtime",
+      "argv": [
+        "python3",
+        "verification/drive.py"
+      ],
+      "timeout_seconds": 30
+    }
+  ],
+  "cleanup": {
+    "argv": [
+      "python3",
+      "verification/cleanup.py"
+    ],
+    "timeout_seconds": 10
+  },
+  "env": {},
+  "required_env": [],
+  "run_timeout_seconds": 120
+}

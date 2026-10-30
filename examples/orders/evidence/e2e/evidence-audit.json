@@ -1,0 +1,851 @@
+{
+  "runs": [
+    {
+      "run_id": "20261030T173948-16798e8380",
+      "status": "PASS",
+      "checks": [
+        {
+          "id": "doctor",
+          "passed": true,
+          "returncode": 0,
+          "timed_out": false,
+          "log": "doctor.log",
+          "duration_seconds": 0.145
+        },
+        {
+          "id": "check-python-syntax",
+          "passed": true,
+          "returncode": 0,
+          "timed_out": false,
+          "log": "check-python-syntax.log",
+          "duration_seconds": 0.0636
+        },
+        {
+          "id": "check-order-invariants",
+          "passed": true,
+          "returncode": 0,
+          "timed_out": false,
+          "log": "check-order-invariants.log",
+          "duration_seconds": 0.0876
+        },
+        {
+          "id": "check-orders-cli",
+          "passed": true,
+          "returncode": 0,
+          "timed_out": false,
+          "log": "check-orders-cli.log",
+          "duration_seconds": 1.1402
+        },
+        {
+          "id": "cleanup",
+          "passed": true,
+          "returncode": 0,
+          "timed_out": false,
+          "log": "cleanup.log",
+          "duration_seconds": 0.0656
+        }
+      ],
+      "scratch_absent": true,
+      "cleanup_called": true,
+      "evidence_count": 63,
+      "all_listed_evidence_exists": true,
+      "observed_cli": [
+        {
+          "case": "normal",
+          "exit_code": 0,
+          "before_hex": null,
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "repeat",
+          "exit_code": 0,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "amount-conflict",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "status-conflict",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "negative",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "nonnumeric",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "unknown-status",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "missing-column",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "extra-field",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "missing-field",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "blank-id",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "malformed-quote",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "no-partial-output",
+          "exit_code": 1,
+          "before_hex": null,
+          "after_hex": null,
+          "directory": [
+            "input.csv"
+          ]
+        }
+      ],
+      "errors": []
+    },
+    {
+      "run_id": "20261030T174004-e393dba558",
+      "status": "FAIL",
+      "checks": [
+        {
+          "id": "doctor",
+          "passed": true,
+          "returncode": 0,
+          "timed_out": false,
+          "log": "doctor.log",
+          "duration_seconds": 0.145
+        },
+        {
+          "id": "check-python-syntax",
+          "passed": true,
+          "returncode": 0,
+          "timed_out": false,
+          "log": "check-python-syntax.log",
+          "duration_seconds": 0.0597
+        },
+        {
+          "id": "check-order-invariants",
+          "passed": false,
+          "returncode": 1,
+          "timed_out": false,
+          "log": "check-order-invariants.log",
+          "duration_seconds": 0.0886
+        },
+        {
+          "id": "check-orders-cli",
+          "passed": false,
+          "returncode": 1,
+          "timed_out": false,
+          "log": "check-orders-cli.log",
+          "duration_seconds": 0.1516
+        },
+        {
+          "id": "cleanup",
+          "passed": true,
+          "returncode": 0,
+          "timed_out": false,
+          "log": "cleanup.log",
+          "duration_seconds": 0.0661
+        }
+      ],
+      "scratch_absent": true,
+      "cleanup_called": true,
+      "evidence_count": 5,
+      "all_listed_evidence_exists": true,
+      "observed_cli": [
+        {
+          "case": "normal",
+          "exit_code": 0,
+          "before_hex": null,
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a332c22746f74616c5f616d6f756e74223a3232357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        }
+      ],
+      "errors": [
+        "검증 또는 cleanup 실패. 로그를 확인하세요."
+      ]
+    },
+    {
+      "run_id": "20261030T174014-d3a9126d23",
+      "status": "PASS",
+      "checks": [
+        {
+          "id": "doctor",
+          "passed": true,
+          "returncode": 0,
+          "timed_out": false,
+          "log": "doctor.log",
+          "duration_seconds": 0.1442
+        },
+        {
+          "id": "check-python-syntax",
+          "passed": true,
+          "returncode": 0,
+          "timed_out": false,
+          "log": "check-python-syntax.log",
+          "duration_seconds": 0.0603
+        },
+        {
+          "id": "check-order-invariants",
+          "passed": true,
+          "returncode": 0,
+          "timed_out": false,
+          "log": "check-order-invariants.log",
+          "duration_seconds": 0.0877
+        },
+        {
+          "id": "check-orders-cli",
+          "passed": true,
+          "returncode": 0,
+          "timed_out": false,
+          "log": "check-orders-cli.log",
+          "duration_seconds": 1.1243
+        },
+        {
+          "id": "cleanup",
+          "passed": true,
+          "returncode": 0,
+          "timed_out": false,
+          "log": "cleanup.log",
+          "duration_seconds": 0.0679
+        }
+      ],
+      "scratch_absent": true,
+      "cleanup_called": true,
+      "evidence_count": 63,
+      "all_listed_evidence_exists": true,
+      "observed_cli": [
+        {
+          "case": "normal",
+          "exit_code": 0,
+          "before_hex": null,
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "repeat",
+          "exit_code": 0,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "amount-conflict",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "status-conflict",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "negative",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "nonnumeric",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "unknown-status",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "missing-column",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "extra-field",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "missing-field",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "blank-id",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "malformed-quote",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "no-partial-output",
+          "exit_code": 1,
+          "before_hex": null,
+          "after_hex": null,
+          "directory": [
+            "input.csv"
+          ]
+        }
+      ],
+      "errors": []
+    },
+    {
+      "run_id": "20261030T174034-161d96e7d3",
+      "status": "FAIL",
+      "checks": [],
+      "scratch_absent": true,
+      "cleanup_called": false,
+      "evidence_count": 0,
+      "all_listed_evidence_exists": true,
+      "observed_cli": [],
+      "errors": [
+        "소스가 없거나 프로젝트 밖을 가리킵니다: app/nonexistent.py"
+      ]
+    },
+    {
+      "run_id": "20261030T174035-44d1700d26",
+      "status": "PASS",
+      "checks": [
+        {
+          "id": "doctor",
+          "passed": true,
+          "returncode": 0,
+          "timed_out": false,
+          "log": "doctor.log",
+          "duration_seconds": 0.1567
+        },
+        {
+          "id": "check-python-syntax",
+          "passed": true,
+          "returncode": 0,
+          "timed_out": false,
+          "log": "check-python-syntax.log",
+          "duration_seconds": 0.0628
+        },
+        {
+          "id": "check-order-invariants",
+          "passed": true,
+          "returncode": 0,
+          "timed_out": false,
+          "log": "check-order-invariants.log",
+          "duration_seconds": 0.0899
+        },
+        {
+          "id": "check-orders-cli",
+          "passed": true,
+          "returncode": 0,
+          "timed_out": false,
+          "log": "check-orders-cli.log",
+          "duration_seconds": 1.1065
+        },
+        {
+          "id": "cleanup",
+          "passed": true,
+          "returncode": 0,
+          "timed_out": false,
+          "log": "cleanup.log",
+          "duration_seconds": 0.0672
+        }
+      ],
+      "scratch_absent": true,
+      "cleanup_called": true,
+      "evidence_count": 63,
+      "all_listed_evidence_exists": true,
+      "observed_cli": [
+        {
+          "case": "normal",
+          "exit_code": 0,
+          "before_hex": null,
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "repeat",
+          "exit_code": 0,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "amount-conflict",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "status-conflict",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "negative",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "nonnumeric",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "unknown-status",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "missing-column",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "extra-field",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "missing-field",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "blank-id",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "malformed-quote",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "no-partial-output",
+          "exit_code": 1,
+          "before_hex": null,
+          "after_hex": null,
+          "directory": [
+            "input.csv"
+          ]
+        }
+      ],
+      "errors": []
+    },
+    {
+      "run_id": "20261030T174112-2015c52516",
+      "status": "FAIL",
+      "checks": [],
+      "scratch_absent": true,
+      "cleanup_called": false,
+      "evidence_count": 0,
+      "all_listed_evidence_exists": true,
+      "observed_cli": [],
+      "errors": [
+        "부분 stage 금지: 추적 파일의 unstaged 변경 또는 미추적 파일이 있습니다. 모든 작업 파일을 stage하세요."
+      ]
+    },
+    {
+      "run_id": "20261030T174112-2de3763189",
+      "status": "PASS",
+      "checks": [
+        {
+          "id": "doctor",
+          "passed": true,
+          "returncode": 0,
+          "timed_out": false,
+          "log": "doctor.log",
+          "duration_seconds": 0.1466
+        },
+        {
+          "id": "check-python-syntax",
+          "passed": true,
+          "returncode": 0,
+          "timed_out": false,
+          "log": "check-python-syntax.log",
+          "duration_seconds": 0.0602
+        },
+        {
+          "id": "check-order-invariants",
+          "passed": true,
+          "returncode": 0,
+          "timed_out": false,
+          "log": "check-order-invariants.log",
+          "duration_seconds": 0.0887
+        },
+        {
+          "id": "check-orders-cli",
+          "passed": true,
+          "returncode": 0,
+          "timed_out": false,
+          "log": "check-orders-cli.log",
+          "duration_seconds": 1.0992
+        },
+        {
+          "id": "cleanup",
+          "passed": true,
+          "returncode": 0,
+          "timed_out": false,
+          "log": "cleanup.log",
+          "duration_seconds": 0.0667
+        }
+      ],
+      "scratch_absent": true,
+      "cleanup_called": true,
+      "evidence_count": 63,
+      "all_listed_evidence_exists": true,
+      "observed_cli": [
+        {
+          "case": "normal",
+          "exit_code": 0,
+          "before_hex": null,
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "repeat",
+          "exit_code": 0,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "amount-conflict",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "status-conflict",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "negative",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "nonnumeric",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "unknown-status",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "missing-column",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "extra-field",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "missing-field",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "blank-id",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "malformed-quote",
+          "exit_code": 1,
+          "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+          "directory": [
+            "input.csv",
+            "output.json"
+          ]
+        },
+        {
+          "case": "no-partial-output",
+          "exit_code": 1,
+          "before_hex": null,
+          "after_hex": null,
+          "directory": [
+            "input.csv"
+          ]
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "common_files": {
+    "kit.py": {
+      "unchanged": true,
+      "sha256": "0461314a1102304a99fc52fa3367e9b16b11460ffdae3a778837668d89245f1b"
+    },
+    "RULE.md": {
+      "unchanged": true,
+      "sha256": "73d13bf567ef3544d6af973fc1a08887eeb79e7bd142c38d0df477210feab58f"
+    },
+    "docs/fde/protocol.md": {
+      "unchanged": true,
+      "sha256": "f92a03c86ba2675fc61025a270c2cff4401117c740775f29aebec5ceec3d0e17"
+    },
+    "docs/fde/skills.md": {
+      "unchanged": true,
+      "sha256": "be45a29045e0767493ba1c8aa56935bc8d6c957d709a2d0f49ebb8db694c83ba"
+    },
+    "docs/fde/verification.md": {
+      "unchanged": true,
+      "sha256": "d7334005a0206c858df2ae631f7df9adda653f6fd6fee9ab132392b9b3b835f3"
+    },
+    ".agents/skills/fde-workflow/SKILL.md": {
+      "unchanged": true,
+      "sha256": "914a6056aa55a4ed91022bd520da66f977b456be303672826c702b2f31ce0e51"
+    }
+  },
+  "source_clean": true,
+  "final_project_clean": true
+}

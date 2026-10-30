@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "run_id": "20261030T174037-71627276dc",
+  "status": "FAIL",
+  "staged": true,
+  "staged_tree": "5a919adae6a4d34b455feea7633963133f4775dd",
+  "fingerprint": "50d4329006a722b1b43b110a336a7b39bb532d4031a64f09158036cfd9742d02",
+  "checks": [
+    {
+      "id": "doctor",
+      "passed": true,
+      "returncode": 0,
+      "timed_out": false,
+      "log": "doctor.log",
+      "duration_seconds": 0.078
+    },
+    {
+      "id": "check-python-syntax",
+      "passed": true,
+      "returncode": 0,
+      "timed_out": false,
+      "log": "check-python-syntax.log",
+      "duration_seconds": 0.0639
+    },
+    {
+      "id": "check-inventory-invariants",
+      "passed": false,
+      "returncode": 1,
+      "timed_out": false,
+      "log": "check-inventory-invariants.log",
+      "duration_seconds": 0.1297
+    },
+    {
+      "id": "check-reservation-http",
+      "passed": false,
+      "returncode": 1,
+      "timed_out": false,
+      "log": "check-reservation-http.log",
+      "duration_seconds": 0.2591
+    },
+    {
+      "id": "cleanup",
+      "passed": true,
+      "returncode": 0,
+      "timed_out": false,
+      "log": "cleanup.log",
+      "duration_seconds": 0.0592
+    }
+  ],
+  "errors": [
+    "검증 또는 cleanup 실패. 로그를 확인하세요."
+  ],
+  "started_at": "2026-10-30T17:40:37.418393+00:00",
+  "unit_limit_reached": false,
+  "fingerprint_after": "50d4329006a722b1b43b110a336a7b39bb532d4031a64f09158036cfd9742d02",
+  "duration_seconds": 0.6962
+}

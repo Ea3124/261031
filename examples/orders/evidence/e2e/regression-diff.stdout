@@ -1,0 +1,22 @@
+diff --git a/app/orders.py b/app/orders.py
+index c2bc4e3..b9f7e8b 100644
+--- a/app/orders.py
++++ b/app/orders.py
+@@ -25,7 +25,7 @@ def aggregate(stream):
+         if order_id in seen:
+             if seen[order_id] != record:
+                 raise ValueError(f"{line}행: 같은 ID의 금액 또는 상태 충돌")
+-            continue
++            pass
+         seen[order_id] = record
+         if status == "confirmed":
+             count += 1
+diff --git a/work/decisions.tsv b/work/decisions.tsv
+index fd57268..fe2c04b 100644
+--- a/work/decisions.tsv
++++ b/work/decisions.tsv
+@@ -4,3 +4,4 @@ D002	컬럼 정확히 3개, 순서 자유, 빈 ID·누락 필드·여분 필드
+ D003	금액 ASCII 숫자열, 선행 0은 수치로 동일	정수 금액은 명시됐지만 +기호·공백·유니코드 숫자·선행 0 표기는 미지정	수치 기반 불변식
+ D004	전체 파싱 뒤 같은 디렉터리 임시 파일을 원자 교체	잘못된 마지막 행도 기존 파일을 변경하면 안 됨	전후 바이트와 임시 파일 유무
+ D005	입력=출력 경로 거절, 부모 디렉터리 자동 생성 안 함	시나리오에서 파일 경로 충돌·생성 정책은 미지정, 입력 보호와 명확한 실패 선택	CLI 실행 계약
++D006	중복 분기의 continue를 pass로 바꾼 실제 회귀 주입	키트가 독립 기대값 125에 위배되는 코드의 커밋을 막는지 확인	CSV002 동일 단위에서 차단과 복구 관찰

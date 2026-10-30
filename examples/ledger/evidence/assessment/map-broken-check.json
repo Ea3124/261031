@@ -1,0 +1,12 @@
+{
+  "label": "map-broken-check",
+  "argv": [
+    "python3",
+    "kit.py",
+    "map",
+    "check"
+  ],
+  "exit_code": 1,
+  "output": "오류: F001: 존재하지 않는 검사 ID: ['missing-runtime']\n",
+  "at": "2026-10-30T17:39:58.447462+00:00"
+}

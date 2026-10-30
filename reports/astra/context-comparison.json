@@ -1,0 +1,63 @@
+{
+  "method": "각 평가자의 소스 기반 답변 12개를 부모가 전문 읽고 실제 명령·맵·Git 훅·증거와 대조했다. 문장 일치가 아닌 실행 계약 일치를 비교했다.",
+  "result": "12개 공통 실행 계약에서 세 평가자의 해석이 일치함",
+  "evaluations": [
+    {
+      "scenario": "ledger",
+      "model": "gpt-6-astra",
+      "source_commit": "c1045e32308fd292a01696406973e5912a442a9c",
+      "understanding": {
+        "scope": "공통 키트는 앱 구현물이 아니라 의도·기능 맵·검사 명령·증거·로컬 커밋 반복을 제공한다. 과제별 앱과 세 검사는 평가자가 직접 작성한다. vendor/pstack 58개는 비활성 참고 자료다.",
+        "entrypoint": "실제 프로젝트에서 소스 kit.py install --project .를 실행한다. 활성 지침은 .agents/skills/fde-workflow/SKILL.md와 .agents/skills/verify-app/SKILL.md 두 개다. 검증 명령은 python3 kit.py check다.",
+        "read_order": "과제 안내와 기존 README → RULE.md → AGENTS.md → FDE_GUIDE.md(키트 자체에서는 README) → docs/fde/protocol.md → skills.md와 verification.md. 이후 기존 work/intent.md·handoff.md와 git status/kit.py status, 두 활성 스킬을 확인한다. README의 먼저 읽기 목록과 AGENTS의 FDE_GUIDE 추가가 있으나 두 목록을 합치면 수행 가능했다.",
+        "map_location": ".agents/skills/verify-app/features/F001.md가 기능별 정본이고 features/README.md가 생성 인덱스다. 이 예제는 F001 입금, F002 출금, F003 조회다.",
+        "map_update_commands": "python3 kit.py map add --id F001 --title ... --source ... --entry ... --precondition ... --action ... --expected ... --invariant ... --check 실제-runtime-ID; 이어 map sync → map check. 같은 기능은 같은 ID로 갱신하고 본문만 직접 바꾸지 않는다.",
+        "commit_gate_command": "begin으로 단위와 예산 고정 → 전체 git add -A → diff 검토 → git commit. .githooks/pre-commit이 python3 kit.py iterate --staged를 호출한다. check는 단발 검사이며 커밋을 만들지 않는다.",
+        "loop_owner": "에이전트가 목표·작업·실패 원인 분석·수정·재시도를 맡는다. kit.py iterate는 고정 예산에서 검사를 한 번 수행하고 상태를 기록할 뿐 AI 호출·자동 코드 수정·자동 커밋을 하지 않는다.",
+        "evidence_location": ".kit/runs/<run-id>/report.json, 검사 로그, 앱이 KIT_RUN_DIR에 저장한 입력/출력/파일 부수효과. .kit/latest.json, unit.json, iteration.jsonl이 현재 결과와 시도 이력을 기록한다. .kit은 Git 제외 대상이다.",
+        "partial_staging": "부분 stage는 검증 내용과 커밋 내용이 달라지므로 금지되고 staged_guard가 차이를 거절한다. 전체 변경을 stage하고 --no-verify를 쓰지 않는다. 이번 평가는 부분 stage 음성 실험을 추가로 하지 않았다.",
+        "competition_models": "RULE의 실전은 제공 Codex와 허용 모델만 사용하며 권장 목록은 Sol 6.1/Terra 5.6/Luna 6/Sol 6.0이다. Astra·Claude Code·외부 AI 연결은 실전 제한이다. 이번 gpt-6-astra 평가는 사용자의 명시적 준비 평가 요청으로 별개다.",
+        "ui_verification": "Computer Use/Playwright/CDP 등 화면 자동조작은 금지이며 UI는 응시자가 내부 Browser에서 직접 확인한다. API 성공을 UI 성공으로 적지 않는다. 장부는 UI 없는 CLI여서 화면 확인은 해당하지 않는다.",
+        "handoff": "work/handoff.md에 목표·현재 브랜치/기존 SHA·변경·구조·명령·실제 검증과 증거·미확인 범위·다음 정확한 행동을 남긴다. 최종 인계도 정상 훅으로 커밋하고 자기 자신의 최종 SHA를 같은 파일에 넣지 않는다. 다음 세션은 실제 Git/검증 상태를 다시 확인한다."
+      }
+    },
+    {
+      "scenario": "reservation",
+      "model": "gpt-6-astra",
+      "source_commit": "c1045e32308fd292a01696406973e5912a442a9c",
+      "understanding": {
+        "scope": "공통 설치·로컬 검증·맵·커밋 게이트·인계 키트다. 과제 앱이나 자동 AI 수정 엔진은 포함하지 않는다. vendor/pstack 58개는 비활성 참고 자료다.",
+        "entrypoint": "기존 Git 과제 루트에서 python3 <kit>/kit.py install --project . 후 활성 .agents/skills/fde-workflow와 앱별 verify-app으로 진입한다.",
+        "read_order": "실제 과제/기존 README → RULE.md → AGENTS.md → FDE_GUIDE.md(없으면 키트 README) → docs/fde/protocol.md → 기존 intent/handoff 및 Git/status → 활성 스킬. README가 지정한 skills.md·verification.md도 읽는다.",
+        "map_location": ".agents/skills/verify-app/features/F001.md 형태가 기능별 정본이고 같은 폴더 README.md가 생성 인덱스다.",
+        "map_update_commands": "python3 kit.py map add --id Fxxx ... → python3 kit.py map sync → python3 kit.py map check. 수정은 같은 ID, 추가는 다음 ID, 삭제는 기능 파일 삭제 후 sync. 소스와 실제 사용자 결과 의미는 별도 검토한다.",
+        "commit_gate_command": "python3 kit.py begin --unit ... --goal ... --minutes ... --max-attempts ... 후 git add -A와 diff 검토, git commit. pre-commit이 python3 kit.py iterate --staged를 실행한다. check는 단발 검증이며 iterate는 단위 예산 내 한 번 검증한다.",
+        "loop_owner": "동일 에이전트가 실패 보고서 읽기·원인 수정·재stage·재commit을 소유한다. 실행기는 AI 호출·자동 수정·커밋·데몬을 만들지 않는다. 서버 실행·준비·요청·finally 정리는 앱 runtime harness가 소유한다.",
+        "evidence_location": ".kit/runs/<run_id>/report.json과 명령별 로그, KIT_RUN_DIR 앱 증거. .kit/latest.json과 status가 현재 내용 지문을 비교한다. cleanup은 증거를 지우지 않는다.",
+        "partial_staging": "부분 stage는 허용하지 않는다. 검증 대상과 커밋 대상이 일치하도록 전체 변경을 stage해야 하며 --no-verify로 우회하지 않는다.",
+        "competition_models": "실전에서는 제공 Codex와 허용 모델만 사용한다. RULE 권장은 Sol 6.1, Terra 5.6, Luna 6, Sol 6.0이며 Astra·Claude Code·별도 AI 연결은 금지다. 이번 gpt-6-astra 준비평가는 사용자의 명시 허가이며 실전으로 전이되지 않는다.",
+        "ui_verification": "HTTP 성공을 화면 확인으로 표시하지 않는다. Computer Use·Playwright/CDP 화면 자동조작은 금지이고 실전 화면은 사람이 내부 Browser로 확인한다. 이 합성 시나리오는 화면을 만들거나 조작하지 않는다.",
+        "handoff": "work/handoff.md에 목표·변경·브랜치·직전 SHA·구조·명령·결과·증거·한계·다음 한 행동을 남긴다. 인계 수정도 정상 훅 커밋하며 최종 SHA를 자기 파일에 넣는 순환 없이 최종 응답/외부 기록에 남긴다. 재개자는 Git/status와 준비 상태를 재확인한다."
+      }
+    },
+    {
+      "scenario": "orders",
+      "model": "gpt-6-astra",
+      "source_commit": "c1045e32308fd292a01696406973e5912a442a9c",
+      "understanding": {
+        "scope": "문제 정의·구현·앱별 검증·기능 맵·로컬 커밋 훅·실패 수정·인계를 통일하는 준비용 키트다. 앱은 제공하지 않으며 원격 CI·자동 AI 수정·보안 샌드박스가 아니다.",
+        "entrypoint": ".agents/skills/fde-workflow/SKILL.md가 공통 진입점, .agents/skills/verify-app/SKILL.md가 앱 실행·검증 진입점이다. vendor/pstack은 비활성 참고 자료다.",
+        "read_order": "실제 과제 안내/기존 README → RULE.md → AGENTS.md → FDE_GUIDE.md(없으면 키트 README) → docs/fde/protocol.md → 기존 work/intent.md·handoff.md 및 실제 Git/status. README는 추가로 docs/fde/skills.md와 verification.md를 안내한다.",
+        "map_location": ".agents/skills/verify-app/features/F001.md 형태가 정본이고 map sync가 기능 인덱스를 만든다.",
+        "map_update_commands": "python3 kit.py map add --id Fxxx ... → python3 kit.py map sync → python3 kit.py map check. 변경은 같은 ID, 삭제는 해당 파일 제거 후 sync이며 의미 일치는 소스·실제 실행으로 별도 확인한다.",
+        "commit_gate_command": "python3 kit.py begin --unit ... --goal ... --minutes ... --max-attempts ... 후 git add -A, diff 확인, git commit. 설치된 pre-commit이 python3 kit.py iterate --staged를 호출한다.",
+        "loop_owner": "코드 수정·가설 변경·다음 커밋 시도는 에이전트가 수행한다. iterate는 제한된 한 차례 검사와 상태 저장만 하며 AI 호출·자동 수정·자동 커밋·데몬이 없다.",
+        "evidence_location": ".kit/runs/<run-id>/report.json과 명령 로그. 앱 검사는 KIT_RUN_DIR에 입력·출력·부수효과를 남긴다. .kit/latest.json, iteration.jsonl, unit.json이 최신 결과와 반복 이력을 보조한다.",
+        "partial_staging": "부분 stage를 금지한다. 추적 파일 unstaged 변경 또는 미추적 작업 파일이 있으면 --staged 검사/커밋을 막는다. --no-verify로 우회하지 않는다.",
+        "competition_models": "실전은 제공 Codex와 허용 모델만 사용한다. RULE의 권장 모델은 Sol 6.1, Terra 5.6, Luna 6, Sol 6.0이며 Astra·외부 모델 연결은 제한된다. 이번 Astra는 소유자가 명시한 준비평가 예외이며 실전 허가로 전이되지 않는다.",
+        "ui_verification": "Computer Use·Playwright/CDP·자동 화면 조작은 금지다. 화면은 응시자가 플랫폼 내부 Browser에서 직접 확인하며 API/CLI 통과를 화면 확인으로 표기하지 않는다. 이번 앱은 UI 없는 CLI다.",
+        "handoff": "work/handoff.md에 목표·브랜치·직전 SHA·변경·구조·검증 명령과 결과·증거·한계·다음 행동을 남긴다. 마지막 인계 문서도 정상 훅으로 커밋하고 최종 SHA는 응답/외부 보고서에 둔다. 다음 세션은 Git/status를 재확인하고 STALE이면 재검증한다."
+      }
+    }
+  ]
+}

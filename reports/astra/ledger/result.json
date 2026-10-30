@@ -1,0 +1,809 @@
+{
+  "model": "gpt-6-astra",
+  "scenario": "ledger",
+  "source_commit": "c1045e32308fd292a01696406973e5912a442a9c",
+  "understanding": {
+    "scope": "공통 키트는 앱 구현물이 아니라 의도·기능 맵·검사 명령·증거·로컬 커밋 반복을 제공한다. 과제별 앱과 세 검사는 평가자가 직접 작성한다. vendor/pstack 58개는 비활성 참고 자료다.",
+    "entrypoint": "실제 프로젝트에서 소스 kit.py install --project .를 실행한다. 활성 지침은 .agents/skills/fde-workflow/SKILL.md와 .agents/skills/verify-app/SKILL.md 두 개다. 검증 명령은 python3 kit.py check다.",
+    "read_order": "과제 안내와 기존 README → RULE.md → AGENTS.md → FDE_GUIDE.md(키트 자체에서는 README) → docs/fde/protocol.md → skills.md와 verification.md. 이후 기존 work/intent.md·handoff.md와 git status/kit.py status, 두 활성 스킬을 확인한다. README의 먼저 읽기 목록과 AGENTS의 FDE_GUIDE 추가가 있으나 두 목록을 합치면 수행 가능했다.",
+    "map_location": ".agents/skills/verify-app/features/F001.md가 기능별 정본이고 features/README.md가 생성 인덱스다. 이 예제는 F001 입금, F002 출금, F003 조회다.",
+    "map_update_commands": "python3 kit.py map add --id F001 --title ... --source ... --entry ... --precondition ... --action ... --expected ... --invariant ... --check 실제-runtime-ID; 이어 map sync → map check. 같은 기능은 같은 ID로 갱신하고 본문만 직접 바꾸지 않는다.",
+    "commit_gate_command": "begin으로 단위와 예산 고정 → 전체 git add -A → diff 검토 → git commit. .githooks/pre-commit이 python3 kit.py iterate --staged를 호출한다. check는 단발 검사이며 커밋을 만들지 않는다.",
+    "loop_owner": "에이전트가 목표·작업·실패 원인 분석·수정·재시도를 맡는다. kit.py iterate는 고정 예산에서 검사를 한 번 수행하고 상태를 기록할 뿐 AI 호출·자동 코드 수정·자동 커밋을 하지 않는다.",
+    "evidence_location": ".kit/runs/<run-id>/report.json, 검사 로그, 앱이 KIT_RUN_DIR에 저장한 입력/출력/파일 부수효과. .kit/latest.json, unit.json, iteration.jsonl이 현재 결과와 시도 이력을 기록한다. .kit은 Git 제외 대상이다.",
+    "partial_staging": "부분 stage는 검증 내용과 커밋 내용이 달라지므로 금지되고 staged_guard가 차이를 거절한다. 전체 변경을 stage하고 --no-verify를 쓰지 않는다. 이번 평가는 부분 stage 음성 실험을 추가로 하지 않았다.",
+    "competition_models": "RULE의 실전은 제공 Codex와 허용 모델만 사용하며 권장 목록은 Sol 6.1/Terra 5.6/Luna 6/Sol 6.0이다. Astra·Claude Code·외부 AI 연결은 실전 제한이다. 이번 gpt-6-astra 평가는 사용자의 명시적 준비 평가 요청으로 별개다.",
+    "ui_verification": "Computer Use/Playwright/CDP 등 화면 자동조작은 금지이며 UI는 응시자가 내부 Browser에서 직접 확인한다. API 성공을 UI 성공으로 적지 않는다. 장부는 UI 없는 CLI여서 화면 확인은 해당하지 않는다.",
+    "handoff": "work/handoff.md에 목표·현재 브랜치/기존 SHA·변경·구조·명령·실제 검증과 증거·미확인 범위·다음 정확한 행동을 남긴다. 최종 인계도 정상 훅으로 커밋하고 자기 자신의 최종 SHA를 같은 파일에 넣지 않는다. 다음 세션은 실제 Git/검증 상태를 다시 확인한다."
+  },
+  "observed": {
+    "install": {
+      "command": "git clone --no-hardlinks SOURCE /private/tmp/fde-e2e-ledger-source; git checkout c1045e32308fd292a01696406973e5912a442a9c; 빈 폴더 git init; python3 SOURCE/kit.py install --project .",
+      "clone_exit_code": 0,
+      "checkout_exit_code": 0,
+      "git_init_exit_code": 0,
+      "install_exit_code": 0,
+      "initial_doctor_exit_code": 1,
+      "note": "초기 앱 명령 미설정을 예상대로 진단했다. 초기 clone/install 출력은 평가 도구 호출에서 관측했다."
+    },
+    "normal_commit": {
+      "exit_code": 0,
+      "sha": "a2b0e2ac30584e681272061e2d929e7d1ac360ca",
+      "unit": "U001",
+      "attempt": 1,
+      "run_id": "20261030T174005-cbabc076e9"
+    },
+    "intentional_regression": {
+      "patch": ".kit/assessment/regression.patch",
+      "direct_balances": [
+        100,
+        70,
+        40,
+        40
+      ],
+      "commit_exit_code": 1,
+      "failed_commit_sha": null,
+      "head_before": "a2b0e2ac30584e681272061e2d929e7d1ac360ca",
+      "head_after": "a2b0e2ac30584e681272061e2d929e7d1ac360ca",
+      "head_unchanged": true,
+      "unit": "U002",
+      "attempt": 1,
+      "run_id": "20261030T174026-0079768721",
+      "static_exit_code": 0,
+      "business_exit_code": 1,
+      "runtime_exit_code": 1,
+      "cleanup_exit_code": 0
+    },
+    "recovery_commit": {
+      "exit_code": 0,
+      "sha": "853d7043be26d00e392860c278166e830c861017",
+      "unit": "U002",
+      "attempt": 2,
+      "same_unit": true,
+      "budget_reset": false,
+      "checks_weakened": false,
+      "run_id": "20261030T174057-7f5eab3b82"
+    },
+    "final_commit": {
+      "exit_code": 0,
+      "sha": "eee94facf6b0546ae5ba83775d1e2f85cd896a3b",
+      "unit": "U003",
+      "run_id": "20261030T174144-9744725ba1",
+      "status": "PASS",
+      "status_exit_code": 0,
+      "git_status": ""
+    },
+    "map_failure": {
+      "broken_reference": "missing-runtime",
+      "failure_exit_code": 1,
+      "recovered_exit_code": 0,
+      "initial_restore_harness_mistake": "평가 보조 스크립트가 argv 리스트 별칭을 수정하여 첫 복구도 같은 잘못된 ID를 사용. 그 실패도 보존한 뒤 원본 명령을 다시 읽어 복구함. 키트 결함 아님."
+    },
+    "stale": {
+      "code_change_exit_code": 1,
+      "regression_change_exit_code": 1,
+      "observed": true
+    },
+    "cleanup_and_evidence": [
+      {
+        "run_id": "20261030T173935-89065279d2",
+        "status": "FAIL",
+        "report_exists": true,
+        "scratch_exists": false,
+        "cleanup_exists": false,
+        "cli_evidence_exists": false
+      },
+      {
+        "run_id": "20261030T173941-49815903e8",
+        "status": "PASS",
+        "report_exists": true,
+        "scratch_exists": false,
+        "cleanup_exists": true,
+        "cli_evidence_exists": true,
+        "cleanup": {
+          "scratch_removed": true,
+          "preserved": [
+            "acceptance-final-0.json",
+            "acceptance-final-1.json",
+            "business-result.json",
+            "check-business-invariants.log",
+            "check-ledger-runtime.log",
+            "check-syntax.log",
+            "cli-transcript.jsonl",
+            "doctor.log",
+            "environment.txt",
+            "runtime-result.json"
+          ]
+        }
+      },
+      {
+        "run_id": "20261030T174005-cbabc076e9",
+        "status": "PASS",
+        "report_exists": true,
+        "scratch_exists": false,
+        "cleanup_exists": true,
+        "cli_evidence_exists": true,
+        "cleanup": {
+          "scratch_removed": true,
+          "preserved": [
+            "acceptance-final-0.json",
+            "acceptance-final-1.json",
+            "business-result.json",
+            "check-business-invariants.log",
+            "check-ledger-runtime.log",
+            "check-syntax.log",
+            "cli-transcript.jsonl",
+            "doctor.log",
+            "environment.txt",
+            "runtime-result.json"
+          ]
+        }
+      },
+      {
+        "run_id": "20261030T174026-0079768721",
+        "status": "FAIL",
+        "report_exists": true,
+        "scratch_exists": false,
+        "cleanup_exists": true,
+        "cli_evidence_exists": true,
+        "cleanup": {
+          "scratch_removed": true,
+          "preserved": [
+            "check-business-invariants.log",
+            "check-ledger-runtime.log",
+            "check-syntax.log",
+            "cli-transcript.jsonl",
+            "doctor.log",
+            "environment.txt"
+          ]
+        }
+      },
+      {
+        "run_id": "20261030T174057-7f5eab3b82",
+        "status": "PASS",
+        "report_exists": true,
+        "scratch_exists": false,
+        "cleanup_exists": true,
+        "cli_evidence_exists": true,
+        "cleanup": {
+          "scratch_removed": true,
+          "preserved": [
+            "acceptance-final-0.json",
+            "acceptance-final-1.json",
+            "business-result.json",
+            "check-business-invariants.log",
+            "check-ledger-runtime.log",
+            "check-syntax.log",
+            "cli-transcript.jsonl",
+            "doctor.log",
+            "environment.txt",
+            "runtime-result.json"
+          ]
+        }
+      },
+      {
+        "run_id": "20261030T174144-9744725ba1",
+        "status": "PASS",
+        "report_exists": true,
+        "scratch_exists": false,
+        "cleanup_exists": true,
+        "cli_evidence_exists": true,
+        "cleanup": {
+          "scratch_removed": true,
+          "preserved": [
+            "acceptance-final-0.json",
+            "acceptance-final-1.json",
+            "business-result.json",
+            "check-business-invariants.log",
+            "check-ledger-runtime.log",
+            "check-syntax.log",
+            "cli-transcript.jsonl",
+            "doctor.log",
+            "environment.txt",
+            "runtime-result.json"
+          ]
+        }
+      }
+    ],
+    "kit_integrity": [
+      {
+        "path": "kit.py",
+        "unchanged_since_install_commit": true,
+        "source_identical": true,
+        "sha256": "0461314a1102304a99fc52fa3367e9b16b11460ffdae3a778837668d89245f1b"
+      },
+      {
+        "path": "AGENTS.md",
+        "unchanged_since_install_commit": true,
+        "source_identical": false,
+        "sha256": "bf974b887d434e47dcdf68e3f19bc2a9a477b87f6db23143c60e98f063da52aa"
+      },
+      {
+        "path": "RULE.md",
+        "unchanged_since_install_commit": true,
+        "source_identical": true,
+        "sha256": "73d13bf567ef3544d6af973fc1a08887eeb79e7bd142c38d0df477210feab58f"
+      },
+      {
+        "path": "docs/fde/protocol.md",
+        "unchanged_since_install_commit": true,
+        "source_identical": true,
+        "sha256": "f92a03c86ba2675fc61025a270c2cff4401117c740775f29aebec5ceec3d0e17"
+      },
+      {
+        "path": "docs/fde/skills.md",
+        "unchanged_since_install_commit": true,
+        "source_identical": true,
+        "sha256": "be45a29045e0767493ba1c8aa56935bc8d6c957d709a2d0f49ebb8db694c83ba"
+      },
+      {
+        "path": "docs/fde/verification.md",
+        "unchanged_since_install_commit": true,
+        "source_identical": true,
+        "sha256": "d7334005a0206c858df2ae631f7df9adda653f6fd6fee9ab132392b9b3b835f3"
+      },
+      {
+        "path": ".agents/skills/fde-workflow/SKILL.md",
+        "unchanged_since_install_commit": true,
+        "source_identical": true,
+        "sha256": "914a6056aa55a4ed91022bd520da66f977b456be303672826c702b2f31ce0e51"
+      }
+    ],
+    "export_rerun": [
+      {
+        "argv": [
+          "python3",
+          "verification/doctor.py"
+        ],
+        "exit_code": 0,
+        "output": "실제 CLI 준비 확인: 빈 장부 조회 0, 파일 생성 없음\n"
+      },
+      {
+        "argv": [
+          "python3",
+          "verification/syntax.py"
+        ],
+        "exit_code": 0,
+        "output": "Python 문법 검사 통과: 7개 파일\n"
+      },
+      {
+        "argv": [
+          "python3",
+          "verification/invariants.py"
+        ],
+        "exit_code": 0,
+        "output": "불변식 통과: 음수 방지, ID 충돌, 중복, 오류 입력과 손상 파일 보존\n"
+      },
+      {
+        "argv": [
+          "python3",
+          "verification/drive.py"
+        ],
+        "exit_code": 0,
+        "output": "고정 인수 시나리오 2회 통과: 새 프로세스 잔액 70, 파일과 임시 파일 잔류 검사 완료\n"
+      },
+      {
+        "argv": [
+          "python3",
+          "verification/cleanup.py"
+        ],
+        "exit_code": 0,
+        "output": "이 실행의 scratch만 정리함; 증거 보존: acceptance-final-0.json, acceptance-final-1.json, business-result.json, cli-transcript.jsonl, environment.txt, runtime-result.json\n"
+      }
+    ],
+    "command_exit_codes": [
+      {
+        "label": "baseline-check",
+        "argv": [
+          "python3",
+          "kit.py",
+          "check"
+        ],
+        "exit_code": 1
+      },
+      {
+        "label": "baseline-fixed-check",
+        "argv": [
+          "python3",
+          "kit.py",
+          "check"
+        ],
+        "exit_code": 0
+      },
+      {
+        "label": "begin-handoff",
+        "argv": [
+          "python3",
+          "kit.py",
+          "begin",
+          "--unit",
+          "U003",
+          "--goal",
+          "실제 증거 보존 확인과 재개 가능한 최종 인계 기록",
+          "--minutes",
+          "15",
+          "--max-attempts",
+          "3"
+        ],
+        "exit_code": 0
+      },
+      {
+        "label": "begin-initial",
+        "argv": [
+          "python3",
+          "kit.py",
+          "begin",
+          "--unit",
+          "U001",
+          "--goal",
+          "입금 출금 조회와 고정 인수 조건을 CLI 및 파일 부수효과로 검증한다",
+          "--minutes",
+          "25",
+          "--max-attempts",
+          "3"
+        ],
+        "exit_code": 0
+      },
+      {
+        "label": "begin-regression",
+        "argv": [
+          "python3",
+          "kit.py",
+          "begin",
+          "--unit",
+          "U002",
+          "--goal",
+          "동일 요청 중복 반영 회귀의 실제 커밋 차단과 같은 단위 복구",
+          "--minutes",
+          "25",
+          "--max-attempts",
+          "3"
+        ],
+        "exit_code": 0
+      },
+      {
+        "label": "blocked-sha",
+        "argv": [
+          "git",
+          "rev-parse",
+          "HEAD"
+        ],
+        "exit_code": 0
+      },
+      {
+        "label": "code-stale",
+        "argv": [
+          "python3",
+          "kit.py",
+          "status"
+        ],
+        "exit_code": 1
+      },
+      {
+        "label": "final-git-status",
+        "argv": [
+          "git",
+          "status",
+          "--short"
+        ],
+        "exit_code": 0
+      },
+      {
+        "label": "final-sha",
+        "argv": [
+          "git",
+          "rev-parse",
+          "HEAD"
+        ],
+        "exit_code": 0
+      },
+      {
+        "label": "final-status",
+        "argv": [
+          "python3",
+          "kit.py",
+          "status"
+        ],
+        "exit_code": 0
+      },
+      {
+        "label": "handoff-commit",
+        "argv": [
+          "git",
+          "commit",
+          "-m",
+          "실행 증거와 한계를 최종 인계"
+        ],
+        "exit_code": 0
+      },
+      {
+        "label": "initial-doctor",
+        "argv": [
+          "python3",
+          "kit.py",
+          "doctor"
+        ],
+        "exit_code": 1
+      },
+      {
+        "label": "initial-status",
+        "argv": [
+          "python3",
+          "kit.py",
+          "status"
+        ],
+        "exit_code": 1
+      },
+      {
+        "label": "map-balance",
+        "argv": [
+          "python3",
+          "kit.py",
+          "map",
+          "add",
+          "--id",
+          "F003",
+          "--title",
+          "잔액조회",
+          "--source",
+          "app/ledger.py",
+          "--entry",
+          "python3 app/ledger.py --file DATA balance",
+          "--precondition",
+          "100 입금과 30 출금이 저장된 장부",
+          "--action",
+          "새 프로세스에서 balance 실행",
+          "--expected",
+          "잔액 70 출력과 파일 보존",
+          "--invariant",
+          "조회는 장부를 변경하지 않음",
+          "--check",
+          "ledger-runtime"
+        ],
+        "exit_code": 0
+      },
+      {
+        "label": "map-broken-check",
+        "argv": [
+          "python3",
+          "kit.py",
+          "map",
+          "check"
+        ],
+        "exit_code": 1
+      },
+      {
+        "label": "map-broken-sync",
+        "argv": [
+          "python3",
+          "kit.py",
+          "map",
+          "sync"
+        ],
+        "exit_code": 0
+      },
+      {
+        "label": "map-check",
+        "argv": [
+          "python3",
+          "kit.py",
+          "map",
+          "check"
+        ],
+        "exit_code": 1
+      },
+      {
+        "label": "map-deposit",
+        "argv": [
+          "python3",
+          "kit.py",
+          "map",
+          "add",
+          "--id",
+          "F001",
+          "--title",
+          "입금",
+          "--source",
+          "app/ledger.py",
+          "--entry",
+          "python3 app/ledger.py --file DATA deposit r1 100",
+          "--precondition",
+          "빈 임시 디렉터리와 없는 JSON 파일",
+          "--action",
+          "r1로 100 입금, 동일 요청 재실행",
+          "--expected",
+          "잔액 100, 성공 요청 하나만 저장, 중복 파일 변경 없음",
+          "--invariant",
+          "동일 종류와 금액의 요청 ID는 한 번만 반영",
+          "--check",
+          "ledger-runtime",
+          "--check",
+          "business-invariants"
+        ],
+        "exit_code": 0
+      },
+      {
+        "label": "map-introduce-broken",
+        "argv": [
+          "python3",
+          "kit.py",
+          "map",
+          "add",
+          "--id",
+          "F001",
+          "--title",
+          "입금",
+          "--source",
+          "app/ledger.py",
+          "--entry",
+          "python3 app/ledger.py --file DATA deposit r1 100",
+          "--precondition",
+          "빈 임시 디렉터리와 없는 JSON 파일",
+          "--action",
+          "r1로 100 입금, 동일 요청 재실행",
+          "--expected",
+          "잔액 100, 성공 요청 하나만 저장, 중복 파일 변경 없음",
+          "--invariant",
+          "동일 종류와 금액의 요청 ID는 한 번만 반영",
+          "--check",
+          "missing-runtime",
+          "--check",
+          "business-invariants"
+        ],
+        "exit_code": 0
+      },
+      {
+        "label": "map-restore",
+        "argv": [
+          "python3",
+          "kit.py",
+          "map",
+          "add",
+          "--id",
+          "F001",
+          "--title",
+          "입금",
+          "--source",
+          "app/ledger.py",
+          "--entry",
+          "python3 app/ledger.py --file DATA deposit r1 100",
+          "--precondition",
+          "빈 임시 디렉터리와 없는 JSON 파일",
+          "--action",
+          "r1로 100 입금, 동일 요청 재실행",
+          "--expected",
+          "잔액 100, 성공 요청 하나만 저장, 중복 파일 변경 없음",
+          "--invariant",
+          "동일 종류와 금액의 요청 ID는 한 번만 반영",
+          "--check",
+          "missing-runtime",
+          "--check",
+          "business-invariants"
+        ],
+        "exit_code": 0
+      },
+      {
+        "label": "map-restored-check-v2",
+        "argv": [
+          "python3",
+          "kit.py",
+          "map",
+          "check"
+        ],
+        "exit_code": 0
+      },
+      {
+        "label": "map-restored-check",
+        "argv": [
+          "python3",
+          "kit.py",
+          "map",
+          "check"
+        ],
+        "exit_code": 1
+      },
+      {
+        "label": "map-restored-sync-v2",
+        "argv": [
+          "python3",
+          "kit.py",
+          "map",
+          "sync"
+        ],
+        "exit_code": 0
+      },
+      {
+        "label": "map-restored-sync",
+        "argv": [
+          "python3",
+          "kit.py",
+          "map",
+          "sync"
+        ],
+        "exit_code": 0
+      },
+      {
+        "label": "map-restored-v2",
+        "argv": [
+          "python3",
+          "kit.py",
+          "map",
+          "add",
+          "--id",
+          "F001",
+          "--title",
+          "입금",
+          "--source",
+          "app/ledger.py",
+          "--entry",
+          "python3 app/ledger.py --file DATA deposit r1 100",
+          "--precondition",
+          "빈 임시 디렉터리와 없는 JSON 파일",
+          "--action",
+          "r1로 100 입금, 동일 요청 재실행",
+          "--expected",
+          "잔액 100, 성공 요청 하나만 저장, 중복 파일 변경 없음",
+          "--invariant",
+          "동일 종류와 금액의 요청 ID는 한 번만 반영",
+          "--check",
+          "ledger-runtime",
+          "--check",
+          "business-invariants"
+        ],
+        "exit_code": 0
+      },
+      {
+        "label": "map-sync",
+        "argv": [
+          "python3",
+          "kit.py",
+          "map",
+          "sync"
+        ],
+        "exit_code": 0
+      },
+      {
+        "label": "map-withdraw",
+        "argv": [
+          "python3",
+          "kit.py",
+          "map",
+          "add",
+          "--id",
+          "F002",
+          "--title",
+          "출금",
+          "--source",
+          "app/ledger.py",
+          "--entry",
+          "python3 app/ledger.py --file DATA withdraw r2 30",
+          "--precondition",
+          "r1 입금으로 잔액 100",
+          "--action",
+          "r2로 30 출금, 동일 요청 반복, r2 금액 20 충돌 및 새 ID 71 출금",
+          "--expected",
+          "70 유지, 두 오류는 종료 2와 파일 바이트 불변",
+          "--invariant",
+          "잔액은 음수가 아니고 중복 출금은 한 번만 반영",
+          "--check",
+          "ledger-runtime",
+          "--check",
+          "business-invariants"
+        ],
+        "exit_code": 0
+      },
+      {
+        "label": "normal-commit",
+        "argv": [
+          "git",
+          "commit",
+          "-m",
+          "장부 CLI와 독립 검증 및 세 기능 맵 구현"
+        ],
+        "exit_code": 0
+      },
+      {
+        "label": "normal-sha",
+        "argv": [
+          "git",
+          "rev-parse",
+          "HEAD"
+        ],
+        "exit_code": 0
+      },
+      {
+        "label": "normal-status",
+        "argv": [
+          "python3",
+          "kit.py",
+          "status"
+        ],
+        "exit_code": 0
+      },
+      {
+        "label": "recovery-commit",
+        "argv": [
+          "git",
+          "commit",
+          "-m",
+          "중복 요청 조기 반환 복구 및 실행 안내 기록"
+        ],
+        "exit_code": 0
+      },
+      {
+        "label": "recovery-sha",
+        "argv": [
+          "git",
+          "rev-parse",
+          "HEAD"
+        ],
+        "exit_code": 0
+      },
+      {
+        "label": "recovery-status",
+        "argv": [
+          "python3",
+          "kit.py",
+          "status"
+        ],
+        "exit_code": 0
+      },
+      {
+        "label": "regression-commit",
+        "argv": [
+          "git",
+          "commit",
+          "-m",
+          "중복 반영 회귀 차단 검증용 임시 변경"
+        ],
+        "exit_code": 1
+      },
+      {
+        "label": "regression-stale",
+        "argv": [
+          "python3",
+          "kit.py",
+          "status"
+        ],
+        "exit_code": 1
+      }
+    ],
+    "not_tested": [
+      "부분 staging의 별도 음성 커밋 실험",
+      "동시 쓰기",
+      "전원 장애 복구",
+      "성능 부하",
+      "UI/서버(시나리오에 없음)",
+      "형식 검증"
+    ],
+    "source_clone_clean": true,
+    "external_ai_or_transfer_or_push_or_ui_automation": false
+  },
+  "findings": [
+    {
+      "id": "LEDGER-DOC-01",
+      "severity": "낮음",
+      "category": "설정 안내 누락",
+      "summary": "결정론적 시간대 고정 안내와 예약 환경변수의 관계가 문서에 없다.",
+      "reproduction": "docs/fde/protocol.md는 시간대·로캘·버전을 고정하라고 안내한다. project.json env에 TZ=UTC와 PYTHONDONTWRITEBYTECODE=1을 넣고 map check 및 check를 실행하면 종료 1과 \"실행기가 관리하는 환경변수는 재정의할 수 없습니다.\"를 받는다. 초기 실험은 LC_ALL=C도 함께 지정했지만 LC_ALL 자체는 예약 변수가 아니다.",
+      "impact": "새 평가자가 정상적인 환경 고정 설정을 했다고 생각해도 실행 전 실패하며, 어느 변수가 원인인지 오류에 이름이 없어 kit.py를 읽어야 한다. 앱 동작 또는 커밋 차단의 우회는 관측되지 않았다.",
+      "proposal": "protocol에 실행기가 이미 TZ=UTC, PYTHONHASHSEED=0, PYTHONDONTWRITEBYTECODE=1을 설정함과 예약 목록 KIT_RUN_DIR/TMPDIR/TZ/PYTHONHASHSEED/PYTHONDONTWRITEBYTECODE를 명시하고 오류에 충돌 변수 이름을 표시한다.",
+      "evidence": [
+        ".kit/assessment/map-check.json",
+        ".kit/assessment/baseline-check.json",
+        ".kit/runs/20261030T173935-89065279d2/report.json"
+      ],
+      "resolution_in_assessment": "키트는 변경하지 않고 앱별 env를 빈 사전으로 복구했다."
+    }
+  ],
+  "artifact_paths": {
+    "source_clone": "/private/tmp/fde-e2e-ledger-source",
+    "project": "/private/tmp/fde-e2e-ledger-project",
+    "result": "/private/tmp/fde-e2e-ledger-result.json",
+    "report": "/private/tmp/fde-e2e-ledger-report.md",
+    "project_result": "/private/tmp/fde-e2e-ledger-project/.kit/assessment/result.json",
+    "project_report": "/private/tmp/fde-e2e-ledger-project/.kit/assessment/report.md",
+    "export": "/private/tmp/fde-e2e-ledger-export",
+    "raw_evidence": "/private/tmp/fde-e2e-ledger-project/.kit"
+  }
+}

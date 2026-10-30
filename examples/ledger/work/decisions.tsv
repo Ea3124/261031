@@ -1,0 +1,11 @@
+unit	decision	reason	evidence
+U001	CLI는 --file PATH 다음 deposit/withdraw REQUEST_ID AMOUNT 또는 balance	시나리오는 정확한 인자 순서와 출력 형식을 정하지 않았으므로 작은 명시적 인터페이스를 선택	app/ledger.py argparse
+U001	성공은 JSON balance와 0, 오류는 stderr와 2	요구사항의 성공/실패 표현이 미지정이므로 검사 가능한 계약을 고정	verification/support.py
+U001	장부가 없으면 조회 0이며 파일은 만들지 않음; 부모 폴더는 호출자가 준비	시나리오에 최초 조회/폴더 생성 정책이 없으므로 읽기의 부수효과를 줄임	verification/doctor.py
+U001	성공 요청만 기록하고 동일 재요청은 현재 잔액을 반환하며 파일을 쓰지 않음	중복 시 원래 응답과 현재 응답 중 무엇인지 요구가 미지정; 잔액 조회 의미를 유지	verification/invariants.py
+U001	순차 단독 쓰기와 같은 폴더 원자적 replace 사용	동시 실행 요구가 없고 실패 입력의 파일 보존이 핵심; 락과 동시성 증명은 범위 밖	app/ledger.py save와 검증의 파일 비교
+U001	양의 정수는 ASCII 숫자만 허용; +1/공백/소수는 거절	문자 표현의 정규화 규칙이 없어서 모호한 입력을 거절	verification/invariants.py
+U001	env를 비워 실행기 기본 환경 사용	문서의 시간대·로캘 고정 지침을 따라 TZ/LC_ALL을 설정했으나 예약 변수 재정의로 거절됨; 예약 목록은 kit.py에서 확인	.kit/assessment/baseline-check.json
+U001	맵 복구 명령을 저장된 원본 argv에서 다시 읽음	평가 스크립트가 리스트 별칭을 수정해 첫 복구도 깨진 ID를 사용함; 키트는 두 번 정확히 차단	.kit/assessment/map-restored-check.json 및 map-restored-check-v2.json
+U002	동일 요청의 조기 반환 두 줄을 의도적으로 제거	실제 잔액 중복 반영 회귀가 통과하지 않는지 확인; 기대값과 검사는 변경하지 않음	.kit/assessment/regression.patch
+U002	요청 충돌 검사와 동일 요청의 조기 반환을 분리해 복구	기존 요청이면 잔액 갱신 코드에 도달하기 전에 종료해야 함; 기존 기대값을 유지	.kit/runs/20261030T174026-0079768721 및 .kit/assessment/regression-direct/cli-transcript.jsonl

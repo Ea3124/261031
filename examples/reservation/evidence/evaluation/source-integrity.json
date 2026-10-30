@@ -1,0 +1,13 @@
+{
+  "source_clean": true,
+  "source_commit": "c1045e32308fd292a01696406973e5912a442a9c",
+  "common_files_unchanged": [
+    "kit.py",
+    "RULE.md",
+    "docs/fde/protocol.md",
+    "docs/fde/skills.md",
+    "docs/fde/verification.md",
+    ".agents/skills/fde-workflow/SKILL.md"
+  ],
+  "AGENTS_only_installer_markers": true
+}

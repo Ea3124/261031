@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/private/tmp/fde-e2e-csv-project/verification/business.py", line 28, in <module>
+    assert actual == expected, records[-1]
+AssertionError: {'case': 'fixed', 'expected': {'confirmed_count': 2, 'total_amount': 125}, 'actual': {'confirmed_count': 3, 'total_amount': 225}}

@@ -1,0 +1,22 @@
+diff --git a/app/server.py b/app/server.py
+index 6d9f613..6210049 100644
+--- a/app/server.py
++++ b/app/server.py
+@@ -43,7 +43,7 @@ class Inventory:
+             if reservation_id not in self.reservations:
+                 raise InvalidRequest(404, "reservation not found")
+             reservation = self.reservations[reservation_id]
+-            if not reservation["cancelled"]:
++            if True:
+                 self.stock += reservation["quantity"]
+                 reservation["cancelled"] = True
+             return {"reservation_id": reservation_id, "stock": self.stock, "cancelled": True}
+diff --git a/work/decisions.tsv b/work/decisions.tsv
+index 7781924..1f291c4 100644
+--- a/work/decisions.tsv
++++ b/work/decisions.tsv
+@@ -5,3 +5,4 @@ U001	400은 입력 오류, 404는 없는 예약/경로, 409는 재고/ID 충돌
+ U001	프로세스 메모리 상태와 잠금 사용	영속 저장·재시작 복구 요구가 없고 각 검사 서버는 독립 임시 디렉터리에서 실행; 잠금으로 한 요청의 판정/차감을 원자적으로 처리	app/server.py
+ U001	검사 기대값은 초기 재고2의 별도 원장과 고정 HTTP 인수 결과	앱 상수·상태에서 기대값을 읽으면 같은 오류를 놓치므로 요구에서 독립 계산	verification/business.py; verification/runtime.py
+ U001	로컬 HTTP bind를 허용하는 도구 실행 승인 사용	처음 제한 샌드박스가 0.0.0.0 bind를 거절했으나 사용자 요청에 실제 서버 검증이 포함됨; 원본 실행기는 수정하지 않음	.kit/runs/20261030T173949-4b7e4ffa10/doctor.log 및 후속 PASS
++U002	평가용으로 취소 표식 가드를 잠시 제거	정상 검사 후 실제 비즈니스 회귀가 커밋을 차단하는지 관찰; 기대값과 검사는 변경하지 않음	.kit/evaluation/regression-commit.log

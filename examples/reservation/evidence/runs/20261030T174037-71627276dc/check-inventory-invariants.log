@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/private/tmp/fde-e2e-http-project/verification/business.py", line 39, in <module>
+    assert app.snapshot() == {"stock": expected_stock}, (sequence, app.snapshot(), expected_stock)
+AssertionError: ((('reserve', 'a', 1), ('reserve', 'a', 1), ('cancel', 'a', 0), ('cancel', 'a', 0)), {'stock': 3}, 2)

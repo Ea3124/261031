@@ -1,0 +1,10 @@
+{
+  "unit": "REPLAY",
+  "goal": "ledger 예제의 실제 사용자 동작과 커밋 검증",
+  "started_at": 1793382343.214745,
+  "deadline": 1793382943.214745,
+  "max_attempts": 3,
+  "attempts": 1,
+  "result": "PASS",
+  "head_at_begin": ""
+}

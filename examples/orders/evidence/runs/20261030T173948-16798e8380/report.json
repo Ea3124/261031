@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "run_id": "20261030T173948-16798e8380",
+  "status": "PASS",
+  "staged": true,
+  "staged_tree": "0345936867734d1bda60d54d01e12f38d7d2a0b4",
+  "fingerprint": "f6f861226e9f7b180d68ad3082a61e5ddb8c24f456ea65b382c9de02bfb907bb",
+  "checks": [
+    {
+      "id": "doctor",
+      "passed": true,
+      "returncode": 0,
+      "timed_out": false,
+      "log": "doctor.log",
+      "duration_seconds": 0.145
+    },
+    {
+      "id": "check-python-syntax",
+      "passed": true,
+      "returncode": 0,
+      "timed_out": false,
+      "log": "check-python-syntax.log",
+      "duration_seconds": 0.0636
+    },
+    {
+      "id": "check-order-invariants",
+      "passed": true,
+      "returncode": 0,
+      "timed_out": false,
+      "log": "check-order-invariants.log",
+      "duration_seconds": 0.0876
+    },
+    {
+      "id": "check-orders-cli",
+      "passed": true,
+      "returncode": 0,
+      "timed_out": false,
+      "log": "check-orders-cli.log",
+      "duration_seconds": 1.1402
+    },
+    {
+      "id": "cleanup",
+      "passed": true,
+      "returncode": 0,
+      "timed_out": false,
+      "log": "cleanup.log",
+      "duration_seconds": 0.0656
+    }
+  ],
+  "errors": [],
+  "started_at": "2026-10-30T17:39:48.477092+00:00",
+  "unit_limit_reached": false,
+  "fingerprint_after": "f6f861226e9f7b180d68ad3082a61e5ddb8c24f456ea65b382c9de02bfb907bb",
+  "duration_seconds": 1.6216
+}

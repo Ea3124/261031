@@ -1,0 +1,12 @@
+{
+  "label": "map-restored-check-v2",
+  "argv": [
+    "python3",
+    "kit.py",
+    "map",
+    "check"
+  ],
+  "exit_code": 0,
+  "output": "기능맵 검사 통과.\n",
+  "at": "2026-10-30T17:40:05.392071+00:00"
+}

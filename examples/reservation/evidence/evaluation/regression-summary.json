@@ -1,0 +1,10 @@
+{
+  "normal_sha": "c1c7967e162bd222f501ceadbf542f7177f7dd63",
+  "blocked_head": "c1c7967e162bd222f501ceadbf542f7177f7dd63",
+  "head_unchanged": true,
+  "failed_commit_sha": null,
+  "failure_run": "20261030T174037-71627276dc",
+  "recovery_sha": "46596ff5473464ae3f8a9d34e36e4c6e86c91563",
+  "same_unit": "U002",
+  "attempts": 2
+}

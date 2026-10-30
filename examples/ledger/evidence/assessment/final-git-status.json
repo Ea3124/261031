@@ -1,0 +1,11 @@
+{
+  "label": "final-git-status",
+  "argv": [
+    "git",
+    "status",
+    "--short"
+  ],
+  "exit_code": 0,
+  "output": "",
+  "at": "2026-10-30T17:41:48.167466+00:00"
+}

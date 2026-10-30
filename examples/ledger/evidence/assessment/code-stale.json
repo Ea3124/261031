@@ -1,0 +1,11 @@
+{
+  "label": "code-stale",
+  "argv": [
+    "python3",
+    "kit.py",
+    "status"
+  ],
+  "exit_code": 1,
+  "output": "증거 상태: STALE; 실행: 20261030T173941-49815903e8\n작업 단위: U001; 시도 0/3; 결과 None\n",
+  "at": "2026-10-30T17:39:58.202470+00:00"
+}

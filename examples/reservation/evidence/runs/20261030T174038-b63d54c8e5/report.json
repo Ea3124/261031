@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "run_id": "20261030T174038-b63d54c8e5",
+  "status": "PASS",
+  "staged": true,
+  "staged_tree": "451bdd5d23ecd15582260cc4bd21598998e6093b",
+  "fingerprint": "ade67483eae8fa26f7bfd40d6a091d6136e1cdfb1e4087e7d35272b2385c86f9",
+  "checks": [
+    {
+      "id": "doctor",
+      "passed": true,
+      "returncode": 0,
+      "timed_out": false,
+      "log": "doctor.log",
+      "duration_seconds": 0.0789
+    },
+    {
+      "id": "check-python-syntax",
+      "passed": true,
+      "returncode": 0,
+      "timed_out": false,
+      "log": "check-python-syntax.log",
+      "duration_seconds": 0.0647
+    },
+    {
+      "id": "check-inventory-invariants",
+      "passed": true,
+      "returncode": 0,
+      "timed_out": false,
+      "log": "check-inventory-invariants.log",
+      "duration_seconds": 0.1356
+    },
+    {
+      "id": "check-reservation-http",
+      "passed": true,
+      "returncode": 0,
+      "timed_out": false,
+      "log": "check-reservation-http.log",
+      "duration_seconds": 0.267
+    },
+    {
+      "id": "cleanup",
+      "passed": true,
+      "returncode": 0,
+      "timed_out": false,
+      "log": "cleanup.log",
+      "duration_seconds": 0.0583
+    }
+  ],
+  "errors": [],
+  "started_at": "2026-10-30T17:40:38.529775+00:00",
+  "unit_limit_reached": false,
+  "fingerprint_after": "ade67483eae8fa26f7bfd40d6a091d6136e1cdfb1e4087e7d35272b2385c86f9",
+  "duration_seconds": 0.712
+}

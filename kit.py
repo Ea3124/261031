@@ -144,8 +144,9 @@ def config(root):
     if not isinstance(required, list) or any(not isinstance(k, str) or not re.fullmatch(r'[A-Za-z_][A-Za-z0-9_]*', k) for k in required):
         raise KitError('required_env는 환경변수 이름 배열이어야 합니다.')
     protected = {'KIT_RUN_DIR', 'TMPDIR', 'TZ', 'PYTHONHASHSEED', 'PYTHONDONTWRITEBYTECODE'}
-    if protected.intersection(env) or protected.intersection(required):
-        raise KitError('실행기가 관리하는 환경변수는 재정의할 수 없습니다.')
+    collisions = sorted(protected.intersection(env) | protected.intersection(required))
+    if collisions:
+        raise KitError('실행기가 관리하는 환경변수는 재정의할 수 없습니다: ' + ', '.join(collisions))
     missing = [key for key in required if key not in os.environ]
     if missing:
         raise KitError('필수 환경변수 미설정: ' + ', '.join(missing))
@@ -497,7 +498,7 @@ def doctor(root):
         errors.append('앱 검증 준비 미완료: ' + str(exc))
     for error in errors:
         print(error)
-    print('준비 검사: ' + ('미완료' if errors else '통과'))
+    print('구조·설정 검사: ' + ('미완료' if errors else '통과') + ' (앱 doctor 명령은 미실행; 실제 환경은 kit.py check로 확인)')
     return 1 if errors else 0
 
 
@@ -571,7 +572,7 @@ def main():
     sub = parser.add_subparsers(dest='command', required=True)
     p = sub.add_parser('install', help='기존 Git 저장소에 설치')
     p.add_argument('--project', required=True)
-    sub.add_parser('doctor', help='키트와 앱 설정 준비 확인')
+    sub.add_parser('doctor', help='구조·설정 확인; 앱 doctor 명령은 check에서 실행')
     p = sub.add_parser('begin', help='제한된 작업 단위 시작')
     p.add_argument('--unit', required=True)
     p.add_argument('--goal', required=True)

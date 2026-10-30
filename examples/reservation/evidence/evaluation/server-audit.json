@@ -1,0 +1,67 @@
+[
+  {
+    "run_id": "20261030T173958-a57b29020a",
+    "pid": 46282,
+    "returncode": -15,
+    "alive": false,
+    "port": 62690,
+    "port_closed": true,
+    "runtime_outcome": "PASS",
+    "trace_exists": true,
+    "rechecked_pid_absent": true,
+    "rechecked_port_closed": true,
+    "trace_bytes": 5426
+  },
+  {
+    "run_id": "20261030T174011-eb7d79c944",
+    "pid": 46466,
+    "returncode": -15,
+    "alive": false,
+    "port": 62730,
+    "port_closed": true,
+    "runtime_outcome": "PASS",
+    "trace_exists": true,
+    "rechecked_pid_absent": true,
+    "rechecked_port_closed": true,
+    "trace_bytes": 5426
+  },
+  {
+    "run_id": "20261030T174037-71627276dc",
+    "pid": 46859,
+    "returncode": -15,
+    "alive": false,
+    "port": 62779,
+    "port_closed": true,
+    "runtime_outcome": "FAIL",
+    "trace_exists": true,
+    "rechecked_pid_absent": true,
+    "rechecked_port_closed": true,
+    "trace_bytes": 2122
+  },
+  {
+    "run_id": "20261030T174038-b63d54c8e5",
+    "pid": 46898,
+    "returncode": -15,
+    "alive": false,
+    "port": 62793,
+    "port_closed": true,
+    "runtime_outcome": "PASS",
+    "trace_exists": true,
+    "rechecked_pid_absent": true,
+    "rechecked_port_closed": true,
+    "trace_bytes": 5426
+  },
+  {
+    "run_id": "20261030T174132-81cc91846e",
+    "pid": 47139,
+    "returncode": -15,
+    "alive": false,
+    "port": 62848,
+    "port_closed": true,
+    "runtime_outcome": "PASS",
+    "trace_exists": true,
+    "rechecked_pid_absent": true,
+    "rechecked_port_closed": true,
+    "trace_bytes": 5426
+  }
+]

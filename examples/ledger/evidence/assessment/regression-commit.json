@@ -1,0 +1,12 @@
+{
+  "label": "regression-commit",
+  "argv": [
+    "git",
+    "commit",
+    "-m",
+    "중복 반영 회귀 차단 검증용 임시 변경"
+  ],
+  "exit_code": 1,
+  "output": "doctor: 통과\ncheck-syntax: 통과\ncheck-business-invariants: 실패\ncheck-ledger-runtime: 실패\ncleanup: 통과\n검증 또는 cleanup 실패. 로그를 확인하세요.\n검증 결과: FAIL; 증거: .kit/runs/20261030T174026-0079768721/report.json\n반복 결과: FAIL; 시도 1/3\n",
+  "at": "2026-10-30T17:40:27.954183+00:00"
+}

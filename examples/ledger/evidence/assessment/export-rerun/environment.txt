@@ -1,0 +1,2 @@
+Python 3.9.6
+CLI ready; fresh balance=0; no server required

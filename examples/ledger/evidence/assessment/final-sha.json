@@ -1,0 +1,11 @@
+{
+  "label": "final-sha",
+  "argv": [
+    "git",
+    "rev-parse",
+    "HEAD"
+  ],
+  "exit_code": 0,
+  "output": "eee94facf6b0546ae5ba83775d1e2f85cd896a3b\n",
+  "at": "2026-10-30T17:41:47.939511+00:00"
+}

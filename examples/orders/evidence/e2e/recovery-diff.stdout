@@ -1,0 +1,30 @@
+diff --git a/.agents/skills/verify-app/features/F002.md b/.agents/skills/verify-app/features/F002.md
+index 7765669..4634da7 100644
+--- a/.agents/skills/verify-app/features/F002.md
++++ b/.agents/skills/verify-app/features/F002.md
+@@ -1,5 +1,5 @@
+ ---
+-{"action": "중복 입력 집계 후 a 금액 101 행을 추가", "checks": ["orders-cli"], "entry": "python3 app/orders.py input.csv output.json", "expected": "처음 건수 2 합계 125, 충돌 추가는 실패와 기존 출력 보존", "id": "F002", "invariants": ["같은 ID는 한 번만 집계하며 다른 값은 거절"], "precondition": "a=100 confirmed 두 행, b=40 cancelled, c=25 confirmed", "sources": ["app/orders.py"], "title": "주문 ID 중복 처리"}
++{"action": "중복 입력 집계 후 a 금액 101 행과 상태 충돌 행을 각각 추가", "checks": ["orders-cli"], "entry": "python3 app/orders.py input.csv output.json", "expected": "처음 건수 2 합계 125, 충돌 추가는 실패와 기존 출력 보존", "id": "F002", "invariants": ["같은 ID는 한 번만 집계하며 다른 값은 거절"], "precondition": "a=100 confirmed 두 행, b=40 cancelled, c=25 confirmed", "sources": ["app/orders.py"], "title": "주문 ID 중복 처리"}
+ ---
+ 
+ # F002: 주문 ID 중복 처리
+@@ -8,7 +8,7 @@
+ 
+ - 사전 조건: a=100 confirmed 두 행, b=40 cancelled, c=25 confirmed
+ - 사용자 진입 경로: python3 app/orders.py input.csv output.json
+-- 조작/입력: 중복 입력 집계 후 a 금액 101 행을 추가
++- 조작/입력: 중복 입력 집계 후 a 금액 101 행과 상태 충돌 행을 각각 추가
+ - 관측할 결과: 처음 건수 2 합계 125, 충돌 추가는 실패와 기존 출력 보존
+ 
+ ## 소스
+diff --git a/work/decisions.tsv b/work/decisions.tsv
+index fd57268..b749d19 100644
+--- a/work/decisions.tsv
++++ b/work/decisions.tsv
+@@ -4,3 +4,5 @@ D002	컬럼 정확히 3개, 순서 자유, 빈 ID·누락 필드·여분 필드
+ D003	금액 ASCII 숫자열, 선행 0은 수치로 동일	정수 금액은 명시됐지만 +기호·공백·유니코드 숫자·선행 0 표기는 미지정	수치 기반 불변식
+ D004	전체 파싱 뒤 같은 디렉터리 임시 파일을 원자 교체	잘못된 마지막 행도 기존 파일을 변경하면 안 됨	전후 바이트와 임시 파일 유무
+ D005	입력=출력 경로 거절, 부모 디렉터리 자동 생성 안 함	시나리오에서 파일 경로 충돌·생성 정책은 미지정, 입력 보호와 명확한 실패 선택	CLI 실행 계약
++D006	중복 분기의 continue를 pass로 바꾼 실제 회귀 주입	키트가 독립 기대값 125에 위배되는 코드의 커밋을 막는지 확인	CSV002 동일 단위에서 차단과 복구 관찰
++D007	동일 ID의 일치 중복은 continue로 집계를 건너뛰도록 복구	CSV002 시도 1에서 실제 결과 3건·225로 실패, HEAD 10f7b25 유지 확인	검사 기대값·입력 유지 후 같은 단위 시도 2

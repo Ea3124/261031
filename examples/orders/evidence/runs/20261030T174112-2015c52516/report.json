@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "run_id": "20261030T174112-2015c52516",
+  "status": "FAIL",
+  "staged": true,
+  "staged_tree": null,
+  "fingerprint": null,
+  "checks": [],
+  "errors": [
+    "부분 stage 금지: 추적 파일의 unstaged 변경 또는 미추적 파일이 있습니다. 모든 작업 파일을 stage하세요."
+  ],
+  "started_at": "2026-10-30T17:41:12.194121+00:00",
+  "fingerprint_after": "263cf377c4d7d430abce49e390c486c1f5b1de5f50d86bdecb195dc6db254350",
+  "duration_seconds": 0.0769
+}

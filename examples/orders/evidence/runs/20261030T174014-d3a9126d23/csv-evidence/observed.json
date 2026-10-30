@@ -1,0 +1,131 @@
+[
+  {
+    "case": "normal",
+    "exit_code": 0,
+    "before_hex": null,
+    "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+    "directory": [
+      "input.csv",
+      "output.json"
+    ]
+  },
+  {
+    "case": "repeat",
+    "exit_code": 0,
+    "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+    "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+    "directory": [
+      "input.csv",
+      "output.json"
+    ]
+  },
+  {
+    "case": "amount-conflict",
+    "exit_code": 1,
+    "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+    "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+    "directory": [
+      "input.csv",
+      "output.json"
+    ]
+  },
+  {
+    "case": "status-conflict",
+    "exit_code": 1,
+    "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+    "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+    "directory": [
+      "input.csv",
+      "output.json"
+    ]
+  },
+  {
+    "case": "negative",
+    "exit_code": 1,
+    "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+    "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+    "directory": [
+      "input.csv",
+      "output.json"
+    ]
+  },
+  {
+    "case": "nonnumeric",
+    "exit_code": 1,
+    "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+    "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+    "directory": [
+      "input.csv",
+      "output.json"
+    ]
+  },
+  {
+    "case": "unknown-status",
+    "exit_code": 1,
+    "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+    "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+    "directory": [
+      "input.csv",
+      "output.json"
+    ]
+  },
+  {
+    "case": "missing-column",
+    "exit_code": 1,
+    "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+    "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+    "directory": [
+      "input.csv",
+      "output.json"
+    ]
+  },
+  {
+    "case": "extra-field",
+    "exit_code": 1,
+    "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+    "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+    "directory": [
+      "input.csv",
+      "output.json"
+    ]
+  },
+  {
+    "case": "missing-field",
+    "exit_code": 1,
+    "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+    "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+    "directory": [
+      "input.csv",
+      "output.json"
+    ]
+  },
+  {
+    "case": "blank-id",
+    "exit_code": 1,
+    "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+    "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+    "directory": [
+      "input.csv",
+      "output.json"
+    ]
+  },
+  {
+    "case": "malformed-quote",
+    "exit_code": 1,
+    "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+    "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+    "directory": [
+      "input.csv",
+      "output.json"
+    ]
+  },
+  {
+    "case": "no-partial-output",
+    "exit_code": 1,
+    "before_hex": null,
+    "after_hex": null,
+    "directory": [
+      "input.csv"
+    ]
+  }
+]

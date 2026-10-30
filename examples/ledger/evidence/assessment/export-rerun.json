@@ -1,0 +1,42 @@
+[
+  {
+    "argv": [
+      "python3",
+      "verification/doctor.py"
+    ],
+    "exit_code": 0,
+    "output": "실제 CLI 준비 확인: 빈 장부 조회 0, 파일 생성 없음\n"
+  },
+  {
+    "argv": [
+      "python3",
+      "verification/syntax.py"
+    ],
+    "exit_code": 0,
+    "output": "Python 문법 검사 통과: 7개 파일\n"
+  },
+  {
+    "argv": [
+      "python3",
+      "verification/invariants.py"
+    ],
+    "exit_code": 0,
+    "output": "불변식 통과: 음수 방지, ID 충돌, 중복, 오류 입력과 손상 파일 보존\n"
+  },
+  {
+    "argv": [
+      "python3",
+      "verification/drive.py"
+    ],
+    "exit_code": 0,
+    "output": "고정 인수 시나리오 2회 통과: 새 프로세스 잔액 70, 파일과 임시 파일 잔류 검사 완료\n"
+  },
+  {
+    "argv": [
+      "python3",
+      "verification/cleanup.py"
+    ],
+    "exit_code": 0,
+    "output": "이 실행의 scratch만 정리함; 증거 보존: acceptance-final-0.json, acceptance-final-1.json, business-result.json, cli-transcript.jsonl, environment.txt, runtime-result.json\n"
+  }
+]

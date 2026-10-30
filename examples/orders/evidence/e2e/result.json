@@ -1,0 +1,1648 @@
+{
+  "model": "gpt-6-astra",
+  "scenario": "CSV 주문 집계 — docs/fde/scenarios/orders.md",
+  "source_commit": "c1045e32308fd292a01696406973e5912a442a9c",
+  "understanding": {
+    "scope": "문제 정의·구현·앱별 검증·기능 맵·로컬 커밋 훅·실패 수정·인계를 통일하는 준비용 키트다. 앱은 제공하지 않으며 원격 CI·자동 AI 수정·보안 샌드박스가 아니다.",
+    "entrypoint": ".agents/skills/fde-workflow/SKILL.md가 공통 진입점, .agents/skills/verify-app/SKILL.md가 앱 실행·검증 진입점이다. vendor/pstack은 비활성 참고 자료다.",
+    "read_order": "실제 과제 안내/기존 README → RULE.md → AGENTS.md → FDE_GUIDE.md(없으면 키트 README) → docs/fde/protocol.md → 기존 work/intent.md·handoff.md 및 실제 Git/status. README는 추가로 docs/fde/skills.md와 verification.md를 안내한다.",
+    "map_location": ".agents/skills/verify-app/features/F001.md 형태가 정본이고 map sync가 기능 인덱스를 만든다.",
+    "map_update_commands": "python3 kit.py map add --id Fxxx ... → python3 kit.py map sync → python3 kit.py map check. 변경은 같은 ID, 삭제는 해당 파일 제거 후 sync이며 의미 일치는 소스·실제 실행으로 별도 확인한다.",
+    "commit_gate_command": "python3 kit.py begin --unit ... --goal ... --minutes ... --max-attempts ... 후 git add -A, diff 확인, git commit. 설치된 pre-commit이 python3 kit.py iterate --staged를 호출한다.",
+    "loop_owner": "코드 수정·가설 변경·다음 커밋 시도는 에이전트가 수행한다. iterate는 제한된 한 차례 검사와 상태 저장만 하며 AI 호출·자동 수정·자동 커밋·데몬이 없다.",
+    "evidence_location": ".kit/runs/<run-id>/report.json과 명령 로그. 앱 검사는 KIT_RUN_DIR에 입력·출력·부수효과를 남긴다. .kit/latest.json, iteration.jsonl, unit.json이 최신 결과와 반복 이력을 보조한다.",
+    "partial_staging": "부분 stage를 금지한다. 추적 파일 unstaged 변경 또는 미추적 작업 파일이 있으면 --staged 검사/커밋을 막는다. --no-verify로 우회하지 않는다.",
+    "competition_models": "실전은 제공 Codex와 허용 모델만 사용한다. RULE의 권장 모델은 Sol 6.1, Terra 5.6, Luna 6, Sol 6.0이며 Astra·외부 모델 연결은 제한된다. 이번 Astra는 소유자가 명시한 준비평가 예외이며 실전 허가로 전이되지 않는다.",
+    "ui_verification": "Computer Use·Playwright/CDP·자동 화면 조작은 금지다. 화면은 응시자가 플랫폼 내부 Browser에서 직접 확인하며 API/CLI 통과를 화면 확인으로 표기하지 않는다. 이번 앱은 UI 없는 CLI다.",
+    "handoff": "work/handoff.md에 목표·브랜치·직전 SHA·변경·구조·검증 명령과 결과·증거·한계·다음 행동을 남긴다. 마지막 인계 문서도 정상 훅으로 커밋하고 최종 SHA는 응답/외부 보고서에 둔다. 다음 세션은 Git/status를 재확인하고 STALE이면 재검증한다."
+  },
+  "observed": {
+    "initial_install_exit_code": 0,
+    "initial_doctor_exit_code": 1,
+    "initial_state": "앱별 doctor 미설정, HEAD와 검증 증거 없음",
+    "command_results": [
+      {
+        "label": "git-config-name",
+        "argv": [
+          "git",
+          "config",
+          "user.name",
+          "CSV E2E Synthetic"
+        ],
+        "exit_code": 0,
+        "stdout": "git-config-name.stdout",
+        "stderr": "git-config-name.stderr"
+      },
+      {
+        "label": "git-config-email",
+        "argv": [
+          "git",
+          "config",
+          "user.email",
+          "csv-e2e@example.invalid"
+        ],
+        "exit_code": 0,
+        "stdout": "git-config-email.stdout",
+        "stderr": "git-config-email.stderr"
+      },
+      {
+        "label": "stage-normal",
+        "argv": [
+          "git",
+          "add",
+          "-A"
+        ],
+        "exit_code": 0,
+        "stdout": "stage-normal.stdout",
+        "stderr": "stage-normal.stderr"
+      },
+      {
+        "label": "staged-stat",
+        "argv": [
+          "git",
+          "diff",
+          "--cached",
+          "--stat"
+        ],
+        "exit_code": 0,
+        "stdout": "staged-stat.stdout",
+        "stderr": "staged-stat.stderr"
+      },
+      {
+        "label": "staged-app-diff",
+        "argv": [
+          "git",
+          "diff",
+          "--cached",
+          "--",
+          "app",
+          "verification",
+          "work",
+          ".agents/skills/verify-app",
+          "README.md"
+        ],
+        "exit_code": 0,
+        "stdout": "staged-app-diff.stdout",
+        "stderr": "staged-app-diff.stderr"
+      },
+      {
+        "label": "commit-normal",
+        "argv": [
+          "git",
+          "commit",
+          "-m",
+          "CSV 주문 집계와 독립 검증 구현"
+        ],
+        "exit_code": 0,
+        "stdout": "commit-normal.stdout",
+        "stderr": "commit-normal.stderr"
+      },
+      {
+        "label": "normal-sha",
+        "argv": [
+          "git",
+          "rev-parse",
+          "HEAD"
+        ],
+        "exit_code": 0,
+        "stdout": "normal-sha.stdout",
+        "stderr": "normal-sha.stderr"
+      },
+      {
+        "label": "normal-status",
+        "argv": [
+          "python3",
+          "kit.py",
+          "status"
+        ],
+        "exit_code": 0,
+        "stdout": "normal-status.stdout",
+        "stderr": "normal-status.stderr"
+      },
+      {
+        "label": "begin-regression",
+        "argv": [
+          "python3",
+          "kit.py",
+          "begin",
+          "--unit",
+          "CSV002",
+          "--goal",
+          "중복 집계 회귀를 실제 커밋에서 차단하고 같은 단위에서 복구",
+          "--minutes",
+          "20",
+          "--max-attempts",
+          "3"
+        ],
+        "exit_code": 0,
+        "stdout": "begin-regression.stdout",
+        "stderr": "begin-regression.stderr"
+      },
+      {
+        "label": "regression-stale",
+        "argv": [
+          "python3",
+          "kit.py",
+          "status"
+        ],
+        "exit_code": 1,
+        "stdout": "regression-stale.stdout",
+        "stderr": "regression-stale.stderr"
+      },
+      {
+        "label": "regression-stage",
+        "argv": [
+          "git",
+          "add",
+          "-A"
+        ],
+        "exit_code": 0,
+        "stdout": "regression-stage.stdout",
+        "stderr": "regression-stage.stderr"
+      },
+      {
+        "label": "regression-diff",
+        "argv": [
+          "git",
+          "diff",
+          "--cached"
+        ],
+        "exit_code": 0,
+        "stdout": "regression-diff.stdout",
+        "stderr": "regression-diff.stderr"
+      },
+      {
+        "label": "commit-regression",
+        "argv": [
+          "git",
+          "commit",
+          "-m",
+          "중복 집계 회귀 차단 실험"
+        ],
+        "exit_code": 1,
+        "stdout": "commit-regression.stdout",
+        "stderr": "commit-regression.stderr"
+      },
+      {
+        "label": "failed-sha",
+        "argv": [
+          "git",
+          "rev-parse",
+          "HEAD"
+        ],
+        "exit_code": 0,
+        "stdout": "failed-sha.stdout",
+        "stderr": "failed-sha.stderr"
+      },
+      {
+        "label": "failed-status",
+        "argv": [
+          "python3",
+          "kit.py",
+          "status"
+        ],
+        "exit_code": 1,
+        "stdout": "failed-status.stdout",
+        "stderr": "failed-status.stderr"
+      },
+      {
+        "label": "map-recovery-update",
+        "argv": [
+          "python3",
+          "kit.py",
+          "map",
+          "add",
+          "--id",
+          "F002",
+          "--title",
+          "주문 ID 중복 처리",
+          "--source",
+          "app/orders.py",
+          "--entry",
+          "python3 app/orders.py input.csv output.json",
+          "--precondition",
+          "a=100 confirmed 두 행, b=40 cancelled, c=25 confirmed",
+          "--action",
+          "중복 입력 집계 후 a 금액 101 행과 상태 충돌 행을 각각 추가",
+          "--expected",
+          "처음 건수 2 합계 125, 충돌 추가는 실패와 기존 출력 보존",
+          "--invariant",
+          "같은 ID는 한 번만 집계하며 다른 값은 거절",
+          "--check",
+          "orders-cli"
+        ],
+        "exit_code": 0,
+        "stdout": "map-recovery-update.stdout",
+        "stderr": "map-recovery-update.stderr"
+      },
+      {
+        "label": "recovery-map-sync",
+        "argv": [
+          "python3",
+          "kit.py",
+          "map",
+          "sync"
+        ],
+        "exit_code": 0,
+        "stdout": "recovery-map-sync.stdout",
+        "stderr": "recovery-map-sync.stderr"
+      },
+      {
+        "label": "recovery-stage",
+        "argv": [
+          "git",
+          "add",
+          "-A"
+        ],
+        "exit_code": 0,
+        "stdout": "recovery-stage.stdout",
+        "stderr": "recovery-stage.stderr"
+      },
+      {
+        "label": "recovery-diff",
+        "argv": [
+          "git",
+          "diff",
+          "--cached"
+        ],
+        "exit_code": 0,
+        "stdout": "recovery-diff.stdout",
+        "stderr": "recovery-diff.stderr"
+      },
+      {
+        "label": "commit-recovery",
+        "argv": [
+          "git",
+          "commit",
+          "-m",
+          "중복 집계 회귀 차단과 동일 단위 복구 기록"
+        ],
+        "exit_code": 0,
+        "stdout": "commit-recovery.stdout",
+        "stderr": "commit-recovery.stderr"
+      },
+      {
+        "label": "recovery-sha",
+        "argv": [
+          "git",
+          "rev-parse",
+          "HEAD"
+        ],
+        "exit_code": 0,
+        "stdout": "recovery-sha.stdout",
+        "stderr": "recovery-sha.stderr"
+      },
+      {
+        "label": "recovery-status",
+        "argv": [
+          "python3",
+          "kit.py",
+          "status"
+        ],
+        "exit_code": 0,
+        "stdout": "recovery-status.stdout",
+        "stderr": "recovery-status.stderr"
+      },
+      {
+        "label": "begin-evidence",
+        "argv": [
+          "python3",
+          "kit.py",
+          "begin",
+          "--unit",
+          "CSV003",
+          "--goal",
+          "깨진 기능 맵과 오래된 증거 탐지 및 최종 인계",
+          "--minutes",
+          "20",
+          "--max-attempts",
+          "3"
+        ],
+        "exit_code": 0,
+        "stdout": "begin-evidence.stdout",
+        "stderr": "begin-evidence.stderr"
+      },
+      {
+        "label": "broken-map-add",
+        "argv": [
+          "python3",
+          "kit.py",
+          "map",
+          "add",
+          "--id",
+          "F001",
+          "--title",
+          "CSV 가져오기와 유효성 검사",
+          "--source",
+          "app/nonexistent.py",
+          "--entry",
+          "python3 app/orders.py input.csv output.json",
+          "--precondition",
+          "UTF-8 CSV와 기존 출력",
+          "--action",
+          "정상 입력 후 음수·문자 금액·알 수 없는 상태·필수 컬럼 누락 입력",
+          "--expected",
+          "정상은 성공, 오류는 실패하며 기존 출력 보존",
+          "--invariant",
+          "잘못된 행 하나면 전체 거절",
+          "--check",
+          "orders-cli"
+        ],
+        "exit_code": 1,
+        "stdout": "broken-map-add.stdout",
+        "stderr": "broken-map-add.stderr"
+      },
+      {
+        "label": "broken-map-sync",
+        "argv": [
+          "python3",
+          "kit.py",
+          "map",
+          "sync"
+        ],
+        "exit_code": 0,
+        "stdout": "broken-map-sync.stdout",
+        "stderr": "broken-map-sync.stderr"
+      },
+      {
+        "label": "broken-map-check",
+        "argv": [
+          "python3",
+          "kit.py",
+          "map",
+          "check"
+        ],
+        "exit_code": 0,
+        "stdout": "broken-map-check.stdout",
+        "stderr": "broken-map-check.stderr"
+      },
+      {
+        "label": "broken-map-status",
+        "argv": [
+          "python3",
+          "kit.py",
+          "status"
+        ],
+        "exit_code": 0,
+        "stdout": "broken-map-status.stdout",
+        "stderr": "broken-map-status.stderr"
+      },
+      {
+        "label": "broken-map-full-check",
+        "argv": [
+          "python3",
+          "kit.py",
+          "check"
+        ],
+        "exit_code": 0,
+        "stdout": "broken-map-full-check.stdout",
+        "stderr": "broken-map-full-check.stderr"
+      },
+      {
+        "label": "restored-map-add",
+        "argv": [
+          "python3",
+          "kit.py",
+          "map",
+          "add",
+          "--id",
+          "F001",
+          "--title",
+          "CSV 가져오기와 유효성 검사",
+          "--source",
+          "app/orders.py",
+          "--entry",
+          "python3 app/orders.py input.csv output.json",
+          "--precondition",
+          "UTF-8 CSV와 기존 출력",
+          "--action",
+          "정상 입력 후 음수·문자 금액·알 수 없는 상태·필수 컬럼 누락 입력",
+          "--expected",
+          "정상은 성공, 오류는 실패하며 기존 출력 보존",
+          "--invariant",
+          "잘못된 행 하나면 전체 거절",
+          "--check",
+          "orders-cli"
+        ],
+        "exit_code": 0,
+        "stdout": "restored-map-add.stdout",
+        "stderr": "restored-map-add.stderr"
+      },
+      {
+        "label": "restored-map-sync",
+        "argv": [
+          "python3",
+          "kit.py",
+          "map",
+          "sync"
+        ],
+        "exit_code": 0,
+        "stdout": "restored-map-sync.stdout",
+        "stderr": "restored-map-sync.stderr"
+      },
+      {
+        "label": "restored-map-check",
+        "argv": [
+          "python3",
+          "kit.py",
+          "map",
+          "check"
+        ],
+        "exit_code": 0,
+        "stdout": "restored-map-check.stdout",
+        "stderr": "restored-map-check.stderr"
+      },
+      {
+        "label": "restored-check",
+        "argv": [
+          "python3",
+          "kit.py",
+          "check"
+        ],
+        "exit_code": 0,
+        "stdout": "restored-check.stdout",
+        "stderr": "restored-check.stderr"
+      },
+      {
+        "label": "restored-status",
+        "argv": [
+          "python3",
+          "kit.py",
+          "status"
+        ],
+        "exit_code": 0,
+        "stdout": "restored-status.stdout",
+        "stderr": "restored-status.stderr"
+      },
+      {
+        "label": "corrupted-map-sync",
+        "argv": [
+          "python3",
+          "kit.py",
+          "map",
+          "sync"
+        ],
+        "exit_code": 0,
+        "stdout": "corrupted-map-sync.stdout",
+        "stderr": "corrupted-map-sync.stderr"
+      },
+      {
+        "label": "corrupted-map-check",
+        "argv": [
+          "python3",
+          "kit.py",
+          "map",
+          "check"
+        ],
+        "exit_code": 1,
+        "stdout": "corrupted-map-check.stdout",
+        "stderr": "corrupted-map-check.stderr"
+      },
+      {
+        "label": "corrupted-map-status",
+        "argv": [
+          "python3",
+          "kit.py",
+          "status"
+        ],
+        "exit_code": 1,
+        "stdout": "corrupted-map-status.stdout",
+        "stderr": "corrupted-map-status.stderr"
+      },
+      {
+        "label": "corrupted-map-full-check",
+        "argv": [
+          "python3",
+          "kit.py",
+          "check"
+        ],
+        "exit_code": 1,
+        "stdout": "corrupted-map-full-check.stdout",
+        "stderr": "corrupted-map-full-check.stderr"
+      },
+      {
+        "label": "corrupted-map-repair",
+        "argv": [
+          "python3",
+          "kit.py",
+          "map",
+          "add",
+          "--id",
+          "F001",
+          "--title",
+          "CSV 가져오기와 유효성 검사",
+          "--source",
+          "app/orders.py",
+          "--entry",
+          "python3 app/orders.py input.csv output.json",
+          "--precondition",
+          "UTF-8 CSV와 기존 출력",
+          "--action",
+          "정상 입력 후 음수·문자 금액·알 수 없는 상태·필수 컬럼 누락 입력",
+          "--expected",
+          "정상은 성공, 오류는 실패하며 기존 출력 보존",
+          "--invariant",
+          "잘못된 행 하나면 전체 거절",
+          "--check",
+          "orders-cli"
+        ],
+        "exit_code": 0,
+        "stdout": "corrupted-map-repair.stdout",
+        "stderr": "corrupted-map-repair.stderr"
+      },
+      {
+        "label": "repaired-map-sync",
+        "argv": [
+          "python3",
+          "kit.py",
+          "map",
+          "sync"
+        ],
+        "exit_code": 0,
+        "stdout": "repaired-map-sync.stdout",
+        "stderr": "repaired-map-sync.stderr"
+      },
+      {
+        "label": "repaired-map-check",
+        "argv": [
+          "python3",
+          "kit.py",
+          "map",
+          "check"
+        ],
+        "exit_code": 0,
+        "stdout": "repaired-map-check.stdout",
+        "stderr": "repaired-map-check.stderr"
+      },
+      {
+        "label": "repaired-full-check",
+        "argv": [
+          "python3",
+          "kit.py",
+          "check"
+        ],
+        "exit_code": 0,
+        "stdout": "repaired-full-check.stdout",
+        "stderr": "repaired-full-check.stderr"
+      },
+      {
+        "label": "repaired-status",
+        "argv": [
+          "python3",
+          "kit.py",
+          "status"
+        ],
+        "exit_code": 0,
+        "stdout": "repaired-status.stdout",
+        "stderr": "repaired-status.stderr"
+      },
+      {
+        "label": "partial-stage-setup",
+        "argv": [
+          "git",
+          "add",
+          "work/decisions.tsv"
+        ],
+        "exit_code": 0,
+        "stdout": "partial-stage-setup.stdout",
+        "stderr": "partial-stage-setup.stderr"
+      },
+      {
+        "label": "partial-staged-check",
+        "argv": [
+          "python3",
+          "kit.py",
+          "check",
+          "--staged"
+        ],
+        "exit_code": 1,
+        "stdout": "partial-staged-check.stdout",
+        "stderr": "partial-staged-check.stderr"
+      },
+      {
+        "label": "final-stage",
+        "argv": [
+          "git",
+          "add",
+          "-A"
+        ],
+        "exit_code": 0,
+        "stdout": "final-stage.stdout",
+        "stderr": "final-stage.stderr"
+      },
+      {
+        "label": "final-diff",
+        "argv": [
+          "git",
+          "diff",
+          "--cached"
+        ],
+        "exit_code": 0,
+        "stdout": "final-diff.stdout",
+        "stderr": "final-diff.stderr"
+      },
+      {
+        "label": "commit-handoff",
+        "argv": [
+          "git",
+          "commit",
+          "-m",
+          "맵 실패와 증거 보존 확인 및 CSV 예제 인계"
+        ],
+        "exit_code": 0,
+        "stdout": "commit-handoff.stdout",
+        "stderr": "commit-handoff.stderr"
+      },
+      {
+        "label": "final-sha",
+        "argv": [
+          "git",
+          "rev-parse",
+          "HEAD"
+        ],
+        "exit_code": 0,
+        "stdout": "final-sha.stdout",
+        "stderr": "final-sha.stderr"
+      },
+      {
+        "label": "final-status",
+        "argv": [
+          "python3",
+          "kit.py",
+          "status"
+        ],
+        "exit_code": 0,
+        "stdout": "final-status.stdout",
+        "stderr": "final-status.stderr"
+      },
+      {
+        "label": "final-git-status",
+        "argv": [
+          "git",
+          "status",
+          "--short"
+        ],
+        "exit_code": 0,
+        "stdout": "final-git-status.stdout",
+        "stderr": "final-git-status.stderr"
+      }
+    ],
+    "normal_sha": "10f7b25d7bfe71f94260d5af674b51d7e08c35ee",
+    "failed_commit_sha": null,
+    "head_after_failed_commit": "10f7b25d7bfe71f94260d5af674b51d7e08c35ee",
+    "head_unchanged_on_block": true,
+    "recovery_sha": "2a77037bca44e6ceaf4549724d34d5ba84eeef45",
+    "final_sha": "fb7018a19e46baf59603369f889a887b62038ead",
+    "regression_unit": {
+      "unit": "CSV002",
+      "goal": "중복 집계 회귀를 실제 커밋에서 차단하고 같은 단위에서 복구",
+      "started_at": 1793382004.3376782,
+      "deadline": 1793383204.3376782,
+      "max_attempts": 3,
+      "attempts": 2,
+      "result": "PASS",
+      "head_at_begin": "10f7b25d7bfe71f94260d5af674b51d7e08c35ee"
+    },
+    "normal_output_bytes": "{\"confirmed_count\":2,\"total_amount\":125}\n",
+    "regression_output_bytes": "{\"confirmed_count\":3,\"total_amount\":225}\n",
+    "map_failure": "map add 단계 누락 소스 거절(1); 실제 파일 손상 후 map check(1)와 check(1), 복구 후 모두 0",
+    "stale": "앱 회귀 수정 뒤 status 1/STALE, 맵 손상 뒤 status 1/STALE; 재검증·복구 최종 status 0/PASS",
+    "partial_staging": "check --staged 종료 1, 전체 stage 뒤 최종 훅 커밋 성공",
+    "evidence_audit": [
+      {
+        "run_id": "20261030T173948-16798e8380",
+        "status": "PASS",
+        "checks": [
+          {
+            "id": "doctor",
+            "passed": true,
+            "returncode": 0,
+            "timed_out": false,
+            "log": "doctor.log",
+            "duration_seconds": 0.145
+          },
+          {
+            "id": "check-python-syntax",
+            "passed": true,
+            "returncode": 0,
+            "timed_out": false,
+            "log": "check-python-syntax.log",
+            "duration_seconds": 0.0636
+          },
+          {
+            "id": "check-order-invariants",
+            "passed": true,
+            "returncode": 0,
+            "timed_out": false,
+            "log": "check-order-invariants.log",
+            "duration_seconds": 0.0876
+          },
+          {
+            "id": "check-orders-cli",
+            "passed": true,
+            "returncode": 0,
+            "timed_out": false,
+            "log": "check-orders-cli.log",
+            "duration_seconds": 1.1402
+          },
+          {
+            "id": "cleanup",
+            "passed": true,
+            "returncode": 0,
+            "timed_out": false,
+            "log": "cleanup.log",
+            "duration_seconds": 0.0656
+          }
+        ],
+        "scratch_absent": true,
+        "cleanup_called": true,
+        "evidence_count": 63,
+        "all_listed_evidence_exists": true,
+        "observed_cli": [
+          {
+            "case": "normal",
+            "exit_code": 0,
+            "before_hex": null,
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "repeat",
+            "exit_code": 0,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "amount-conflict",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "status-conflict",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "negative",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "nonnumeric",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "unknown-status",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "missing-column",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "extra-field",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "missing-field",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "blank-id",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "malformed-quote",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "no-partial-output",
+            "exit_code": 1,
+            "before_hex": null,
+            "after_hex": null,
+            "directory": [
+              "input.csv"
+            ]
+          }
+        ],
+        "errors": []
+      },
+      {
+        "run_id": "20261030T174004-e393dba558",
+        "status": "FAIL",
+        "checks": [
+          {
+            "id": "doctor",
+            "passed": true,
+            "returncode": 0,
+            "timed_out": false,
+            "log": "doctor.log",
+            "duration_seconds": 0.145
+          },
+          {
+            "id": "check-python-syntax",
+            "passed": true,
+            "returncode": 0,
+            "timed_out": false,
+            "log": "check-python-syntax.log",
+            "duration_seconds": 0.0597
+          },
+          {
+            "id": "check-order-invariants",
+            "passed": false,
+            "returncode": 1,
+            "timed_out": false,
+            "log": "check-order-invariants.log",
+            "duration_seconds": 0.0886
+          },
+          {
+            "id": "check-orders-cli",
+            "passed": false,
+            "returncode": 1,
+            "timed_out": false,
+            "log": "check-orders-cli.log",
+            "duration_seconds": 0.1516
+          },
+          {
+            "id": "cleanup",
+            "passed": true,
+            "returncode": 0,
+            "timed_out": false,
+            "log": "cleanup.log",
+            "duration_seconds": 0.0661
+          }
+        ],
+        "scratch_absent": true,
+        "cleanup_called": true,
+        "evidence_count": 5,
+        "all_listed_evidence_exists": true,
+        "observed_cli": [
+          {
+            "case": "normal",
+            "exit_code": 0,
+            "before_hex": null,
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a332c22746f74616c5f616d6f756e74223a3232357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          }
+        ],
+        "errors": [
+          "검증 또는 cleanup 실패. 로그를 확인하세요."
+        ]
+      },
+      {
+        "run_id": "20261030T174014-d3a9126d23",
+        "status": "PASS",
+        "checks": [
+          {
+            "id": "doctor",
+            "passed": true,
+            "returncode": 0,
+            "timed_out": false,
+            "log": "doctor.log",
+            "duration_seconds": 0.1442
+          },
+          {
+            "id": "check-python-syntax",
+            "passed": true,
+            "returncode": 0,
+            "timed_out": false,
+            "log": "check-python-syntax.log",
+            "duration_seconds": 0.0603
+          },
+          {
+            "id": "check-order-invariants",
+            "passed": true,
+            "returncode": 0,
+            "timed_out": false,
+            "log": "check-order-invariants.log",
+            "duration_seconds": 0.0877
+          },
+          {
+            "id": "check-orders-cli",
+            "passed": true,
+            "returncode": 0,
+            "timed_out": false,
+            "log": "check-orders-cli.log",
+            "duration_seconds": 1.1243
+          },
+          {
+            "id": "cleanup",
+            "passed": true,
+            "returncode": 0,
+            "timed_out": false,
+            "log": "cleanup.log",
+            "duration_seconds": 0.0679
+          }
+        ],
+        "scratch_absent": true,
+        "cleanup_called": true,
+        "evidence_count": 63,
+        "all_listed_evidence_exists": true,
+        "observed_cli": [
+          {
+            "case": "normal",
+            "exit_code": 0,
+            "before_hex": null,
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "repeat",
+            "exit_code": 0,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "amount-conflict",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "status-conflict",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "negative",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "nonnumeric",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "unknown-status",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "missing-column",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "extra-field",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "missing-field",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "blank-id",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "malformed-quote",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "no-partial-output",
+            "exit_code": 1,
+            "before_hex": null,
+            "after_hex": null,
+            "directory": [
+              "input.csv"
+            ]
+          }
+        ],
+        "errors": []
+      },
+      {
+        "run_id": "20261030T174034-161d96e7d3",
+        "status": "FAIL",
+        "checks": [],
+        "scratch_absent": true,
+        "cleanup_called": false,
+        "evidence_count": 0,
+        "all_listed_evidence_exists": true,
+        "observed_cli": [],
+        "errors": [
+          "소스가 없거나 프로젝트 밖을 가리킵니다: app/nonexistent.py"
+        ]
+      },
+      {
+        "run_id": "20261030T174035-44d1700d26",
+        "status": "PASS",
+        "checks": [
+          {
+            "id": "doctor",
+            "passed": true,
+            "returncode": 0,
+            "timed_out": false,
+            "log": "doctor.log",
+            "duration_seconds": 0.1567
+          },
+          {
+            "id": "check-python-syntax",
+            "passed": true,
+            "returncode": 0,
+            "timed_out": false,
+            "log": "check-python-syntax.log",
+            "duration_seconds": 0.0628
+          },
+          {
+            "id": "check-order-invariants",
+            "passed": true,
+            "returncode": 0,
+            "timed_out": false,
+            "log": "check-order-invariants.log",
+            "duration_seconds": 0.0899
+          },
+          {
+            "id": "check-orders-cli",
+            "passed": true,
+            "returncode": 0,
+            "timed_out": false,
+            "log": "check-orders-cli.log",
+            "duration_seconds": 1.1065
+          },
+          {
+            "id": "cleanup",
+            "passed": true,
+            "returncode": 0,
+            "timed_out": false,
+            "log": "cleanup.log",
+            "duration_seconds": 0.0672
+          }
+        ],
+        "scratch_absent": true,
+        "cleanup_called": true,
+        "evidence_count": 63,
+        "all_listed_evidence_exists": true,
+        "observed_cli": [
+          {
+            "case": "normal",
+            "exit_code": 0,
+            "before_hex": null,
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "repeat",
+            "exit_code": 0,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "amount-conflict",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "status-conflict",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "negative",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "nonnumeric",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "unknown-status",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "missing-column",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "extra-field",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "missing-field",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "blank-id",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "malformed-quote",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "no-partial-output",
+            "exit_code": 1,
+            "before_hex": null,
+            "after_hex": null,
+            "directory": [
+              "input.csv"
+            ]
+          }
+        ],
+        "errors": []
+      },
+      {
+        "run_id": "20261030T174112-2015c52516",
+        "status": "FAIL",
+        "checks": [],
+        "scratch_absent": true,
+        "cleanup_called": false,
+        "evidence_count": 0,
+        "all_listed_evidence_exists": true,
+        "observed_cli": [],
+        "errors": [
+          "부분 stage 금지: 추적 파일의 unstaged 변경 또는 미추적 파일이 있습니다. 모든 작업 파일을 stage하세요."
+        ]
+      },
+      {
+        "run_id": "20261030T174112-2de3763189",
+        "status": "PASS",
+        "checks": [
+          {
+            "id": "doctor",
+            "passed": true,
+            "returncode": 0,
+            "timed_out": false,
+            "log": "doctor.log",
+            "duration_seconds": 0.1466
+          },
+          {
+            "id": "check-python-syntax",
+            "passed": true,
+            "returncode": 0,
+            "timed_out": false,
+            "log": "check-python-syntax.log",
+            "duration_seconds": 0.0602
+          },
+          {
+            "id": "check-order-invariants",
+            "passed": true,
+            "returncode": 0,
+            "timed_out": false,
+            "log": "check-order-invariants.log",
+            "duration_seconds": 0.0887
+          },
+          {
+            "id": "check-orders-cli",
+            "passed": true,
+            "returncode": 0,
+            "timed_out": false,
+            "log": "check-orders-cli.log",
+            "duration_seconds": 1.0992
+          },
+          {
+            "id": "cleanup",
+            "passed": true,
+            "returncode": 0,
+            "timed_out": false,
+            "log": "cleanup.log",
+            "duration_seconds": 0.0667
+          }
+        ],
+        "scratch_absent": true,
+        "cleanup_called": true,
+        "evidence_count": 63,
+        "all_listed_evidence_exists": true,
+        "observed_cli": [
+          {
+            "case": "normal",
+            "exit_code": 0,
+            "before_hex": null,
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "repeat",
+            "exit_code": 0,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "amount-conflict",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "status-conflict",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "negative",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "nonnumeric",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "unknown-status",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "missing-column",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "extra-field",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "missing-field",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "blank-id",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "malformed-quote",
+            "exit_code": 1,
+            "before_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "after_hex": "7b22636f6e6669726d65645f636f756e74223a322c22746f74616c5f616d6f756e74223a3132357d0a",
+            "directory": [
+              "input.csv",
+              "output.json"
+            ]
+          },
+          {
+            "case": "no-partial-output",
+            "exit_code": 1,
+            "before_hex": null,
+            "after_hex": null,
+            "directory": [
+              "input.csv"
+            ]
+          }
+        ],
+        "errors": []
+      }
+    ],
+    "common_files_unchanged": {
+      "kit.py": {
+        "unchanged": true,
+        "sha256": "0461314a1102304a99fc52fa3367e9b16b11460ffdae3a778837668d89245f1b"
+      },
+      "RULE.md": {
+        "unchanged": true,
+        "sha256": "73d13bf567ef3544d6af973fc1a08887eeb79e7bd142c38d0df477210feab58f"
+      },
+      "docs/fde/protocol.md": {
+        "unchanged": true,
+        "sha256": "f92a03c86ba2675fc61025a270c2cff4401117c740775f29aebec5ceec3d0e17"
+      },
+      "docs/fde/skills.md": {
+        "unchanged": true,
+        "sha256": "be45a29045e0767493ba1c8aa56935bc8d6c957d709a2d0f49ebb8db694c83ba"
+      },
+      "docs/fde/verification.md": {
+        "unchanged": true,
+        "sha256": "d7334005a0206c858df2ae631f7df9adda653f6fd6fee9ab132392b9b3b835f3"
+      },
+      ".agents/skills/fde-workflow/SKILL.md": {
+        "unchanged": true,
+        "sha256": "914a6056aa55a4ed91022bd520da66f977b456be303672826c702b2f31ce0e51"
+      }
+    },
+    "project_clean": true,
+    "source_clone_clean": true,
+    "external_calls_push_ui_automation_used": false,
+    "limitations": [
+      "Python 3.9 이상 모든 버전에서 실행한 것은 아님",
+      "대규모 성능·동시 쓰기·전원 장애·권한 경합·모든 CSV 방언 미검증",
+      "검사는 실행한 상태의 증거이며 형식 증명 아님",
+      "첫 rg 파일 목록 검색이 /private/tmp 전체를 대상으로 해 다른 평가 폴더 이름을 나열했으나 다른 평가 파일 내용은 읽지 않음"
+    ],
+    "export_validation": {
+      "commands": [
+        {
+          "argv": [
+            "python3",
+            "verification/doctor.py"
+          ],
+          "exit_code": 0,
+          "stdout": "Python 준비 및 CLI 인수 계약 확인\n",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "python3",
+            "verification/static.py"
+          ],
+          "exit_code": 0,
+          "stdout": "실제 Python 문법 검사: 6개 파일\n",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "python3",
+            "verification/business.py"
+          ],
+          "exit_code": 0,
+          "stdout": "독립 기대값 기반 불변식 8종 통과\n",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "python3",
+            "verification/runtime.py"
+          ],
+          "exit_code": 0,
+          "stdout": "실제 CLI 정상·재실행·10종 오류 보존·부분 출력 없음 통과\n",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "python3",
+            "verification/cleanup.py"
+          ],
+          "exit_code": 0,
+          "stdout": "자체 임시 상태 정리, 증거 63개 보존\n",
+          "stderr": ""
+        }
+      ],
+      "scratch_absent": true,
+      "evidence_exists": true
+    }
+  },
+  "findings": [
+    {
+      "id": "CSV-KIT-01",
+      "severity": "낮음",
+      "title": "cleanup 호출 범위의 문서와 실행 차이",
+      "reproduction": "F001의 metadata와 본문 소스를 존재하지 않는 app/nonexistent.py로 바꾼 뒤 map sync, map check, kit.py check 실행. map check와 check 모두 종료 1. .kit/runs/20261030T174034-161d96e7d3/report.json의 checks는 []이며 cleanup.json도 없다.",
+      "impact": "protocol 1절과 앱 스킬 템플릿은 성공·실패 모두 cleanup을 호출한다고 읽히지만 맵·stage 등 사전 검사 실패에는 호출하지 않는다. 이번에는 앱을 시작하지 않아 앱 임시 데이터 누수는 없었다. 공통 run 폴더와 빈 tmp는 증거와 함께 남는다. 모든 실패에서 앱 cleanup이 실행됐다고 보고하면 사실과 다르다.",
+      "suggestion": "사전조건 검사 실패에는 앱 실행·cleanup을 생략하고 그 이유를 report에 명시한다고 문서를 좁히거나, 안전한 구성·환경 준비 후의 실패에서만 cleanup을 보장하는 계약을 분명히 한다. 이 평가는 kit.py/공통 문서를 수정하지 않았다."
+    },
+    {
+      "id": "CSV-SPEC-01",
+      "severity": "정보",
+      "title": "시나리오의 비지정 인터페이스·입력 정책을 앱별 결정으로 고정",
+      "reproduction": "orders.md는 JSON 파일과 건수/합계만 요구하며 CLI 인수 이름·JSON 키·직렬화·빈 ID·여분 컬럼·숫자 표기·같은 입력/출력 경로의 정책을 정하지 않는다.",
+      "impact": "새 에이전트가 기능을 완성하려면 합리적 정책을 선택해야 한다. 앱·검사·맵의 계약 일치로 처리했고 work/decisions.tsv D001–D005에 이유를 기록했다. 합계 125 등 고정 인수 조건은 변경하지 않았다.",
+      "suggestion": "공통 키트 결함은 아니다. 여러 독립 구현의 바이트나 인터페이스를 동일하게 비교하려면 시나리오에 출력 스키마·CLI 계약과 경계 정책을 추가한다."
+    }
+  ],
+  "artifact_paths": {
+    "source_clone": "/private/tmp/fde-e2e-csv-source",
+    "project": "/private/tmp/fde-e2e-csv-project",
+    "report": "/private/tmp/fde-e2e-csv-report.md",
+    "result": "/private/tmp/fde-e2e-csv-result.json",
+    "export": "/private/tmp/fde-e2e-csv-export",
+    "evidence": "/private/tmp/fde-e2e-csv-project/.kit",
+    "app": "/private/tmp/fde-e2e-csv-project/app/orders.py",
+    "verification": "/private/tmp/fde-e2e-csv-project/verification",
+    "handoff": "/private/tmp/fde-e2e-csv-project/work/handoff.md"
+  }
+}

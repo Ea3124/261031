@@ -1,0 +1,11 @@
+{
+  "scratch_existed": true,
+  "scratch_removed": true,
+  "evidence_files": [
+    "csv-evidence/normal.after.json",
+    "csv-evidence/normal.csv",
+    "csv-evidence/normal.stderr",
+    "csv-evidence/normal.stdout",
+    "csv-evidence/observed.json"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "label": "regression-stale",
+  "argv": [
+    "python3",
+    "kit.py",
+    "status"
+  ],
+  "exit_code": 1,
+  "output": "증거 상태: STALE; 실행: 20261030T174005-cbabc076e9\n작업 단위: U002; 시도 0/3; 결과 None\n",
+  "at": "2026-10-30T17:40:26.300538+00:00"
+}

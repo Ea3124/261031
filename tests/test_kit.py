@@ -222,6 +222,15 @@ elif mode == 'fail':
         log = self.root / '.kit/runs' / report['run_id'] / 'check-syntax.log'
         self.assertIn('[REDACTED]', log.read_text())
 
+    def test_reserved_environment_names_are_actionable(self):
+        self.fixture()
+        self.cfg['env'] = {'TZ': 'UTC', 'PYTHONHASHSEED': '0'}
+        self.save_config()
+        p = self.kit('check', expected=1)
+        self.assertIn('TZ', p.stdout)
+        self.assertIn('PYTHONHASHSEED', p.stdout)
+        self.assertEqual(self.latest()['checks'], [])
+
     def test_real_secret_pattern_blocks_before_commands(self):
         self.fixture()
         (self.root / 'accidental.txt').write_text('AK' + 'IA' + 'Z' * 16)

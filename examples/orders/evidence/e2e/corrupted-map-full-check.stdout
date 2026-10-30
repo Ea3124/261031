@@ -1,0 +1,2 @@
+소스가 없거나 프로젝트 밖을 가리킵니다: app/nonexistent.py
+검증 결과: FAIL; 증거: .kit/runs/20261030T174034-161d96e7d3/report.json

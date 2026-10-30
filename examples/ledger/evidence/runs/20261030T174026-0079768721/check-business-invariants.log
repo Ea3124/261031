@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "PROJECT_ROOT/verification/invariants.py", line 10, in <module>
+    success(path, 9, 'deposit', 'seed', '9')
+  File "PROJECT_ROOT/verification/support.py", line 33, in success
+    assert json.loads(result.stdout) == {'balance': expected}, result.stdout
+AssertionError: {"balance": 18}
+
