@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "/private/tmp/fde-e2e-http-project/verification/runtime.py", line 75, in <module>
-    expect("POST", f"/reservations/{ident}/cancel", {}, 200, {"stock": 1, "cancelled": True})
-  File "/private/tmp/fde-e2e-http-project/verification/runtime.py", line 46, in expect
-    assert actual.get(key) == value, (path, key, actual.get(key), value)
-AssertionError: ('/reservations/r1/cancel', 'stock', 2, 1)

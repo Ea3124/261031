@@ -1,0 +1,22 @@
+--- a/scripts/check
++++ b/scripts/check
+@@ -24,7 +24,6 @@
+ trap 'exit 143' TERM
+ : > "$run_dir/output.log"
+ receipt
+-printf '%s\n' "${run_dir##*/}" > .evidence/latest
+ 
+ tree=$(./scripts/source-tree working)
+ receipt
+@@ -38,7 +37,10 @@
+     printf '\nSource tree changed during verification.\n' >> "$run_dir/output.log"
+     exit_code=1
+ fi
+-if [ "$exit_code" -eq 0 ]; then status=PASS; fi
++if [ "$exit_code" -eq 0 ]; then
++    status=PASS
++    printf '%s\n' "${run_dir##*/}" > .evidence/latest
++fi
+ cat "$run_dir/output.log"
+ printf '%s: %s\n' "$status" "$run_dir"
+ exit "$exit_code"

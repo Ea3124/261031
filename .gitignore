@@ -1,4 +1,9 @@
-.kit/
+# 현재 흐름의 핵심 증거 .evidence/는 추적한다.
+.evidence/tmp/
 __pycache__/
 *.pyc
+*.pyo
+.pytest_cache/
 .DS_Store
+# 이전 실행기가 남긴 로컬 캐시이며 현재 흐름에서는 사용하지 않는다.
+.kit/

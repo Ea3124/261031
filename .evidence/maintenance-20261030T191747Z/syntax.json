@@ -1,0 +1,32 @@
+[
+  {
+    "file": "scripts/check",
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "file": "scripts/source-tree",
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "file": "scripts/setup",
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "file": ".githooks/pre-commit",
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "file": ".githooks/pre-push",
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "file": "verification/check",
+    "exit_code": 0,
+    "output": ""
+  }
+]

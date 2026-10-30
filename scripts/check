@@ -1,4 +1,44 @@
-#!/bin/sh
-set -eu
+#!/usr/bin/env bash
+set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
-exec python3 kit.py check "$@"
+
+mkdir -p .evidence
+run_dir=$(mktemp -d ".evidence/run-$(date -u +%Y%m%dT%H%M%SZ)-XXXXXXXX")
+export EVIDENCE_DIR="$PWD/$run_dir"
+status=FAIL
+tree=unavailable
+exit_code=1
+receipt() {
+    printf 'status=%s\ntree=%s\nexit_code=%s\ncommand=./verification/check\n' \
+        "$status" "$tree" "$exit_code" > "$run_dir/result"
+}
+finish() {
+    code=$?
+    trap - EXIT
+    if [ "$code" -ne 0 ]; then status=FAIL; exit_code=$code; fi
+    receipt
+}
+trap finish EXIT
+trap 'exit 129' HUP
+trap 'exit 130' INT
+trap 'exit 143' TERM
+: > "$run_dir/output.log"
+receipt
+printf '%s\n' "${run_dir##*/}" > .evidence/latest
+
+tree=$(./scripts/source-tree working)
+receipt
+if ./verification/check > "$run_dir/output.log" 2>&1; then
+    exit_code=0
+else
+    exit_code=$?
+fi
+after=$(./scripts/source-tree working)
+if [ "$tree" != "$after" ]; then
+    printf '\nSource tree changed during verification.\n' >> "$run_dir/output.log"
+    exit_code=1
+fi
+if [ "$exit_code" -eq 0 ]; then status=PASS; fi
+cat "$run_dir/output.log"
+printf '%s: %s\n' "$status" "$run_dir"
+exit "$exit_code"

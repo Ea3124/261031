@@ -1,0 +1,11 @@
+--- a/scripts/check
++++ b/scripts/check
+@@ -34,7 +34,7 @@
+     exit_code=$?
+ fi
+ after=$(./scripts/source-tree working)
+-if [ "$tree" != "$after" ]; then
++if [ "$tree" != "$tree" ]; then
+     printf '\nSource tree changed during verification.\n' >> "$run_dir/output.log"
+     exit_code=1
+ fi

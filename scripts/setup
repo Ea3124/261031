@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(git rev-parse --show-toplevel)"
+if configured=$(git config --get core.hooksPath); then
+    if [ "$configured" != .githooks ] && [ "$configured" != "$PWD/.githooks" ]; then
+        printf 'Existing core.hooksPath preserved: %s\n' "$configured" >&2
+        exit 1
+    fi
+else
+    hooks=$(git rev-parse --git-path hooks)
+    if [ -d "$hooks" ] && [ -n "$(find "$hooks" -mindepth 1 -maxdepth 1 ! -name '*.sample' -print -quit)" ]; then
+        printf 'Existing user hooks preserved; setup stopped.\n' >&2
+        exit 1
+    fi
+fi
+test -x .githooks/pre-commit
+test -x .githooks/pre-push
+git config --local core.hooksPath .githooks
+printf 'Installed local Git hooks from .githooks.\n'

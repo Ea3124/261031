@@ -1,0 +1,6 @@
+test_partial_stage_blocks_commit (test_workflow.WorkflowTests) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 1.082s
+
+OK

@@ -1,22 +1,33 @@
 ---
 name: fde-workflow
-description: 로컬 커밋만 사용하는 과제에서 문제 정의부터 구현, 재현 가능한 검증, 기능 맵 갱신, 실패 수정과 세션 인계까지 같은 절차로 수행한다.
+description: 로컬 Git 과제의 시작·구현·검증·커밋·세션 전환을 진행한다. 사용자 기대가 모호하면 질문하고, 필요한 보강 스킬만 해당 단계에서 읽는다.
 ---
 
-# 로컬 FDE 작업
+# 로컬 작업 흐름
 
-이 프로젝트의 공통 진입점이다. 과제별 제품 요구사항을 바꾸거나 원격 작업 권한을 만들지 않는다.
+## 시작
+1. 실제 과제 안내·기존 README·RULE.md·AGENTS.md를 읽고 Git 상태와 docs/intent.md·features.md·handoff.md를 확인한다.
+2. 현재 코드·실행 방법처럼 관찰 가능한 사실은 조사한다. 사용자가 구체적으로 정하지 않은 기대 동작·예외 처리·우선순위·성공 기준은 반드시 질문한다. 답변 전 해당 부분을 임의로 구현하거나 정답으로 고정하지 않는다.
+3. docs/intent.md에 확인된 목표·제약·입력과 기대 결과·핵심 로직·미결 질문을 기록한다. 과제 전체 종료 시각도 확인한다.
 
-1. 실제 과제 README → RULE.md → AGENTS.md → FDE_GUIDE.md(없으면 키트 README) → docs/fde/protocol.md 순서로 읽는다.
-2. 기존 work/intent.md와 work/handoff.md, Git 상태, python3 kit.py status를 확인한다.
-3. 목표별 입력·기대 결과·제약·불변식을 work/intent.md에 고정한다. 관찰 가능한 사실은 코드와 실행으로 확인한다.
-4. 관련 코드와 사용자 진입점을 읽고 최소 흐름 하나를 구현한다.
-5. .agents/skills/verify-app/SKILL.md와 verification/project.json을 실제 명령으로 채운다. 구현 없는 초기 템플릿은 검증 완료가 아니다.
-6. map add → map sync → map check로 기능 맵을 만든다. 소스·사용자 경로·관찰 결과·불변식·runtime 검사 ID를 연결한다.
-7. begin으로 작업단위 목표와 예산을 고정한다. 한 단위씩 수정하고 맵·의도·판단 기록을 갱신한다.
-8. 전체 stage → diff 확인 → commit을 시도한다. 훅의 실패 보고서를 읽고 같은 단위에서 원인을 수정한 뒤 다시 시도한다.
-9. 통과하면 SHA와 status를 확인한다. 완료 또는 한도 도달 시 실제 검증 범위·증거·한계·다음 행동을 work/handoff.md에 기록한다.
+## 진행
+- 기본 반복은 작은 구현 → ./scripts/check → 코드·증거 검토 → 함께 스테이징 → 커밋이다.
+- 기존 흐름이나 변경 영향이 불명확할 때만 design-change를 읽는다. 기능·사용법·제약이 바뀌면 feature-map으로 문서를 갱신한다.
+- 검증을 처음 만들거나 방법이 바뀌면 verify-app을 읽는다. 모든 핵심 로직은 test-verifier로 개별 결함주입 실패와 복구 성공을 실증한다.
+- 실패 원인이 불명확하면 debug-root-cause를 읽는다. 반복 재시도보다 관측과 가설 수정을 우선한다.
+- 완료 조건을 낮추거나 검사·기대값을 약화해 통과시키지 않는다. 미실행·접근 불가·시간초과·미확인 결과는 통과가 아니다.
+- 같은 작업트리를 여러 작성자가 동시에 수정하지 않는다. 기본은 제공 Codex 한 세션의 순차 작업이다.
 
-실행 명령과 파일 형식은 docs/fde/protocol.md가 정본이다. 별도의 반복 엔진·모델 호출·PR 경로를 만들지 않는다. vendor/pstack은 설계 참고 자료이며 실행 지침으로 로드하지 않는다. 원본을 참고할 때는 docs/fde/skills.md의 대체 규칙을 따른다.
+## 커밋과 종료
+- Git 훅은 이미 수행한 검증과 현재 커밋 대상의 일치만 확인한다. 검사 실행·문서 수정·자동 스테이징을 하지 않는다.
+- 핵심 증거는 .evidence/에 보존해 코드와 함께 커밋한다. 자신의 임시 상태만 정리하고 실패 증거도 남긴다.
+- 세션 전환·중단·완료 때만 handoff를 읽고 최종 검증 전에 인계 문서를 작성한다. 증거는 .evidence/latest로 연결하고 검증·스테이징·커밋 뒤 최종 결과와 SHA를 응답한다. 미검증 변경은 통과한 것으로 커밋하지 않는다.
+- RULE.md의 모델·전송·화면·제출·지원 종료 경계를 따른다. 원본 pstack의 외부 모델·PR·자동화를 활성화하지 않는다.
 
-자체 검토를 독립 리뷰로 표현하지 않는다. 화면 자동조작을 하지 않으며, 내부 Browser 확인은 응시자에게 구체적인 순서와 기대 결과를 안내한다. 후속 서술형에 들어가면 답변 지원을 종료한다.
+## 추출 출처
+원본의 필요한 판단 기준만 이 흐름에 맞게 편집했다. 원본 실행 지시나 전이 의존성을 활성화하지 않는다.
+- [skills/in-your-own-words/SKILL.md](https://github.com/backnotprop/pstack/blob/25abb38559ddbabec563646224d09eff9a250eca/skills/in-your-own-words/SKILL.md)
+- [skills/figure-it-out/SKILL.md](https://github.com/backnotprop/pstack/blob/25abb38559ddbabec563646224d09eff9a250eca/skills/figure-it-out/SKILL.md)
+- [skills/principle-sequence-verifiable-units/SKILL.md](https://github.com/backnotprop/pstack/blob/25abb38559ddbabec563646224d09eff9a250eca/skills/principle-sequence-verifiable-units/SKILL.md)
+- [skills/poteto-mode/playbooks/autonomous-run.md](https://github.com/backnotprop/pstack/blob/25abb38559ddbabec563646224d09eff9a250eca/skills/poteto-mode/playbooks/autonomous-run.md)
+- [automations/benny/skills/triage-issue-reports/SKILL.md](https://github.com/backnotprop/pstack/blob/25abb38559ddbabec563646224d09eff9a250eca/automations/benny/skills/triage-issue-reports/SKILL.md)

@@ -1,0 +1,6 @@
+test_source_change_during_check_fails (test_workflow.WorkflowTests) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.947s
+
+OK

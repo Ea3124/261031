@@ -1,6 +1,0 @@
-order_id,amount,status
-a,100,confirmed
-a,100,confirmed
-b,40,cancelled
-c,25,confirmed
-a,100,cancelled

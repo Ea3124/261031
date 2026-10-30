@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "/private/tmp/fde-e2e-csv-project/verification/runtime.py", line 37, in <module>
-    assert p.returncode == 0 and first == expected, records[-1]
-AssertionError: {'case': 'normal', 'exit_code': 0, 'before_hex': None, 'after_hex': '7b22636f6e6669726d65645f636f756e74223a332c22746f74616c5f616d6f756e74223a3232357d0a', 'directory': ['input.csv', 'output.json']}

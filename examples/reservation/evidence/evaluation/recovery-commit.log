@@ -1,9 +1,0 @@
-doctor: 통과
-check-python-syntax: 통과
-check-inventory-invariants: 통과
-check-reservation-http: 통과
-cleanup: 통과
-검증 결과: PASS; 증거: .kit/runs/20261030T174038-b63d54c8e5/report.json
-반복 결과: PASS; 시도 2/4
-[main 46596ff] 취소 회귀 차단과 같은 단위 복구 증거 기록
- 1 file changed, 3 insertions(+)

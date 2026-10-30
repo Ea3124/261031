@@ -1,0 +1,453 @@
+{
+  "upstream_commit": "25abb38559ddbabec563646224d09eff9a250eca",
+  "root_skills": 58,
+  "nested_benny_skills": 3,
+  "total_reviewed": 61,
+  "reference_files_read": 25,
+  "skills": [
+    {
+      "source": "vendor/pstack/automations/benny/skills/reproduce-and-fix-issues/SKILL.md",
+      "sha256": "1363cc07343fe86aab42853b1bd4563288cbcbdf12f1c265b3b3b1afa25c09cb",
+      "full_text_read": true,
+      "adapted_into": [
+        "debug-root-cause"
+      ]
+    },
+    {
+      "source": "vendor/pstack/automations/benny/skills/setup-benny/SKILL.md",
+      "sha256": "5a3cbe63360c9f6373b6cb6c79a1eaf7e0eba181bfaa1577e2e6431af3407282",
+      "full_text_read": true,
+      "adapted_into": []
+    },
+    {
+      "source": "vendor/pstack/automations/benny/skills/triage-issue-reports/SKILL.md",
+      "sha256": "216a758b8711e64d19a55e6032c496527daac6364d010611040f3c04ef1a448f",
+      "full_text_read": true,
+      "adapted_into": [
+        "fde-workflow"
+      ]
+    },
+    {
+      "source": "vendor/pstack/skills/architect/SKILL.md",
+      "sha256": "8b06915a5e728c4f78b6a685fec0213b5cb1a89b9476fae680d4cc3f67d4e79e",
+      "full_text_read": true,
+      "adapted_into": [
+        "design-change"
+      ]
+    },
+    {
+      "source": "vendor/pstack/skills/arena/SKILL.md",
+      "sha256": "2d852994eaa2f0abe7a9de959b21f0d5a818cc8a000acc65350d7b8fae914992",
+      "full_text_read": true,
+      "adapted_into": []
+    },
+    {
+      "source": "vendor/pstack/skills/automate-me/SKILL.md",
+      "sha256": "4d2e2fa5624c6d8830008c8c263bebeaa976ed2c655e890d962d1b9aaf873fd5",
+      "full_text_read": true,
+      "adapted_into": []
+    },
+    {
+      "source": "vendor/pstack/skills/benchmark-checklist/SKILL.md",
+      "sha256": "ba109e96c8f6c1c391baccf19e5d11e14370df7b3f2605e1572cd565a6c0fca0",
+      "full_text_read": true,
+      "adapted_into": [
+        "verify-app"
+      ]
+    },
+    {
+      "source": "vendor/pstack/skills/blast-radius/SKILL.md",
+      "sha256": "2e10745b97f5862323dcda3b29ca60d56b5c3c98e37020085d26b48efbe0a436",
+      "full_text_read": true,
+      "adapted_into": [
+        "design-change"
+      ]
+    },
+    {
+      "source": "vendor/pstack/skills/bro/SKILL.md",
+      "sha256": "aa329d0ceeeecb6822a7174ad76bb07a7826a3c52ceb6a588dec4138815084bb",
+      "full_text_read": true,
+      "adapted_into": []
+    },
+    {
+      "source": "vendor/pstack/skills/correct/SKILL.md",
+      "sha256": "e347045d00c967a0b831ef883cc6ac79d21329aa10b5968637df95de7febf0ba",
+      "full_text_read": true,
+      "adapted_into": [
+        "debug-root-cause"
+      ]
+    },
+    {
+      "source": "vendor/pstack/skills/create-formal-verification-skill/SKILL.md",
+      "sha256": "30ef0ac27612ecd16fdc081112113221d673053cef3f8603db11932193861211",
+      "full_text_read": true,
+      "adapted_into": [
+        "test-verifier",
+        "verify-app"
+      ]
+    },
+    {
+      "source": "vendor/pstack/skills/create-verification-skill/SKILL.md",
+      "sha256": "bba612e8b81a02df0f49e6f6911f3b543c8c7d9f1f3c13ae6c0e2d58cc8c3ad3",
+      "full_text_read": true,
+      "adapted_into": [
+        "feature-map",
+        "verify-app"
+      ]
+    },
+    {
+      "source": "vendor/pstack/skills/figure-it-out/SKILL.md",
+      "sha256": "bdb23cdbd82a1e6af094b495691c832a6f7f3ab9706ba9edbeb664ef51a726e1",
+      "full_text_read": true,
+      "adapted_into": [
+        "fde-workflow"
+      ]
+    },
+    {
+      "source": "vendor/pstack/skills/how/SKILL.md",
+      "sha256": "a63ac90597960cfdc4d51ec88960b3bf0a05d44a7dff1d5a2b8639981c25ca54",
+      "full_text_read": true,
+      "adapted_into": [
+        "design-change"
+      ]
+    },
+    {
+      "source": "vendor/pstack/skills/in-your-own-words/SKILL.md",
+      "sha256": "fa8ba74e27d7be371dc270ec78bbf816411477d0dfab185356c861ac8dd413ad",
+      "full_text_read": true,
+      "adapted_into": [
+        "fde-workflow"
+      ]
+    },
+    {
+      "source": "vendor/pstack/skills/interrogate/SKILL.md",
+      "sha256": "ce9d4c1390657924f58daa8174abdc605d07cd134a736cd86e392a0309a405fb",
+      "full_text_read": true,
+      "adapted_into": [
+        "design-change"
+      ]
+    },
+    {
+      "source": "vendor/pstack/skills/ketchup-video/SKILL.md",
+      "sha256": "027aed9a01adf208aeac3a134f47d12f7c1e42d6fea03095aedc2bae58cdcfd1",
+      "full_text_read": true,
+      "adapted_into": []
+    },
+    {
+      "source": "vendor/pstack/skills/ketchup/SKILL.md",
+      "sha256": "94d04bd4f4dd5d77229f2a349796b1863143edac7551a6c2068e1d80f73228b9",
+      "full_text_read": true,
+      "adapted_into": []
+    },
+    {
+      "source": "vendor/pstack/skills/maintain-formal-verification-skill/SKILL.md",
+      "sha256": "0c96f54293542d3818b68754562b338073958781a9684454611dca37592e2d2c",
+      "full_text_read": true,
+      "adapted_into": [
+        "test-verifier",
+        "verify-app"
+      ]
+    },
+    {
+      "source": "vendor/pstack/skills/maintain-verification-skill/SKILL.md",
+      "sha256": "5943f7747da6aafcf5c1063c988e725c97e415866f5c7746279012f35cb49815",
+      "full_text_read": true,
+      "adapted_into": [
+        "feature-map",
+        "verify-app"
+      ]
+    },
+    {
+      "source": "vendor/pstack/skills/make-bot-ui/SKILL.md",
+      "sha256": "ad19d0bc6764287ec08c2521701974e7dac941f72e4d0fe81a24f4614494586f",
+      "full_text_read": true,
+      "adapted_into": []
+    },
+    {
+      "source": "vendor/pstack/skills/no-comments/SKILL.md",
+      "sha256": "a725059771d1577fc59fbd266e2f75fe7f547a23a3dcc1052459db54ae10c0c2",
+      "full_text_read": true,
+      "adapted_into": [
+        "design-change"
+      ]
+    },
+    {
+      "source": "vendor/pstack/skills/poteto-help/SKILL.md",
+      "sha256": "950ce2914611906a8bfcc6e063f6b717e76e1abbe75e9d4fb5b6fdc986b9942c",
+      "full_text_read": true,
+      "adapted_into": []
+    },
+    {
+      "source": "vendor/pstack/skills/poteto-mode/SKILL.md",
+      "sha256": "70faeea64f157a019b349137f3e8163c5df9a0ec5a2412e4b4e75e50d760b936",
+      "full_text_read": true,
+      "adapted_into": []
+    },
+    {
+      "source": "vendor/pstack/skills/principle-attack-the-premise/SKILL.md",
+      "sha256": "6a932884daad4aa189e9b5d1665226bbc75621d4d2a398fd4003bebd382f4599",
+      "full_text_read": true,
+      "adapted_into": [
+        "debug-root-cause"
+      ]
+    },
+    {
+      "source": "vendor/pstack/skills/principle-boundary-discipline/SKILL.md",
+      "sha256": "62ac2862c2caa22dd14531f51c9c6bb445ceb198ca98a687e25b4d47c1f10a28",
+      "full_text_read": true,
+      "adapted_into": [
+        "design-change"
+      ]
+    },
+    {
+      "source": "vendor/pstack/skills/principle-build-the-lever/SKILL.md",
+      "sha256": "3434b0ad0c640c6f1d7960be7a8986c3bcdc14e26060360dec29903df60074ff",
+      "full_text_read": true,
+      "adapted_into": []
+    },
+    {
+      "source": "vendor/pstack/skills/principle-encode-lessons-in-structure/SKILL.md",
+      "sha256": "228963799189f481827d6f28065f278bc2008ffa37030b1234cbd5814d36b9e9",
+      "full_text_read": true,
+      "adapted_into": [
+        "debug-root-cause"
+      ]
+    },
+    {
+      "source": "vendor/pstack/skills/principle-exhaust-the-design-space/SKILL.md",
+      "sha256": "2de83d99f93f60ec6313455b0bc9aa9f0bfb93dd59f414f403691322db00d4db",
+      "full_text_read": true,
+      "adapted_into": []
+    },
+    {
+      "source": "vendor/pstack/skills/principle-experience-first/SKILL.md",
+      "sha256": "58903529d733b1c1a7c9ccf127d45ef3c7d0d9f0b81164a4dc6b80efe6f2912b",
+      "full_text_read": true,
+      "adapted_into": []
+    },
+    {
+      "source": "vendor/pstack/skills/principle-explain-the-number/SKILL.md",
+      "sha256": "3c84fbf9a7d9842abcfcd134010782b32092ac3d3fb4aaf9ed5732dca83aa58c",
+      "full_text_read": true,
+      "adapted_into": [
+        "verify-app"
+      ]
+    },
+    {
+      "source": "vendor/pstack/skills/principle-fix-root-causes/SKILL.md",
+      "sha256": "8df3c8c3fe57eb0055a5c8efab8ab144557fdf301da70b1cdc77a3a3ef3f3052",
+      "full_text_read": true,
+      "adapted_into": [
+        "debug-root-cause"
+      ]
+    },
+    {
+      "source": "vendor/pstack/skills/principle-foundational-thinking/SKILL.md",
+      "sha256": "864b827e8199d946ce58beca0f89c4ed4099ed6e426fb698a3aaa45de2a9eea2",
+      "full_text_read": true,
+      "adapted_into": [
+        "design-change"
+      ]
+    },
+    {
+      "source": "vendor/pstack/skills/principle-guard-the-context-window/SKILL.md",
+      "sha256": "af0b9dd70b43628ce4a59a4d332e9d9ad055084e460f430e7a757495c627e81a",
+      "full_text_read": true,
+      "adapted_into": [
+        "handoff"
+      ]
+    },
+    {
+      "source": "vendor/pstack/skills/principle-laziness-protocol/SKILL.md",
+      "sha256": "1be6e7a435f26a75a76eb848b9c3d611b9977d0f5822361753244da25ca3ca45",
+      "full_text_read": true,
+      "adapted_into": [
+        "design-change"
+      ]
+    },
+    {
+      "source": "vendor/pstack/skills/principle-make-operations-idempotent/SKILL.md",
+      "sha256": "7aa9327cf1f1aa057e95d47a0a78bd88a8f9d556b608866fee939d455a53a019",
+      "full_text_read": true,
+      "adapted_into": [
+        "verify-app"
+      ]
+    },
+    {
+      "source": "vendor/pstack/skills/principle-migrate-callers-then-delete-legacy-apis/SKILL.md",
+      "sha256": "580ad9bb1a0994ecb924321ba49efc38a2f85c64e22c76fb133f57a78272a2e6",
+      "full_text_read": true,
+      "adapted_into": []
+    },
+    {
+      "source": "vendor/pstack/skills/principle-minimize-reader-load/SKILL.md",
+      "sha256": "1ea2b7fef2391cae5844c4efdbd59031f775e8a52d06b7495d707229a200dcca",
+      "full_text_read": true,
+      "adapted_into": []
+    },
+    {
+      "source": "vendor/pstack/skills/principle-model-the-domain/SKILL.md",
+      "sha256": "52c0d85e0c3827c41c18299b642657d7b47eaf77b7b31609e42e0df42b84c75f",
+      "full_text_read": true,
+      "adapted_into": [
+        "design-change"
+      ]
+    },
+    {
+      "source": "vendor/pstack/skills/principle-never-block-on-the-human/SKILL.md",
+      "sha256": "05030a7a083c337676f793881b4e93cd218e8f1dd676529f56e6ac1d3efb8d1f",
+      "full_text_read": true,
+      "adapted_into": []
+    },
+    {
+      "source": "vendor/pstack/skills/principle-outcome-oriented-execution/SKILL.md",
+      "sha256": "10eb91633aa570355ba4bb37088fcade2b22e498df7a58edc749e65bc5a78e2d",
+      "full_text_read": true,
+      "adapted_into": []
+    },
+    {
+      "source": "vendor/pstack/skills/principle-prove-it-works/SKILL.md",
+      "sha256": "ec79a15025bac8d33d62011c54f3b612733fd2a024e623b531b3637aa75070e2",
+      "full_text_read": true,
+      "adapted_into": [
+        "verify-app"
+      ]
+    },
+    {
+      "source": "vendor/pstack/skills/principle-redesign-from-first-principles/SKILL.md",
+      "sha256": "170e0a658783e43fee8ec5a8c2422a4abb8f69cef621dd1819a95910b8207034",
+      "full_text_read": true,
+      "adapted_into": []
+    },
+    {
+      "source": "vendor/pstack/skills/principle-separate-before-serializing-shared-state/SKILL.md",
+      "sha256": "05294b40448e927c5da1c7b6f5c6b9fed3744637e3833d2d948b9154a9dd00bb",
+      "full_text_read": true,
+      "adapted_into": []
+    },
+    {
+      "source": "vendor/pstack/skills/principle-sequence-verifiable-units/SKILL.md",
+      "sha256": "2ccbbacc56ace5afdfb8670cef19d7bd009fb2a0033b9a741cbdf2b6baf72187",
+      "full_text_read": true,
+      "adapted_into": [
+        "fde-workflow"
+      ]
+    },
+    {
+      "source": "vendor/pstack/skills/principle-subtract-before-you-add/SKILL.md",
+      "sha256": "8c93bb9d1a7f38e2ef37655d93f0e790fa59903105af3d500cc8a663ebe45f3f",
+      "full_text_read": true,
+      "adapted_into": []
+    },
+    {
+      "source": "vendor/pstack/skills/principle-test-behavior-not-implementation/SKILL.md",
+      "sha256": "f7223698623b6a26fea49c751e466b38e6691b1f32ce841d3983e7ffbe2b74a6",
+      "full_text_read": true,
+      "adapted_into": [
+        "test-verifier",
+        "verify-app"
+      ]
+    },
+    {
+      "source": "vendor/pstack/skills/principle-type-system-discipline/SKILL.md",
+      "sha256": "5cdaf79785e3c12b2592b9469ee8c272143eb86ab7a18d8382197cea5fd30106",
+      "full_text_read": true,
+      "adapted_into": [
+        "design-change"
+      ]
+    },
+    {
+      "source": "vendor/pstack/skills/recall/SKILL.md",
+      "sha256": "c0a208e084bbe3946ee318ea8a001fbde5699416e385fd0278c864d7cb118e93",
+      "full_text_read": true,
+      "adapted_into": []
+    },
+    {
+      "source": "vendor/pstack/skills/reflect/SKILL.md",
+      "sha256": "4e04c17f5ee635b504acd0b16ce8fbe1f8381357f2bdcb4fb6608473c5e1b8a2",
+      "full_text_read": true,
+      "adapted_into": []
+    },
+    {
+      "source": "vendor/pstack/skills/setup-pstack/SKILL.md",
+      "sha256": "dc00eb38d9451182982a296e845dc673ff453803327cb33a2815c5d7ccc74a6c",
+      "full_text_read": true,
+      "adapted_into": []
+    },
+    {
+      "source": "vendor/pstack/skills/sharpen/SKILL.md",
+      "sha256": "563dfc460c605d311e650726288e2f1cbd61eab817db178d6e7e29643e07e7a2",
+      "full_text_read": true,
+      "adapted_into": []
+    },
+    {
+      "source": "vendor/pstack/skills/show-me-your-work/SKILL.md",
+      "sha256": "63a79b3d849af1d3e0b76cf7c1dcba0a0d1ff2823edad60675d25623804d3058",
+      "full_text_read": true,
+      "adapted_into": [
+        "handoff"
+      ]
+    },
+    {
+      "source": "vendor/pstack/skills/statechart/SKILL.md",
+      "sha256": "010b7b4532406739b1c3a426d1a45f02bb618a42561fc96b3976e064a7f8384d",
+      "full_text_read": true,
+      "adapted_into": []
+    },
+    {
+      "source": "vendor/pstack/skills/swarm/SKILL.md",
+      "sha256": "c94b57907ef23936623da152ae15da2b1e6f2af50917f5368cb41a8e1041933b",
+      "full_text_read": true,
+      "adapted_into": []
+    },
+    {
+      "source": "vendor/pstack/skills/tdd/SKILL.md",
+      "sha256": "eeb868e2dfebee528d730a67d7b17498fac4bb85dec2e38bc5c5176aca4d5d2f",
+      "full_text_read": true,
+      "adapted_into": [
+        "debug-root-cause",
+        "test-verifier",
+        "verify-app"
+      ]
+    },
+    {
+      "source": "vendor/pstack/skills/teach/SKILL.md",
+      "sha256": "bd286e5a6290673be2cd28aef7af2ec7f1fb138e6bce156ea657368c7e7fc8a4",
+      "full_text_read": true,
+      "adapted_into": [
+        "design-change",
+        "handoff"
+      ]
+    },
+    {
+      "source": "vendor/pstack/skills/technical-writing/SKILL.md",
+      "sha256": "61fe9c424a798ebf36ad94941f87be049cb8827bdf86d21474a0dde37b513c43",
+      "full_text_read": true,
+      "adapted_into": [
+        "handoff"
+      ]
+    },
+    {
+      "source": "vendor/pstack/skills/typescript-best-practices/SKILL.md",
+      "sha256": "ec1dac086d3708e5940d45d250c30a37dd953b4e3cb2ca0692f5851d7a039e27",
+      "full_text_read": true,
+      "adapted_into": []
+    },
+    {
+      "source": "vendor/pstack/skills/unslop/SKILL.md",
+      "sha256": "ccab208e315ce05e2fab8eeee2f7879f1289b5c6844840b2d307adf31c79144f",
+      "full_text_read": true,
+      "adapted_into": [
+        "handoff"
+      ]
+    },
+    {
+      "source": "vendor/pstack/skills/why/SKILL.md",
+      "sha256": "b12ea2757ff1d1d111c7b4e74e3e764d337c6a08458b8d6240d3f01c4be490ec",
+      "full_text_read": true,
+      "adapted_into": [
+        "design-change"
+      ]
+    }
+  ]
+}

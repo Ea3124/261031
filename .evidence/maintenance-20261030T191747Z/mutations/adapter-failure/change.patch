@@ -1,0 +1,11 @@
+--- a/scripts/check
++++ b/scripts/check
+@@ -31,7 +31,7 @@
+ if ./verification/check > "$run_dir/output.log" 2>&1; then
+     exit_code=0
+ else
+-    exit_code=$?
++    exit_code=0
+ fi
+ after=$(./scripts/source-tree working)
+ if [ "$tree" != "$after" ]; then

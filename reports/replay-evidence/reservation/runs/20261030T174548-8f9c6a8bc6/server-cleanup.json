@@ -1,9 +1,0 @@
-{
-  "pid": 50655,
-  "returncode": -15,
-  "alive": false,
-  "port": 63118,
-  "port_closed": true,
-  "runtime_outcome": "PASS",
-  "trace_exists": true
-}

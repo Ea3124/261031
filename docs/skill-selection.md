@@ -1,0 +1,84 @@
+# pstack 전체 스킬 검토와 선별
+
+원본은 backnotprop/pstack의 고정 SHA 25abb38559ddbabec563646224d09eff9a250eca다. 루트 스킬 58개와 Benny 3개, 총 61개를 전문 읽었고 연결 참조 25개도 검토했다. RULE.md 원본은 변경하지 않았다.
+
+## 편집 기준
+
+- 현실적인 시작·설계·구현·기능 기억·고정 방법 검증·핵심별 결함주입·수정·증거 포함 커밋·인계에 필요한 판단만 추출했다.
+- 원본 전체 대신 7개의 한국어 스킬로 편집했다. 전부 매번 실행하는 절차가 아니다.
+- 모델 선택·강제 위임·PR/push·UI 자동조작·개인 설정·외부 메시지·범용 상태 관리는 실행 의존성에서 제외했다.
+- 모호한 기대 동작을 알아서 정하거나 예산 없이 무한 반복하는 규칙은 채택하지 않았다.
+- 핵심 증거를 Git에 남긴다. 원본 TSV 6열과 교차모델 리뷰는 강제하지 않는다.
+- vendor는 비교용 원본으로 유지한다. 실제 프로젝트에 재귀 설치하지 않는다.
+
+## 전체 61개 검토표
+
+추출 표시는 원본 전체 기능을 가져왔다는 뜻이 아니다. 연결된 새 스킬 본문이 실제 채택 범위다. 별도 추출하지 않은 항목도 전문 검토했으며 조건부 도구를 기본 경로에 넣지 않았다.
+
+| 원본 | 추출한 스킬 | 검토 내용·제외 이유 |
+|---|---|---|
+| [Benny/reproduce-and-fix-issues](../vendor/pstack/automations/benny/skills/reproduce-and-fix-issues/SKILL.md) | [debug-root-cause](../.agents/skills/debug-root-cause/SKILL.md) | 채택: 기대 상태와 잘못된 상태를 나누고 둘이 갈리는 지점을 관찰한다.; 독립 시도마다 같은 초기 데이터로 되돌린다.; 허용된 CLI/API/공개 진입점에서 전후 같은 방법으로 실행한다.; 변경 전 실패와 변경 후 성공을 Git 기록으로 연결한다. / 제외: Slack/tracker/marker/외부보고·polling·권한·live automation 전체; 실제 UI 자동조작·녹화/이미지 리뷰 강제; 역할별 worker·code worker 격리; PR 작성·온라인 상태관리·플랫폼별 모델; 화면 재현 2회만으로 모든 핵심 로직 mutation을 갈음 |
+| [Benny/setup-benny](../vendor/pstack/automations/benny/skills/setup-benny/SKILL.md) | 별도 추출 없음 | 조건부 참고 또는 기본 판단과 중복. 팩 통째 복사·.cursor/settings.json plugin enable; Slack/tracker/모델/제어 어댑터 설정; automation 생성/수정/승인/에디터 인계; 개인 config 및 외부 통합; 거대한 feature map 및 thread safety 체계 |
+| [Benny/triage-issue-reports](../vendor/pstack/automations/benny/skills/triage-issue-reports/SKILL.md) | [fde-workflow](../.agents/skills/fde-workflow/SKILL.md) | 채택: 기대동작·관찰동작·환경·정확한 trigger를 구분한다.; 버그와 의도된 동작 변경의 구분이 모호하면 하나의 초점 있는 질문으로 사용자 기대를 확인한다.; 확정 사실과 원인 가설을 섞지 않는다. / 제외: Slack source 좌표·tracker·dedupe·route·ping·marker·외부 write 보상 전체; 자동화 follow-up 대기·강제 read-only workers |
+| [architect](../vendor/pstack/skills/architect/SKILL.md) | [design-change](../.agents/skills/design-change/SKILL.md) | 채택: 관련 기존 흐름과 경계를 먼저 읽고 실제 호출자 사용 예에서 최소 형태를 도출한다.; 구현 중 같은 종류의 예외/우회가 반복되면 원래 의도와 형태가 맞는지 재검토한다.; 하나의 기능을 실행·검증하는 공식 경로를 하나로 유지한다. / 제외: arena 강제 호출, Claude/Grok 모델 선정 및 개인 설정 파일; 반드시 두 병렬 설계안·대규모 rationale 별도 문서; 모호한 기대동작도 기본 무정지로 구현하는 Agree 정책; not implemented scaffold를 보통 작업의 독립 커밋으로 강제 |
+| [arena](../vendor/pstack/skills/arena/SKILL.md) | 별도 추출 없음 | 조건부 참고 또는 기본 판단과 중복. 다중모델 후보·교차심사·대안 graft·작업트리 좌석 운영 전체; 모델 alias fallback과 개인 모델설정 탐색 |
+| [automate-me](../vendor/pstack/skills/automate-me/SKILL.md) | 별도 추출 없음 | 조건부 참고 또는 기본 판단과 중복. 개인 대화기록 채굴·개인 mode 스킬 생성·사용자 홈 설정 탐색; 강제 병렬 채굴, worktree, PR; 작업별 기술 스킬에 불필요한 개인 취향 설문 |
+| [benchmark-checklist](../vendor/pstack/skills/benchmark-checklist/SKILL.md) | [verify-app](../.agents/skills/verify-app/SKILL.md) | 채택: 성능 과제일 때 결과 정확성·실패 개수와 실제 작업 수행 여부를 확인한다.; 성능 비교는 같은 환경과 데이터에서 교대로 반복하고 변동폭을 보고한다. / 제외: 모든 개발 작업에 profiler 설치·5회 측정·순위검정 강제; PR 및 별도 perf playbook 의존성 |
+| [blast-radius](../vendor/pstack/skills/blast-radius/SKILL.md) | [design-change](../.agents/skills/design-change/SKILL.md) | 채택: 변경이 안전하다는 핵심 가정을 찾고 실제 코드 경로를 실행하여 검증한다.; 호출자뿐 아니라 데이터 형식·저장 상태·외부 경계의 영향을 읽는다.; 증거 없는 안전 주장은 미검증으로 표시한다. / 제외: 큰 변경 arena 강제; PR·공개게시용 writeup 산출물; 모든 위험에 주관적 확률을 숫자로 매기는 형식 |
+| [bro](../vendor/pstack/skills/bro/SKILL.md) | 별도 추출 없음 | 조건부 참고 또는 기본 판단과 중복. 별도 slash 스킬 |
+| [correct](../vendor/pstack/skills/correct/SKILL.md) | [debug-root-cause](../.agents/skills/debug-root-cause/SKILL.md) | 채택: 중복 상태·실행 경로를 없애 구조로 실수를 막는다.; 오류를 탐지하는 검증기가 실제 잘못된 코드에서 실패하는지 입증한다.; 검증 실행 경로를 하나로 유지한다. / 제외: 실수 두 번 발생 전에는 개선하지 않는 threshold; 매번 한 실수당 독립 커밋·거대 rule table; 승인·만료일을 모든 예외에 붙이는 체계; CI가 없는 실전 환경에 CI 신규 설치 |
+| [create-formal-verification-skill](../vendor/pstack/skills/create-formal-verification-skill/SKILL.md) | [test-verifier](../.agents/skills/test-verifier/SKILL.md) · [verify-app](../.agents/skills/verify-app/SKILL.md) | 채택: 모든 핵심 로직마다 실제 구현을 한 곳씩 의도적으로 깨고 대응 검증이 실패함을 확인한다.; 변형을 복구하고 똑같은 검증 명령이 다시 성공하는지 확인한다.; 같은 입력·초기 상태·버전·명령으로 쉽게 반복할 수 있게 한다.; 검증한 범위와 남은 한계를 말한다. / 제외: TLA+·SMT·proof assistant 설치/도입을 기본값으로 삼는 것; 형식 검증의 보편 증명 주장을 일반 테스트에 적용; statechart 강제 의존성; 대규모 coverage-sync commit 레지스트리 |
+| [create-verification-skill](../vendor/pstack/skills/create-verification-skill/SKILL.md) | [feature-map](../.agents/skills/feature-map/SKILL.md) · [verify-app](../.agents/skills/verify-app/SKILL.md) | 채택: 명령·버전·실제 진입점 같은 관찰 사실은 저장소에서 조사한다.; 준비 완료는 포트 응답만이 아니라 fixture와 필수 기능을 쓸 수 있는 상태다.; 내부 setter나 test-only 우회점 대신 실제 CLI/API/라이브러리 공개 진입점으로 입력→결과·부작용을 확인한다.; 실패를 숨기기 위해 기대결과나 기능 경로를 완화하지 않는다.; 자신이 시작한 프로세스와 임시데이터만 정리한다. / 제외: Browser/CDP/Playwright/Cypress/좌표 자동조작; 자동화된 API 성공을 UI 성공으로 표기; 기능당 features/*.md와 별도 README 인덱스; 생성물 검증을 첫 feature 하나 성공으로 전체 완료 처리; 실전 준비 때 임의 새 설치·개인 환경 수정 |
+| [figure-it-out](../vendor/pstack/skills/figure-it-out/SKILL.md) | [fde-workflow](../.agents/skills/fde-workflow/SKILL.md) | 채택: 실행으로 참/거짓을 판정할 수 있는 완료조건을 먼저 적는다.; 변경 전 상태와 고정 검증 명령을 확보한다.; 가설→작은 변경→같은 검증→유지/복구를 한 단위씩 반복한다.; 불명확·실행불가 결과를 통과로 취급하지 않는다. / 제외: poteto-mode 원칙 전체 선행읽기; 위임+judge 강제; 별도 show-me-your-work 로그 시스템; 긴 실행의 형식적 체크포인트·다단계 todo 의식 |
+| [how](../vendor/pstack/skills/how/SKILL.md) | [design-change](../.agents/skills/design-change/SKILL.md) | 채택: 실제 사용자/공개 진입점에서 함수·상태·저장/응답까지 흐름을 추적한다.; 지금 변경과 관련된 소수 파일·함수만 식별한다. / 제외: 단순 질문에도 explainer agent 강제; Grok/Claude 등 모델/개인설정 의존성; 매번 장문의 아키텍처 설명·템플릿 출력 |
+| [in-your-own-words](../vendor/pstack/skills/in-your-own-words/SKILL.md) | [fde-workflow](../.agents/skills/fde-workflow/SKILL.md) | 채택: 이해한 사용자 목표·해결할 문제·완료조건을 짧게 재진술한다. / 제외: 별도 slash 스킬 |
+| [interrogate](../vendor/pstack/skills/interrogate/SKILL.md) | [design-change](../.agents/skills/design-change/SKILL.md) | 채택: 의도·기대동작이 불명확하면 반드시 사용자에게 질문한다.; 결함 주장은 실제 실행 명령·현재 결과·기대결과로 증명한다.; 의심되는 결함은 같은 명령으로 재실행하여 확인한다. / 제외: arena 강제 위임·다중모델 검토; PR/merge-base 중심 범위 추정; 검토 요청에만 머물러 실제 수정 작업을 금지하는 경계(일반 구현 작업에 전용하지 않음) |
+| [ketchup-video](../vendor/pstack/skills/ketchup-video/SKILL.md) | 별도 추출 없음 | 조건부 참고 또는 기본 판단과 중복. 영상 렌더링·슬라이드·자막·파일 검사 전체; 기본 개발/검증/commit에 기여 없는 보고 매체 |
+| [ketchup](../vendor/pstack/skills/ketchup/SKILL.md) | 별도 추출 없음 | 조건부 참고 또는 기본 판단과 중복. 상태 보고마다 영상·그림 우선; PR/CI/agent 상태 수집 체계; 설명에서 SHA·경로·명령을 무조건 숨기는 규칙: Git 근거·재실행에 필요하면 유지 |
+| [maintain-formal-verification-skill](../vendor/pstack/skills/maintain-formal-verification-skill/SKILL.md) | [test-verifier](../.agents/skills/test-verifier/SKILL.md) · [verify-app](../.agents/skills/verify-app/SKILL.md) | 채택: 코드 변경이 기존 검증 가정·경로를 바꾸었는지 소스와 비교한다.; 기대동작 변경 근거 없이 실패를 통과시키도록 검증을 약화하지 않는다.; 업데이트한 검증도 핵심 로직별 변형을 실제 잡는지 다시 입증한다. / 제외: 별도 형식검증 모델·sync SHA 레지스트리; 코드 수정과 검증 수정마다 별도 PR/변경 형식 강제; 유지보수 전용 스킬의 product edit 금지를 일반 개발 절차에 적용 |
+| [maintain-verification-skill](../vendor/pstack/skills/maintain-verification-skill/SKILL.md) | [feature-map](../.agents/skills/feature-map/SKILL.md) · [verify-app](../.agents/skills/verify-app/SKILL.md) | 채택: 이상 동작 후에는 알고 있는 초기 상태로 되돌려 같은 절차를 재실행한다.; 검증 설명의 오래됨과 제품 회귀를 구분하고 결함을 문서 수정으로 숨기지 않는다.; 실패 시에도 자신이 만든 프로세스·임시 상태를 정리한다. / 제외: feature당 강제 병렬 subagent; one PR·브랜치 생성; UI live pass를 자동 조작하는 방법; 별도 feature-map 유지관리·scratch 보고 체계 |
+| [make-bot-ui](../vendor/pstack/skills/make-bot-ui/SKILL.md) | 별도 추출 없음 | 조건부 참고 또는 기본 판단과 중복. Grok Bot·webhook routine·외부 메시지·secret connector·Tailscale 설치/네트워크 설정 전체 |
+| [no-comments](../vendor/pstack/skills/no-comments/SKILL.md) | [design-change](../.agents/skills/design-change/SKILL.md) | 채택:  / 제외: Comment Sicko 위임·모호하면 주석 삭제·공격적 일괄 리팩터링; 사용자 승인 전에도 제약 주석 삭제하는 기본값; 건드리지 않는 RULE.md와 의미 있는 제약 설명을 훼손할 수 있는 정책 |
+| [poteto-help](../vendor/pstack/skills/poteto-help/SKILL.md) | 별도 추출 없음 | 조건부 참고 또는 기본 판단과 중복. 설치/모델 설정/Custom Mode/전체 58개 스킬 라우팅/원격 안내 |
+| [poteto-mode](../vendor/pstack/skills/poteto-mode/SKILL.md) | 별도 추출 없음 | 조건부 참고 또는 기본 판단과 중복. 전체 호출·원본 단계 강제 복사·강제 위임/모델/PR/화면 조작·모호한 기대 동작 자동 결정·문체 부속 규칙 |
+| [principle-attack-the-premise](../vendor/pstack/skills/principle-attack-the-premise/SKILL.md) | [debug-root-cause](../.agents/skills/debug-root-cause/SKILL.md) | 채택: 같은 가정을 둔 수정이 두 번 같은 검사를 실패하면 공통 가정을 한 문장으로 적고 이를 직접 구별하는 검사부터 실행 / 제외: 원본 스킬 상호 호출과 별도 원격 절차 |
+| [principle-boundary-discipline](../vendor/pstack/skills/principle-boundary-discipline/SKILL.md) | [design-change](../.agents/skills/design-change/SKILL.md) | 채택: 외부 입력은 경계에서 검증하고 실제 업무 규칙을 작고 순수한 함수에 모아 실행 검사 가능하게 유지 / 제외: 검증 전제가 없는 내부 무조건 신뢰를 모든 언어에 기계적으로 적용 |
+| [principle-build-the-lever](../vendor/pstack/skills/principle-build-the-lever/SKILL.md) | 별도 추출 없음 | 조건부 참고 또는 기본 판단과 중복. 모든 비단순 작업에 새 프레임워크 생성·분산 위임·기존 도구로 충분한 작업에 추가 도구 강제 |
+| [principle-encode-lessons-in-structure](../vendor/pstack/skills/principle-encode-lessons-in-structure/SKILL.md) | [debug-root-cause](../.agents/skills/debug-root-cause/SKILL.md) | 채택: 실제 반복된 오류는 좁은 검사·타입·명령으로 예방 / 제외: 발생하지 않은 오류를 위한 대규모 규칙/설정 체계 |
+| [principle-exhaust-the-design-space](../vendor/pstack/skills/principle-exhaust-the-design-space/SKILL.md) | 별도 추출 없음 | 조건부 참고 또는 기본 판단과 중복. 모든 새 구조에 2~3개 경쟁 프로토타입 강제·구현 기대 동작을 실험 결과로 임의 결정 |
+| [principle-experience-first](../vendor/pstack/skills/principle-experience-first/SKILL.md) | 별도 추출 없음 | 조건부 참고 또는 기본 판단과 중복. 불명확한 사용자 선호를 agent가 대신 판단·불필요한 프로토타입 |
+| [principle-explain-the-number](../vendor/pstack/skills/principle-explain-the-number/SKILL.md) | [verify-app](../.agents/skills/verify-app/SKILL.md) | 채택: 성능이나 수치를 주장할 때만 판단 기준·입력·반복 횟수·분산·실제 제한 원인을 함께 기록 / 제외: 성능 요구가 없는 과제의 프로파일러/모델 eval 기본 도입 |
+| [principle-fix-root-causes](../vendor/pstack/skills/principle-fix-root-causes/SKILL.md) | [debug-root-cause](../.agents/skills/debug-root-cause/SKILL.md) | 채택: 동일 입력으로 재현하고 최초 잘못된 상태가 생기는 위치를 실제 상태/로그로 찾은 뒤 수정. 동일 패턴의 다른 경로도 조사 / 제외: 추정 방어 코드·오류 삼키기·실패를 숨기는 재시도 |
+| [principle-foundational-thinking](../vendor/pstack/skills/principle-foundational-thinking/SKILL.md) | [design-change](../.agents/skills/design-change/SKILL.md) | 채택: 핵심 자료형과 접근 경로를 먼저 정하고 첫 기능과 검증에 필요한 최소 기반만 구성 / 제외: 모든 후속 작업을 위한 선제 infrastructure·강제 분산 처리 |
+| [principle-guard-the-context-window](../vendor/pstack/skills/principle-guard-the-context-window/SKILL.md) | [handoff](../.agents/skills/handoff/SKILL.md) | 채택: 맥락 소진 전에 목표·SHA·변경·검증·증거·다음 행동을 파일로 남김 / 제외: 대용량 자료의 강제 위임·개인/다른 프로젝트 대화 탐색 |
+| [principle-laziness-protocol](../vendor/pstack/skills/principle-laziness-protocol/SKILL.md) | [design-change](../.agents/skills/design-change/SKILL.md) | 채택: 하나의 결정은 한 곳에 두고 목표를 만족하는 가장 작은 변경을 택함 / 제외: 필수 검증·증거를 생략하는 근거로 사용 |
+| [principle-make-operations-idempotent](../vendor/pstack/skills/principle-make-operations-idempotent/SKILL.md) | [verify-app](../.agents/skills/verify-app/SKILL.md) | 채택: 두 번 실행·부분 중단 후 재실행에서 중복 효과가 없고 같은 목표 상태로 수렴하는지 실제 관측 / 제외: 멱등성을 동일 초기 상태에서 동일한 실행 순서/결과를 보장하는 결정론과 혼동 |
+| [principle-migrate-callers-then-delete-legacy-apis](../vendor/pstack/skills/principle-migrate-callers-then-delete-legacy-apis/SKILL.md) | 별도 추출 없음 | 조건부 참고 또는 기본 판단과 중복. 외부 사용자가 있는 API의 무조건 호환성 파괴 |
+| [principle-minimize-reader-load](../vendor/pstack/skills/principle-minimize-reader-load/SKILL.md) | 별도 추출 없음 | 조건부 참고 또는 기본 판단과 중복. 추가 계층/상태를 위한 수치화된 보편 기준 |
+| [principle-model-the-domain](../vendor/pstack/skills/principle-model-the-domain/SKILL.md) | [design-change](../.agents/skills/design-change/SKILL.md) | 채택: 자료형/표/컬렉션으로 실제 상태와 규칙을 표현하고 잘못된 조합·중복 분기를 줄임. 이미 명확한 코드는 유지 / 제외: 범용 state.json 실행엔진이나 모든 과제의 상태기계 강제 |
+| [principle-never-block-on-the-human](../vendor/pstack/skills/principle-never-block-on-the-human/SKILL.md) | 별도 추출 없음 | 조건부 참고 또는 기본 판단과 중복. 기대 동작이 불명확한데 합리적 기본값으로 결정 후 통보. 사용자 요구상 질문이 필수 |
+| [principle-outcome-oriented-execution](../vendor/pstack/skills/principle-outcome-oriented-execution/SKILL.md) | 별도 추출 없음 | 조건부 참고 또는 기본 판단과 중복. 중간 고장을 포괄 허용·커밋별 검증 생략·최종 전수 검증만으로 소급 정당화 |
+| [principle-prove-it-works](../vendor/pstack/skills/principle-prove-it-works/SKILL.md) | [verify-app](../.agents/skills/verify-app/SKILL.md) | 채택: 실제 진입점·실제 출력/저장 값을 확인. 재실행 가능한 검사와 핵심 결과를 Git에 보존 / 제외: 컴파일 성공·mtime·자기 보고만으로 완료. 큰 작업에서만 Git 증거를 남기는 원본 기본값 |
+| [principle-redesign-from-first-principles](../vendor/pstack/skills/principle-redesign-from-first-principles/SKILL.md) | 별도 추출 없음 | 조건부 참고 또는 기본 판단과 중복. 매 요구마다 전체 재설계·요청 밖 재작성·examples 다시 생성 |
+| [principle-separate-before-serializing-shared-state](../vendor/pstack/skills/principle-separate-before-serializing-shared-state/SKILL.md) | 별도 추출 없음 | 조건부 참고 또는 기본 판단과 중복. 기본 단독 작업에 lock/state 엔진 추가·강제 위임 |
+| [principle-sequence-verifiable-units](../vendor/pstack/skills/principle-sequence-verifiable-units/SKILL.md) | [fde-workflow](../.agents/skills/fde-workflow/SKILL.md) | 채택: 알려진 기준 상태 → 한 변화 → 실제 검사 → 확인된 작은 커밋 순으로 진행. 버그는 재현 실패 증거를 수정 전에 기록 / 제외: 원격 clean trunk rebase·stacked PR 강제. 모든 mutation 상태를 별도 제품 커밋으로 남길 필요 |
+| [principle-subtract-before-you-add](../vendor/pstack/skills/principle-subtract-before-you-add/SKILL.md) | 별도 추출 없음 | 조건부 참고 또는 기본 판단과 중복. 중요 외부 계약·사용자 변경·증거를 죽은 코드로 추정 삭제 |
+| [principle-test-behavior-not-implementation](../vendor/pstack/skills/principle-test-behavior-not-implementation/SKILL.md) | [test-verifier](../.agents/skills/test-verifier/SKILL.md) · [verify-app](../.agents/skills/verify-app/SKILL.md) | 채택: 사용자/호출자가 관측하는 값·오류·효과를 요구사항에서 독립적으로 기대값을 정해 검사. 각 핵심 계약을 고의로 깨 검사 실패를 입증하고 복구 후 통과 / 제외: 테스트가 만든 데이터 자체 검증·현재 구현에서 기대값 계산·검사 문자열 존재만으로 검증 주장 |
+| [principle-type-system-discipline](../vendor/pstack/skills/principle-type-system-discipline/SKILL.md) | [design-change](../.agents/skills/design-change/SKILL.md) | 채택: 실제 언어에서 잘못된 상태를 제한하고 외부 자료를 경계에서 parse. 이미 있는 schema로 타입을 파생 / 제외: 모든 원시값 branding·새 schema 의존성 추가·언어와 무관한 TS 문법 강제 |
+| [recall](../vendor/pstack/skills/recall/SKILL.md) | 별도 추출 없음 | 조건부 참고 또는 기본 판단과 중복. 개인 대화 기록·여러 서비스 기록 자동 조사·MCP/gh·강제 위임 |
+| [reflect](../vendor/pstack/skills/reflect/SKILL.md) | 별도 추출 없음 | 조건부 참고 또는 기본 판단과 중복. 3 reviewer+합성기·외부 모델·조직 backlog 자동 생성·글로벌 skill 쓰기·매번 별도 승인 |
+| [setup-pstack](../vendor/pstack/skills/setup-pstack/SKILL.md) | 별도 추출 없음 | 조건부 참고 또는 기본 판단과 중복. 역할별 외부 모델/예산 선택·전역 설정 파일 작성·설치·formal verifier 제안 기본화 |
+| [sharpen](../vendor/pstack/skills/sharpen/SKILL.md) | 별도 추출 없음 | 조건부 참고 또는 기본 판단과 중복. 새 범위 추가·구현 기대 결과를 대신 결정·별도 prompt rewrite 기본 단계 |
+| [show-me-your-work](../vendor/pstack/skills/show-me-your-work/SKILL.md) | [handoff](../.agents/skills/handoff/SKILL.md) | 채택: 결정/이유/증거 포인터/결과를 한 기록에 남기고 틀린 판단은 정정 행으로 남김. 핵심 입력·명령·mutant diff·red/green 출력과 직접 연결 / 제외: 다른 모델 가족 강제 리뷰·개인 transcript 전체 읽기·행마다 timestamp 복잡한 run stretch 분리·local-only 기본값 |
+| [statechart](../vendor/pstack/skills/statechart/SKILL.md) | 별도 추출 없음 | 조건부 참고 또는 기본 판단과 중복. TLA+/Java/mise 자동 설치·TypeScript 상태엔진/그래프·렌더러·형식 검증 기본 도입 |
+| [swarm](../vendor/pstack/skills/swarm/SKILL.md) | 별도 추출 없음 | 조건부 참고 또는 기본 판단과 중복. 강제 병렬 worker·외부 모델·cloud agent·race/best-of·원격 branch |
+| [tdd](../vendor/pstack/skills/tdd/SKILL.md) | [debug-root-cause](../.agents/skills/debug-root-cause/SKILL.md) · [test-verifier](../.agents/skills/test-verifier/SKILL.md) · [verify-app](../.agents/skills/verify-app/SKILL.md) | 채택: 의도한 동작을 실행하는 좁은 검사로 수정 전 실패 원인을 확인하고 수정 뒤 같은 검사 통과. 사용자가 핵심별 고의 파괴를 요구했으므로 cheap-path 예외로 생략하지 않음 / 제외: 브라우저 자동화 fallback·핵심 계약 감도 증명의 임의 생략·잘못된 구현에 기대값 맞추기 |
+| [teach](../vendor/pstack/skills/teach/SKILL.md) | [design-change](../.agents/skills/design-change/SKILL.md) · [handoff](../.agents/skills/handoff/SKILL.md) | 채택: 사용자에게 동작·변경 이유·검증 범위·한계를 코드/기록으로 구체적으로 설명 / 제외: how/why 강제 호출·모든 3개 이상 개념에 연속 그림·이미지 생성·영어 단독 문체 |
+| [technical-writing](../vendor/pstack/skills/technical-writing/SKILL.md) | [handoff](../.agents/skills/handoff/SKILL.md) | 채택: 독자가 해야 할 동작·기대 결과·정확한 명령/경로를 짧은 한국어로 쓰고 근거/한계를 명확히 전달 / 제외: 4개 문체 layer 전부·스킬 수정 제안 의무·tabs/영어 문법/문장 길이 등 전역 스타일 강제 |
+| [typescript-best-practices](../vendor/pstack/skills/typescript-best-practices/SKILL.md) | 별도 추출 없음 | 조건부 참고 또는 기본 판단과 중복. TS가 아닌 과제에 적용·모든 인자 object/brand 강제·새 schema 설치·무조건 as 금지 |
+| [unslop](../vendor/pstack/skills/unslop/SKILL.md) | [handoff](../.agents/skills/handoff/SKILL.md) | 채택: 근거 없는 표현·불필요한 수식·관용적인 AI 문장 대신 실제 문제/결과/근거를 짧고 구체적으로 설명 / 제외: 영어 중심 33개 rule 전체 복사·한국어에 부적절한 구두점/문체 강제 |
+| [why](../vendor/pstack/skills/why/SKILL.md) | [design-change](../.agents/skills/design-change/SKILL.md) | 채택: 과제 문서·소스·로컬 Git에서 설계 이유를 찾고 관측 사실·근거 있는 추정·가설·미확인을 구분 / 제외: 7가지 MCP category 전체 조사·각 source 강제 위임·외부 서비스/개인 history·모델/gh 의존·불명확한 target 임의 추정 |
+
+## 독립 사용과 라이선스
+
+새 스킬은 원본 실행기와 모델 설정 없이 읽을 수 있다. 출처 링크는 원문 비교용이며 실행 의존성이 아니다. 다른 프로젝트에 복사할 때 .agents/skills/LICENSE.pstack을 함께 보존한다.

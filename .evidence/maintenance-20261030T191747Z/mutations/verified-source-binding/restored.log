@@ -1,0 +1,6 @@
+test_stale_evidence_after_source_or_document_change (test_workflow.WorkflowTests) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 1.556s
+
+OK

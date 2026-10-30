@@ -1,0 +1,16 @@
+test_unstaged_evidence_blocks_commit (test_workflow.WorkflowTests) ... FAIL
+
+======================================================================
+FAIL: test_unstaged_evidence_blocks_commit (test_workflow.WorkflowTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/05/cvkr89bd0r59mk0ts5kln8mw0000gn/T/261031-mutant-cpavg67j/tests/test_workflow.py", line 150, in test_unstaged_evidence_blocks_commit
+    self.assertIn("unstaged", self.blocked_commit().stderr)
+  File "/private/var/folders/05/cvkr89bd0r59mk0ts5kln8mw0000gn/T/261031-mutant-cpavg67j/tests/test_workflow.py", line 92, in blocked_commit
+    self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
+AssertionError: 0 == 0 : 
+
+----------------------------------------------------------------------
+Ran 1 test in 1.260s
+
+FAILED (failures=1)

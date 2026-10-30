@@ -1,0 +1,6 @@
+test_setup_preserves_existing_user_hooks_and_hooks_path (test_workflow.WorkflowTests) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.282s
+
+OK

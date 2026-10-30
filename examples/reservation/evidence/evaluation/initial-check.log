@@ -1,6 +1,0 @@
-doctor: 통과
-check-python-syntax: 통과
-check-inventory-invariants: 통과
-check-reservation-http: 통과
-cleanup: 통과
-검증 결과: PASS; 증거: .kit/runs/20261030T173958-a57b29020a/report.json

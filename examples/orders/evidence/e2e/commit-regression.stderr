@@ -1,8 +1,0 @@
-doctor: 통과
-check-python-syntax: 통과
-check-order-invariants: 실패
-check-orders-cli: 실패
-cleanup: 통과
-검증 또는 cleanup 실패. 로그를 확인하세요.
-검증 결과: FAIL; 증거: .kit/runs/20261030T174004-e393dba558/report.json
-반복 결과: FAIL; 시도 1/3

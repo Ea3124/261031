@@ -1,0 +1,53 @@
+test_dirty_submodule_source_blocks_check_and_commit (test_workflow.WorkflowTests) ... 
+======================================================================
+FAIL: test_dirty_submodule_source_blocks_check_and_commit (test_workflow.WorkflowTests) (kind='modified')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/05/cvkr89bd0r59mk0ts5kln8mw0000gn/T/261031-mutant-r8i4s7j3/tests/test_workflow.py", line 272, in test_dirty_submodule_source_blocks_check_and_commit
+    self.assertNotEqual(failed.returncode, 0)
+AssertionError: 0 == 0
+
+======================================================================
+FAIL: test_dirty_submodule_source_blocks_check_and_commit (test_workflow.WorkflowTests) (kind='staged')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/05/cvkr89bd0r59mk0ts5kln8mw0000gn/T/261031-mutant-r8i4s7j3/tests/test_workflow.py", line 272, in test_dirty_submodule_source_blocks_check_and_commit
+    self.assertNotEqual(failed.returncode, 0)
+AssertionError: 0 == 0
+
+======================================================================
+FAIL: test_dirty_submodule_source_blocks_check_and_commit (test_workflow.WorkflowTests) (kind='staged-only')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/05/cvkr89bd0r59mk0ts5kln8mw0000gn/T/261031-mutant-r8i4s7j3/tests/test_workflow.py", line 272, in test_dirty_submodule_source_blocks_check_and_commit
+    self.assertNotEqual(failed.returncode, 0)
+AssertionError: 0 == 0
+
+======================================================================
+FAIL: test_dirty_submodule_source_blocks_check_and_commit (test_workflow.WorkflowTests) (kind='untracked')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/05/cvkr89bd0r59mk0ts5kln8mw0000gn/T/261031-mutant-r8i4s7j3/tests/test_workflow.py", line 272, in test_dirty_submodule_source_blocks_check_and_commit
+    self.assertNotEqual(failed.returncode, 0)
+AssertionError: 0 == 0
+
+======================================================================
+FAIL: test_dirty_submodule_source_blocks_check_and_commit (test_workflow.WorkflowTests) (kind='assume-unchanged')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/05/cvkr89bd0r59mk0ts5kln8mw0000gn/T/261031-mutant-r8i4s7j3/tests/test_workflow.py", line 272, in test_dirty_submodule_source_blocks_check_and_commit
+    self.assertNotEqual(failed.returncode, 0)
+AssertionError: 0 == 0
+
+======================================================================
+FAIL: test_dirty_submodule_source_blocks_check_and_commit (test_workflow.WorkflowTests) (kind='skip-worktree')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/05/cvkr89bd0r59mk0ts5kln8mw0000gn/T/261031-mutant-r8i4s7j3/tests/test_workflow.py", line 272, in test_dirty_submodule_source_blocks_check_and_commit
+    self.assertNotEqual(failed.returncode, 0)
+AssertionError: 0 == 0
+
+----------------------------------------------------------------------
+Ran 1 test in 3.529s
+
+FAILED (failures=6)

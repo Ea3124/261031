@@ -1,0 +1,21 @@
+test_working_tree_sees_changes_hidden_by_index_flags (test_workflow.WorkflowTests) ... 
+======================================================================
+FAIL: test_working_tree_sees_changes_hidden_by_index_flags (test_workflow.WorkflowTests) (flag='assume-unchanged')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/05/cvkr89bd0r59mk0ts5kln8mw0000gn/T/261031-mutant-_7o2bcp1/tests/test_workflow.py", line 220, in test_working_tree_sees_changes_hidden_by_index_flags
+    self.assertNotEqual(before, after)
+AssertionError: '5cfe030423e787e6859bd01168146afc2af271c4\n' == '5cfe030423e787e6859bd01168146afc2af271c4\n'
+
+======================================================================
+FAIL: test_working_tree_sees_changes_hidden_by_index_flags (test_workflow.WorkflowTests) (flag='skip-worktree')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/05/cvkr89bd0r59mk0ts5kln8mw0000gn/T/261031-mutant-_7o2bcp1/tests/test_workflow.py", line 220, in test_working_tree_sees_changes_hidden_by_index_flags
+    self.assertNotEqual(before, after)
+AssertionError: '5cfe030423e787e6859bd01168146afc2af271c4\n' == '5cfe030423e787e6859bd01168146afc2af271c4\n'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.992s
+
+FAILED (failures=2)

@@ -1,0 +1,8 @@
+--- a/.githooks/pre-commit
++++ b/.githooks/pre-commit
+@@ -32,4 +32,4 @@
+ working=$(./scripts/source-tree working)
+ staged=$(./scripts/source-tree staged)
+ [ "$working" = "$staged" ] || fail 'stage all current source and documentation.'
+-[ "$staged" = "$tree" ] || fail 'the staged source differs from the verified tree.'
++[ "$staged" = "$staged" ] || fail 'the staged source differs from the verified tree.'

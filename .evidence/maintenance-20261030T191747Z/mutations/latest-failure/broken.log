@@ -1,0 +1,14 @@
+test_failure_with_same_source_invalidates_old_pass (test_workflow.WorkflowTests) ... FAIL
+
+======================================================================
+FAIL: test_failure_with_same_source_invalidates_old_pass (test_workflow.WorkflowTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/05/cvkr89bd0r59mk0ts5kln8mw0000gn/T/261031-mutant-ejmmfedr/tests/test_workflow.py", line 168, in test_failure_with_same_source_invalidates_old_pass
+    self.assertNotEqual(self.evidence(), original)
+AssertionError: PosixPath('/var/folders/05/cvkr89bd0r59mk0ts5kln8mw0000gn/T/verification-test-sy0bt7vb/.evidence/run-20261030T191827Z-QWsvINhY') == PosixPath('/var/folders/05/cvkr89bd0r59mk0ts5kln8mw0000gn/T/verification-test-sy0bt7vb/.evidence/run-20261030T191827Z-QWsvINhY')
+
+----------------------------------------------------------------------
+Ran 1 test in 1.201s
+
+FAILED (failures=1)

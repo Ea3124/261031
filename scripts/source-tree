@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(git rev-parse --show-toplevel)"
+case "${1:-}" in
+    working|staged) mode=$1 ;;
+    *) printf 'Usage: scripts/source-tree working|staged\n' >&2; exit 2 ;;
+esac
+
+index=$(git rev-parse --git-path index)
+temporary=$(mktemp -d "${TMPDIR:-/tmp}/verification-index.XXXXXXXX")
+trap 'rm -rf "$temporary"' EXIT
+if [ -f "$index" ]; then cp "$index" "$temporary/index"; fi
+export GIT_INDEX_FILE="$temporary/index"
+export GIT_OPTIONAL_LOCKS=0
+if [ ! -f "$GIT_INDEX_FILE" ]; then git read-tree --empty; fi
+git rm -r -f --cached --quiet --ignore-unmatch -- .evidence
+if [ "$mode" = working ]; then
+    for flag in --no-assume-unchanged --no-skip-worktree; do
+        git ls-files -z | git update-index "$flag" -z --stdin
+    done
+    git -c core.splitIndex=false add -A -- . ':(top,exclude).evidence'
+    modules=$(git submodule status --recursive)
+    while IFS= read -r module; do
+        case "$module" in -*) printf 'Uninitialized submodule: %s\n' "$module" >&2; exit 1 ;; esac
+    done <<< "$modules"
+    VERIFY_INDEX_TMP="$temporary" git submodule foreach --quiet --recursive '
+        set -eu
+        unset GIT_INDEX_FILE
+        temporary=$(mktemp -d "$VERIFY_INDEX_TMP/module.XXXXXXXX")
+        cp "$(git rev-parse --git-path index)" "$temporary/index"
+        export GIT_INDEX_FILE="$temporary/index"
+        git ls-files -z > "$temporary/files"
+        for flag in --no-assume-unchanged --no-skip-worktree; do
+            git update-index "$flag" -z --stdin < "$temporary/files"
+        done
+        staged=$(git write-tree)
+        git -c core.splitIndex=false add -A
+        working=$(git write-tree)
+        committed=$(git rev-parse HEAD^{tree})
+        if [ "$working" != "$committed" ] || [ "$staged" != "$committed" ]; then
+            printf "Dirty submodule: %s\n" "$displaypath" >&2
+            exit 1
+        fi
+    '
+fi
+git write-tree
