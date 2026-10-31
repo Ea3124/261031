@@ -60,7 +60,7 @@ bash /tmp/261031/setup.sh
 - 기존 .gitignore에 폐기용 .evidence/tmp/ 제외만 추가하고, 로컬 core.hooksPath를 .githooks로 연결한다. scripts/setup --check는 훅 충돌 확인만 한다.
 - 네트워크·패키지 설치·전역 설정 변경·Git 초기화·앱 검사·스테이징·커밋은 설치기가 하지 않는다. 디스크·권한 오류로 복사 중 멈추면 추가된 파일이 남을 수 있으며, 비파괴 재실행으로 이어간다.
 
-원본 아카이브 vendor/는 제거했다. 이미 편집한 스킬과 필요한 허가문만 유지한다. 키트 자체 tests·과거 .evidence·선정 감사표·HTML 설명서는 과제 프로젝트에 설치하지 않는다.
+원본 아카이브 vendor/는 제거했다. 이미 편집한 스킬과 필요한 허가문만 유지한다. 키트 자체 tests·과거 .evidence·선정 감사표는 과제 프로젝트에 설치하지 않는다.
 
 ## 매 변경의 실행 순서
 
@@ -119,6 +119,6 @@ PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -v
 
 pstack의 필요한 판단만 선별·편집했으며 [원본 MIT 고지](.agents/skills/LICENSE.pstack)를 유지한다. 시작 단계에는 cofa-ready-kit의 요구 파악·질문 정리 관점을 새 문장으로 작성했고 [해당 MIT 고지](.agents/skills/LICENSE.cofa-ready-kit)도 포함한다. 실제 메시지를 보내거나 원본 자동화를 활성화하지 않는다.
 
-선정 이력은 [공개 저장소의 감사표](https://github.com/Ea3124/261031/blob/main/docs/skill-selection.md), 전체 파일과 연결 시나리오는 키트 원본의 docs/repository-guide.html에서 확인한다. HTML은 설치 대상이 아니며 [공개 저장소에서 내려받을 수 있다](https://github.com/Ea3124/261031/blob/main/docs/repository-guide.html).
+선정 이력은 [공개 저장소의 감사표](https://github.com/Ea3124/261031/blob/main/docs/skill-selection.md), README를 받은 순간부터 제출까지의 상세 흐름은 [180분 작업 시나리오](readme.skill.md#180분-작업-시나리오)에서 확인한다.
 
 최초 설치 방식은 [cofa-kit/setup.sh](https://github.com/JinwooKim-git/cofa-kit/blob/main/setup.sh)의 현재 폴더 복사·기존 파일 보존 개념을 우리 구조에 맞게 독립 구현했다.
