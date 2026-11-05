@@ -1,6 +1,0 @@
-test_identical_runtime_without_execute_permission_stops_before_copying (test_setup.SetupTests) ... ok
-
-----------------------------------------------------------------------
-Ran 1 test in 0.040s
-
-OK

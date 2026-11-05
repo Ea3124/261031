@@ -1,6 +1,0 @@
-test_false_adapter_fails_and_blocks_commit (test_workflow.WorkflowTests) ... ok
-
-----------------------------------------------------------------------
-Ran 1 test in 0.971s
-
-OK

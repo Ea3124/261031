@@ -1,130 +1,128 @@
 #!/usr/bin/env bash
-# 과제 Git 루트에서 실행: bash /tmp/261031/setup.sh
-# 설치 방식 참고: https://github.com/JinwooKim-git/cofa-kit/blob/main/setup.sh
+# 사용: 실제 과제 폴더에서 bash /tmp/261031/setup.sh [과제 폴더]
 set -euo pipefail
 
-fail() { printf '설치 중지: %s\n' "$1" >&2; exit 1; }
-exists() { [ -e "$1" ] || [ -L "$1" ]; }
-kit=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
-target=$(pwd -P)
-top=$(git rev-parse --show-toplevel 2>/dev/null) || fail '과제 Git 루트에서 실행하세요. Git 저장소를 자동 생성하지 않습니다.'
-top=$(cd "$top" && pwd -P)
-[ "$target" = "$top" ] || fail '하위 폴더가 아닌 과제 Git 루트에서 실행하세요.'
-[ "$target" != "$kit" ] || fail '키트 원본이 아닌 별도 과제 Git 루트에서 실행하세요.'
-[ "$#" -eq 0 ] || fail '인자 없이 과제 Git 루트에서 실행하세요.'
-
-# 모든 충돌을 먼저 확인한다. 외부 경로로 연결되는 symlink는 따라가지 않는다.
-check_path() {
-    local path=$1 parent=$1
-    while [[ "$parent" = */* ]]; do
-        parent=${parent%/*}
-        if exists "$parent" && { [ ! -d "$parent" ] || [ -L "$parent" ]; }; then
-            fail "디렉터리 충돌 또는 symlink: $parent"
-        fi
-    done
-    if exists "$path" && { [ ! -f "$path" ] || [ -L "$path" ]; }; then
-        fail "일반 파일이 아닌 경로: $path"
-    fi
-}
-runtime=(
-    readme.kit.md readme.skill.md
-    .agents/skills/LICENSE.pstack .agents/skills/LICENSE.cofa-ready-kit
-    scripts/check scripts/source-tree scripts/setup
-    .githooks/pre-commit .githooks/pre-push
-)
-for skill in 01-fde-workflow 02-design-change 03-feature-map 04-verify-app 05-test-verifier 06-debug-root-cause 07-handoff; do
-    legacy=".agents/skills/${skill#??-}/SKILL.md"
-    if exists "$legacy"; then
-        fail "번호 없는 이전 스킬을 보존했습니다: $legacy. 새 스킬과 중복되지 않도록 내용을 비교해 이전 경로를 정리한 뒤 다시 실행하세요."
-    fi
-    runtime+=(".agents/skills/$skill/SKILL.md")
-done
-preserved=(docs/intent.md docs/features.md docs/handoff.md verification/check)
-for path in "${runtime[@]}" "${preserved[@]}" AGENTS.md RULE.md; do
-    [ -f "$kit/$path" ] && [ ! -L "$kit/$path" ] || fail "키트 원본 누락: $path"
-    check_path "$path"
-done
-for path in "${runtime[@]}"; do
-    if exists "$path" && ! cmp -s "$kit/$path" "$path"; then
-        fail "기존 공통 도구·스킬을 덮어쓰지 않습니다: $path. 내용을 비교해 먼저 해결하세요."
-    fi
-    case "$path" in
-        scripts/*|.githooks/*)
-            [ -x "$kit/$path" ] || fail "키트 실행 권한 누락: $path"
-            if [ -f "$path" ] && [ ! -x "$path" ]; then
-                fail "기존 실행 파일의 권한을 보존했습니다: $path. 실행 권한을 확인한 뒤 다시 실행하세요."
-            fi ;;
-    esac
-done
-[ -x "$kit/verification/check" ] || fail '키트 실행 권한 누락: verification/check'
-if [ -f verification/check ] && [ ! -x verification/check ]; then
-    fail '기존 verification/check를 보존했습니다. 실행 권한을 확인한 뒤 다시 실행하세요.'
+if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
+    printf '사용: bash setup.sh [기존 과제 폴더]\n'
+    printf '인자 생략 시 현재 폴더에 안내서와 스킬 7개를 생성합니다.\n'
+    printf '같은 내용은 보존하고 다른 내용의 기존 파일은 덮어쓰지 않습니다.\n'
+    exit 0
+fi
+if [[ "$#" -gt 1 ]]; then
+    printf '설치 중지: 과제 폴더 하나만 지정하세요.\n' >&2
+    exit 1
+fi
+if ! command -v python3 >/dev/null 2>&1; then
+    printf '설치 중지: Python 3.8 이상이 필요합니다.\n' >&2
+    exit 1
 fi
 
-agents=AGENTS.md
-if [ -f AGENTS.md ] && ! cmp -s "$kit/AGENTS.md" AGENTS.md; then agents=AGENTS.kit.md; fi
-rules=RULE.md
-if [ -f RULE.md ] && ! cmp -s "$kit/RULE.md" RULE.md; then rules=RULE.kit.md; fi
-for pair in "AGENTS.md:$agents" "RULE.md:$rules"; do
-    source=${pair%%:*}; destination=${pair#*:}
-    check_path "$destination"
-    if [ "$source" != "$destination" ] && exists "$destination" && ! cmp -s "$kit/$source" "$destination"; then
-        fail "기존 참고 문서 충돌: $destination. 내용을 비교해 먼저 해결하세요."
-    fi
-done
-check_path LICENSE.261031
-[ -f "$kit/LICENSE" ] && [ ! -L "$kit/LICENSE" ] || fail '키트 원본 누락: LICENSE'
-if exists LICENSE.261031 && ! cmp -s "$kit/LICENSE" LICENSE.261031; then
-    fail '기존 LICENSE.261031을 덮어쓰지 않습니다. 내용을 비교해 먼저 해결하세요.'
-fi
-check_path .gitignore
-check_not_ignored() {
-    local reason=$1 ignored
-    shift
-    if git check-ignore --no-index -- "$@" > /dev/null; then
-        fail "$reason 기존 추적 여부와 관계없이 ignore 충돌을 먼저 해결하세요."
-    else
-        ignored=$?
-        [ "$ignored" -eq 1 ] || fail '기존 ignore 규칙을 확인하지 못했습니다.'
-    fi
-}
-check_not_ignored '.evidence 실행 증거가 ignore 규칙에 가려집니다. 증거는 추적하고 .evidence/tmp/만 제외해야 합니다.' \
-    .evidence/latest .evidence/run-kit-probe/result .evidence/run-kit-probe/output.log
-check_not_ignored '필수 키트 설치 파일이 ignore 규칙에 가려집니다.' \
-    "${runtime[@]}" "${preserved[@]}" AGENTS.md "$agents" RULE.md "$rules" LICENSE.261031 .gitignore
-bash "$kit/scripts/setup" --check
+kit_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+target_dir="${1:-$PWD}"
 
-copy_missing() {
-    local source=$1 destination=$2
-    if [ -f "$destination" ]; then
-        printf '보존: %s\n' "$destination"
-    else
-        mkdir -p "$(dirname "$destination")"
-        cp -p -n "$kit/$source" "$destination"
-        printf '추가: %s\n' "$destination"
-    fi
-}
-for path in "${runtime[@]}" "${preserved[@]}"; do copy_missing "$path" "$path"; done
-copy_missing LICENSE LICENSE.261031
-copy_missing AGENTS.md "$agents"
-copy_missing RULE.md "$rules"
-if [ "$agents" = AGENTS.kit.md ] && ! grep -Fqx '<!-- 261031-kit -->' AGENTS.md; then
-    cat >> AGENTS.md <<'POINTER'
+python3 - "$kit_dir" "$target_dir" <<'PY'
+import os
+from pathlib import Path
+import re
+import sys
+import tempfile
 
-<!-- 261031-kit -->
-작업을 시작할 때 AGENTS.kit.md도 읽는다. 실제 과제 안내와 기존 규칙을 우선하고, RULE.kit.md가 있으면 차이도 확인한다.
-<!-- /261031-kit -->
-POINTER
-fi
-if [ ! -f .gitignore ] || ! grep -Fqx '.evidence/tmp/' .gitignore; then
-    printf '\n# 261031: 폐기용 상태만 제외하고 실행 증거는 추적한다.\n.evidence/tmp/\n' >> .gitignore
-fi
-bash ./scripts/setup
-printf '\n설치 완료. 실제 과제 안내·RULE.md·AGENTS.md를 먼저 읽으세요.\n'
-if [ "$rules" = RULE.kit.md ]; then
-    printf '기존 RULE.md를 보존하고 키트 규칙을 RULE.kit.md에 두었습니다. 실제 과제 규칙이 우선합니다.\n'
-fi
-printf '키트 안내는 readme.kit.md, 단계별 스킬과 시나리오는 readme.skill.md에서 확인하세요.\n'
-printf 'docs/intent.md·docs/features.md와 verification/check를 과제에 맞게 작성하세요.\n'
-printf '그 뒤 ./scripts/check → 코드·증거 함께 스테이징 → 커밋 순서로 진행하세요.\n'
-printf '앱 검증·스테이징·커밋은 실행하지 않았습니다. 재실행은 기존 과제 문서와 검사 어댑터를 보존합니다.\n'
+
+def fail(message):
+    raise ValueError(message)
+
+
+def install():
+    if sys.version_info < (3, 8):
+        fail("Python 3.8 이상이 필요합니다.")
+
+    kit = Path(sys.argv[1]).resolve(strict=True)
+    target = Path(sys.argv[2]).expanduser().resolve(strict=True)
+    if not target.is_dir():
+        fail("기존 과제 디렉터리를 지정하세요.")
+    if target == kit or kit in target.parents:
+        fail("키트 원본이나 그 하위 폴더가 아닌 실제 과제 폴더에서 실행하세요.")
+
+    source = kit / "readme.kit.md"
+    if source.is_symlink() or not source.is_file():
+        fail("키트 원본 readme.kit.md가 일반 파일이어야 합니다.")
+    raw = source.read_bytes()
+    text = raw.decode("utf-8")
+    expected = (
+        "cofa-workflow", "cofa-discovery", "cofa-prd", "cofa-architecture",
+        "cofa-build", "cofa-verify", "cofa-understanding-coach",
+    )
+    pattern = r"^<!-- skill: ([a-z0-9-]+) -->\r?\n```markdown\r?\n(.*?)\r?\n```[ \t]*$"
+    blocks = re.findall(pattern, text, flags=re.MULTILINE | re.DOTALL)
+    if tuple(name for name, _ in blocks) != expected:
+        fail("스킬 원문의 누락·중복·순서를 확인하세요. 필요한 블록은 7개입니다.")
+
+    outputs = {Path("readme.kit.md"): raw}
+    for name, body in blocks:
+        lines = body.splitlines()
+        if not lines or lines[0] != "---" or "---" not in lines[1:]:
+            fail("YAML 머리말이 없습니다: " + name)
+        end = lines.index("---", 1)
+        metadata = {}
+        for line in lines[1:end]:
+            key, separator, value = line.partition(":")
+            if separator:
+                metadata[key.strip()] = value.strip()
+        if metadata.get("name") != name or not metadata.get("description", "").strip("\"' "):
+            fail("스킬 name 또는 description을 확인하세요: " + name)
+        outputs[Path(".agents") / "skills" / name / "SKILL.md"] = (body + "\n").encode("utf-8")
+
+    # 모든 대상 경로를 쓰기 전에 검사한다. 기존 하위 symlink는 따라가지 않는다.
+    pending = []
+    preserved = []
+    for relative, content in outputs.items():
+        parent = target
+        for part in relative.parts[:-1]:
+            parent = parent / part
+            if parent.is_symlink() or (parent.exists() and not parent.is_dir()):
+                fail("디렉터리 충돌 또는 symlink: " + str(parent))
+        destination = target / relative
+        if destination.is_symlink() or (destination.exists() and not destination.is_file()):
+            fail("일반 파일이 아닌 대상: " + str(destination))
+        if destination.exists():
+            if destination.read_bytes() != content:
+                fail("기존 파일과 내용이 달라 보존했습니다. 먼저 비교하세요: " + str(destination))
+            preserved.append(relative)
+        else:
+            pending.append((relative, content))
+
+    # 완성된 임시 파일을 배타적으로 연결해 생성 중인 파일이나 기존 파일을 덮어쓰지 않는다.
+    for relative, content in pending:
+        destination = target / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        temporary = None
+        try:
+            with tempfile.NamedTemporaryFile(dir=str(destination.parent), prefix=".cofa-kit-", delete=False) as handle:
+                temporary = Path(handle.name)
+                handle.write(content)
+            temporary.chmod(0o644)
+            try:
+                os.link(str(temporary), str(destination))
+            except FileExistsError:
+                if destination.is_symlink() or not destination.is_file() or destination.read_bytes() != content:
+                    fail("설치 중 대상이 변경됐습니다. 기존 경로를 보존했습니다: " + str(destination))
+        finally:
+            if temporary is not None:
+                temporary.unlink(missing_ok=True)
+        print("준비: " + str(relative))
+
+    for relative in preserved:
+        print("보존: " + str(relative))
+    print("\n설치 완료: " + str(target))
+    print("안내서와 스킬 7개를 준비했습니다. 실제 과제 규칙과 README를 먼저 확인하세요.")
+    print("Codex에서 $cofa-workflow를 요청해 문답·PRD·설계·구현·검증을 시작하세요.")
+    print("각 핵심 단계 뒤에 작은 검증과 사용자 역질문 한 개를 반복합니다.")
+    print("앱 검증·제출·커밋은 실행하지 않았습니다.")
+
+
+try:
+    install()
+except (OSError, ValueError, UnicodeError) as error:
+    print("설치 중지: " + str(error), file=sys.stderr)
+    sys.exit(1)
+PY

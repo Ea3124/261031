@@ -1,6 +1,0 @@
-test_ignored_managed_files_stop_before_copying (test_setup.SetupTests) ... ok
-
-----------------------------------------------------------------------
-Ran 1 test in 0.079s
-
-OK

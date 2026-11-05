@@ -1,6 +1,0 @@
-test_invalid_pointer_and_push_are_blocked (test_workflow.WorkflowTests) ... ok
-
-----------------------------------------------------------------------
-Ran 1 test in 0.406s
-
-OK

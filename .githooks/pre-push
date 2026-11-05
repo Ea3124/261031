@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-printf 'Push blocked: this workflow does not permit git push.\n' >&2
-exit 1

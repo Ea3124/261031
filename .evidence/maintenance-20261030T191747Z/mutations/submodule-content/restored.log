@@ -1,6 +1,0 @@
-test_dirty_submodule_source_blocks_check_and_commit (test_workflow.WorkflowTests) ... ok
-
-----------------------------------------------------------------------
-Ran 1 test in 2.860s
-
-OK

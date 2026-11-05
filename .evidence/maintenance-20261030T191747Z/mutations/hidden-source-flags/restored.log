@@ -1,6 +1,0 @@
-test_working_tree_sees_changes_hidden_by_index_flags (test_workflow.WorkflowTests) ... ok
-
-----------------------------------------------------------------------
-Ran 1 test in 0.875s
-
-OK

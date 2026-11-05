@@ -1,6 +1,0 @@
-test_failure_with_same_source_invalidates_old_pass (test_workflow.WorkflowTests) ... ok
-
-----------------------------------------------------------------------
-Ran 1 test in 1.300s
-
-OK

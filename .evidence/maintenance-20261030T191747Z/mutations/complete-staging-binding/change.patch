@@ -1,9 +1,0 @@
---- a/.githooks/pre-commit
-+++ b/.githooks/pre-commit
-@@ -31,5 +31,5 @@
- tree=$(printf '%s\n' "$receipt" | sed -n 's/^tree=//p')
- working=$(./scripts/source-tree working)
- staged=$(./scripts/source-tree staged)
--[ "$working" = "$staged" ] || fail 'stage all current source and documentation.'
-+[ "$staged" = "$staged" ] || fail 'stage all current source and documentation.'
- [ "$staged" = "$tree" ] || fail 'the staged source differs from the verified tree.'

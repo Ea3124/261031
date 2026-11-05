@@ -1,6 +1,0 @@
-test_reject_non_git_subdirectory_and_source_checkout (test_setup.SetupTests) ... ok
-
-----------------------------------------------------------------------
-Ran 1 test in 0.062s
-
-OK

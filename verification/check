@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-printf 'Project verification is not configured. Replace verification/check with the project native checks.\n' >&2
-exit 2
