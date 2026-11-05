@@ -4,7 +4,7 @@ set -euo pipefail
 
 if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
     printf '사용: bash setup.sh [기존 과제 폴더]\n'
-    printf '인자 생략 시 현재 폴더에 안내서·운영 지침과 스킬 7개를 준비합니다.\n'
+    printf '인자 생략 시 현재 폴더에 안내서·운영 지침과 스킬 8개를 준비합니다.\n'
     printf '기존 RULE.md는 보존하고 다른 내용의 안내서·스킬은 덮어쓰지 않습니다.\n'
     exit 0
 fi
@@ -53,12 +53,12 @@ def install():
         fail("키트 원본 RULE.md가 일반 파일이어야 합니다.")
     expected = (
         "cofa-workflow", "cofa-discovery", "cofa-prd", "cofa-architecture",
-        "cofa-build", "cofa-verify", "cofa-understanding-coach",
+        "cofa-build", "cofa-verify", "cofa-understanding-coach", "cofa-handoff",
     )
     pattern = r"^<!-- skill: ([a-z0-9-]+) -->\r?\n```markdown\r?\n(.*?)\r?\n```[ \t]*$"
     blocks = re.findall(pattern, text, flags=re.MULTILINE | re.DOTALL)
     if tuple(name for name, _ in blocks) != expected:
-        fail("스킬 원문의 누락·중복·순서를 확인하세요. 필요한 블록은 7개입니다.")
+        fail("스킬 원문의 누락·중복·순서를 확인하세요. 필요한 블록은 8개입니다.")
 
     outputs = {Path("readme.kit.md"): raw, Path("RULE.md"): rules.read_bytes()}
     for name, body in blocks:
@@ -120,7 +120,7 @@ def install():
     for relative in preserved:
         print("보존: " + str(relative))
     print("\n설치 완료: " + str(target))
-    print("안내서·RULE.md와 스킬 7개를 준비했습니다. 실제 과제 규칙과 README를 먼저 확인하세요.")
+    print("안내서·RULE.md와 스킬 8개를 준비했습니다. 실제 과제 규칙과 README를 먼저 확인하세요.")
     print("Codex에서 $cofa-workflow를 요청해 문답·PRD·설계·구현·검증을 시작하세요.")
     print("각 핵심 단계 뒤에 설계·로직 검증과 근거를 설명하는 역질문 한 개를 반복합니다.")
     print("앱 검증·제출·커밋은 실행하지 않았습니다.")
