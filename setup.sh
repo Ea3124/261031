@@ -4,8 +4,8 @@ set -euo pipefail
 
 if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
     printf '사용: bash setup.sh [기존 과제 폴더]\n'
-    printf '인자 생략 시 현재 폴더에 안내서·운영 지침과 스킬 8개를 준비합니다.\n'
-    printf '기존 RULE.md는 보존하고 다른 내용의 안내서·스킬은 덮어쓰지 않습니다.\n'
+    printf '인자 생략 시 현재 폴더에 안내서·AGENTS.md·운영 지침과 스킬 8개를 준비합니다.\n'
+    printf '기존 AGENTS.md·RULE.md는 보존하고 다른 내용의 안내서·스킬은 덮어쓰지 않습니다.\n'
     exit 0
 fi
 if [[ "$#" -gt 1 ]]; then
@@ -59,8 +59,16 @@ def install():
     blocks = re.findall(pattern, text, flags=re.MULTILINE | re.DOTALL)
     if tuple(name for name, _ in blocks) != expected:
         fail("스킬 원문의 누락·중복·순서를 확인하세요. 필요한 블록은 8개입니다.")
+    agents_pattern = r"^<!-- artifact: AGENTS\.md -->\r?\n```markdown\r?\n(.*?)\r?\n```[ \t]*$"
+    agents_blocks = re.findall(agents_pattern, text, flags=re.MULTILINE | re.DOTALL)
+    if len(agents_blocks) != 1 or not agents_blocks[0].strip():
+        fail("AGENTS.md 원문 블록이 하나 있어야 하며 내용이 비어 있으면 안 됩니다.")
 
-    outputs = {Path("readme.kit.md"): raw, Path("RULE.md"): rules.read_bytes()}
+    outputs = {
+        Path("readme.kit.md"): raw,
+        Path("RULE.md"): rules.read_bytes(),
+        Path("AGENTS.md"): (agents_blocks[0] + "\n").encode("utf-8"),
+    }
     for name, body in blocks:
         lines = body.splitlines()
         if not lines or lines[0] != "---" or "---" not in lines[1:]:
@@ -88,7 +96,7 @@ def install():
         if destination.is_symlink() or (destination.exists() and not destination.is_file()):
             fail("일반 파일이 아닌 대상: " + str(destination))
         if destination.exists():
-            if relative == Path("RULE.md"):
+            if relative in (Path("RULE.md"), Path("AGENTS.md")):
                 preserved.append(relative)
                 continue
             if destination.read_bytes() != content:
@@ -120,7 +128,7 @@ def install():
     for relative in preserved:
         print("보존: " + str(relative))
     print("\n설치 완료: " + str(target))
-    print("안내서·RULE.md와 스킬 8개를 준비했습니다. 실제 과제 규칙과 README를 먼저 확인하세요.")
+    print("안내서·AGENTS.md·RULE.md와 스킬 8개를 준비했습니다. 실제 과제 규칙과 README를 먼저 확인하세요.")
     print("Codex에서 $cofa-workflow를 요청해 문답·PRD·설계·구현·검증을 시작하세요.")
     print("각 핵심 단계 뒤에 설계·로직 검증과 근거를 설명하는 역질문 한 개를 반복합니다.")
     print("앱 검증·제출·커밋은 실행하지 않았습니다.")
