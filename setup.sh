@@ -4,8 +4,8 @@ set -euo pipefail
 
 if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
     printf '사용: bash setup.sh [기존 과제 폴더]\n'
-    printf '인자 생략 시 현재 폴더에 안내서와 스킬 7개를 생성합니다.\n'
-    printf '같은 내용은 보존하고 다른 내용의 기존 파일은 덮어쓰지 않습니다.\n'
+    printf '인자 생략 시 현재 폴더에 안내서·운영 지침과 스킬 7개를 준비합니다.\n'
+    printf '기존 RULE.md는 보존하고 다른 내용의 안내서·스킬은 덮어쓰지 않습니다.\n'
     exit 0
 fi
 if [[ "$#" -gt 1 ]]; then
@@ -48,6 +48,9 @@ def install():
         fail("키트 원본 readme.kit.md가 일반 파일이어야 합니다.")
     raw = source.read_bytes()
     text = raw.decode("utf-8")
+    rules = kit / "RULE.md"
+    if rules.is_symlink() or not rules.is_file():
+        fail("키트 원본 RULE.md가 일반 파일이어야 합니다.")
     expected = (
         "cofa-workflow", "cofa-discovery", "cofa-prd", "cofa-architecture",
         "cofa-build", "cofa-verify", "cofa-understanding-coach",
@@ -57,7 +60,7 @@ def install():
     if tuple(name for name, _ in blocks) != expected:
         fail("스킬 원문의 누락·중복·순서를 확인하세요. 필요한 블록은 7개입니다.")
 
-    outputs = {Path("readme.kit.md"): raw}
+    outputs = {Path("readme.kit.md"): raw, Path("RULE.md"): rules.read_bytes()}
     for name, body in blocks:
         lines = body.splitlines()
         if not lines or lines[0] != "---" or "---" not in lines[1:]:
@@ -85,6 +88,9 @@ def install():
         if destination.is_symlink() or (destination.exists() and not destination.is_file()):
             fail("일반 파일이 아닌 대상: " + str(destination))
         if destination.exists():
+            if relative == Path("RULE.md"):
+                preserved.append(relative)
+                continue
             if destination.read_bytes() != content:
                 fail("기존 파일과 내용이 달라 보존했습니다. 먼저 비교하세요: " + str(destination))
             preserved.append(relative)
@@ -114,7 +120,7 @@ def install():
     for relative in preserved:
         print("보존: " + str(relative))
     print("\n설치 완료: " + str(target))
-    print("안내서와 스킬 7개를 준비했습니다. 실제 과제 규칙과 README를 먼저 확인하세요.")
+    print("안내서·RULE.md와 스킬 7개를 준비했습니다. 실제 과제 규칙과 README를 먼저 확인하세요.")
     print("Codex에서 $cofa-workflow를 요청해 문답·PRD·설계·구현·검증을 시작하세요.")
     print("각 핵심 단계 뒤에 작은 검증과 사용자 역질문 한 개를 반복합니다.")
     print("앱 검증·제출·커밋은 실행하지 않았습니다.")
